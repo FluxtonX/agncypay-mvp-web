@@ -32,6 +32,7 @@ interface AppState {
     accountType: AccountType;
     isLoggedIn: boolean;
     emailVerified: boolean;
+    kybStatus?: string;
     activeWorkspaceId?: string;
     parentAgencyEmail?: string;
     parentAgencyUid?: string;
@@ -302,6 +303,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
                 accountType: userData.accountType,
                 isLoggedIn: true,
                 emailVerified: true,
+                kybStatus: userData.kybStatus || "not_started",
                 activeWorkspaceId: workspaceId,
               },
               workspaces: [userWorkspace],

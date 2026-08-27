@@ -7,6 +7,8 @@ import { Check, ShieldCheck, Eye, EyeOff, Loader2, ArrowRight } from "lucide-rea
 import { apiRegister } from "../../../lib/api/auth";
 import { WorkspaceType } from "../../../types/workspace";
 
+import { useApp } from "../../../context/AppContext";
+
 const DEMO_EMAIL = "martin.safi@adidas.com";
 const DEMO_PASSWORD = "password123";
 
@@ -67,6 +69,7 @@ function FormField({
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { loginUser } = useApp();
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -133,14 +136,27 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      await apiRegister({
+      const res = await apiRegister({
         email: normalizedEmail,
         password,
         fullName: normalizedName,
         accountType: roleType === "agency" ? "agency" : "brand",
         workspaceName: normalizedWorkspaceName,
       });
-      router.push("/auth/login");
+
+      if (res && res.user) {
+        loginUser(res.user.email, res.user.fullName, res.user.accountType, {
+          uid: res.user.id,
+          agencyId: res.user.agncyId,
+          workspaceName: normalizedWorkspaceName,
+        });
+      }
+
+      if (roleType === "agency") {
+        router.push("/onboarding/business-setup");
+      } else {
+        router.push("/branddashboard");
+      }
     } catch (error: any) {
       console.error("Registration failed:", error);
       setErrors({ email: error.message || "Failed to create account. Please try again." });
