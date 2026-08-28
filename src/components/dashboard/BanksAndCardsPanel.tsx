@@ -1,7 +1,6 @@
-"use client";
-
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { Building2, CreditCard, Plus, CheckCircle2, X, Loader2, ShieldCheck, Wallet } from "lucide-react";
+import { Building2, CreditCard, Plus, CheckCircle2, X, Loader2, ShieldCheck, Wallet, Landmark } from "lucide-react";
+import { apiGetVerificationState } from "../../lib/api/verification";
 
 interface PlaidAccount {
   id: string;
@@ -12,16 +11,24 @@ interface PlaidAccount {
   availableBalance: number;
 }
 
+interface CybridDepositAccount {
+  routingNumber?: string;
+  accountNumber?: string;
+  uniqueMemoId?: string;
+  bankName?: string;
+}
+
 interface BanksAndCardsPanelProps {
   onConnectAccount?: () => void;
 }
 
 export function BanksAndCardsPanel({ onConnectAccount }: BanksAndCardsPanelProps) {
   const [plaidAccounts, setPlaidAccounts] = useState<PlaidAccount[]>([]);
+  const [cybridDeposit, setCybridDeposit] = useState<CybridDepositAccount | null>(null);
   const [isPlaidLoading, setIsPlaidLoading] = useState(false);
   const [plaidError, setPlaidError] = useState<string | null>(null);
 
-  // Initialize Plaid Link SDK
+  // Initialize Plaid Link SDK & Load Cybrid Deposit Account
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!document.getElementById("plaid-link-sdk")) {
@@ -40,6 +47,15 @@ export function BanksAndCardsPanel({ onConnectAccount }: BanksAndCardsPanelProps
           console.error("Error reading saved Plaid accounts:", e);
         }
       }
+
+      // Fetch Cybrid Virtual Deposit Account from API
+      apiGetVerificationState()
+        .then((state) => {
+          if (state?.depositAccount) {
+            setCybridDeposit(state.depositAccount);
+          }
+        })
+        .catch(() => {});
     }
   }, []);
 
@@ -172,6 +188,38 @@ export function BanksAndCardsPanel({ onConnectAccount }: BanksAndCardsPanelProps
 
       {/* Main Body */}
       <div className="p-6 flex flex-col gap-4 border-b border-white/10 light:border-black/10 bg-white/[0.02] light:bg-slate-50/50">
+        {/* Cybrid Inbound Deposit Account (Virtual Checking for Brand ACH/Wire Funding) */}
+        {cybridDeposit && (
+          <div className="flex items-center justify-between p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/[0.04] light:bg-emerald-50 hover:border-emerald-500/50 transition-all shadow-xs">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-center shrink-0">
+                <Landmark className="h-6 w-6 text-emerald-400 light:text-emerald-700" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-xs font-bold text-white light:text-emerald-950">
+                    {cybridDeposit.bankName || "Evolve Bank & Trust / Cybrid Sandbox"}
+                  </h4>
+                  <span className="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase bg-emerald-500/20 text-emerald-300 light:text-emerald-800 border border-emerald-500/30">
+                    Cybrid Cloud Inbound Settlement
+                  </span>
+                </div>
+                <p className="text-[11px] font-medium text-neutral-300 light:text-emerald-900 mt-1 flex items-center gap-3">
+                  <span>Routing: <strong className="font-mono text-white light:text-black">{cybridDeposit.routingNumber}</strong></span>
+                  <span>•</span>
+                  <span>Acct: <strong className="font-mono text-white light:text-black">{cybridDeposit.accountNumber}</strong></span>
+                  <span>•</span>
+                  <span>Memo: <strong className="font-mono text-emerald-400 light:text-emerald-700">{cybridDeposit.uniqueMemoId}</strong></span>
+                </p>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="text-[10px] uppercase font-bold text-emerald-400 light:text-emerald-700 block">Active & Verified</span>
+              <span className="text-[10px] text-neutral-400 light:text-neutral-600 font-semibold">Inbound Wire / ACH</span>
+            </div>
+          </div>
+        )}
+
         {/* Dynamic Plaid Connected Accounts */}
         {plaidAccounts.length > 0 && plaidAccounts.map((acc) => (
           <div
