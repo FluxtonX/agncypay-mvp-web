@@ -140,10 +140,10 @@ export default function AgencyContactsPage() {
   };
 
   const filteredBrands = brands.filter(b =>
-    (b.workspaceName || b.fullName || b.email).toLowerCase().includes(searchQuery.toLowerCase())
+    ((b?.workspaceName || b?.fullName || b?.email || '') as string).toLowerCase().includes((searchQuery || '').toLowerCase())
   );
   const filteredTalents = talents.filter(t =>
-    (t.fullName || t.email).toLowerCase().includes(searchQuery.toLowerCase())
+    ((t?.fullName || t?.email || '') as string).toLowerCase().includes((searchQuery || '').toLowerCase())
   );
 
   return (

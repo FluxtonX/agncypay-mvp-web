@@ -73,6 +73,7 @@ export default function LoginPage() {
             workspaceType: userProfile.accountType,
             agencyId: userProfile.agncyId,
             uid: userProfile.id,
+            kybStatus: userProfile.kybStatus,
           }
         );
 

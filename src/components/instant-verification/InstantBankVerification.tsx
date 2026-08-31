@@ -78,35 +78,14 @@ export function InstantBankVerification() {
           setLinkToken(token);
           setIsMockPlaid(false);
           setPlaidError(null);
-        } else if (data.isMock) {
-          setIsMockPlaid(true);
-          setPlaidError(null);
+        } else {
+          setPlaidError("Plaid integration token unavailable. Please verify API configuration or enter bank details manually.");
         }
       })
       .catch((err) => {
-        console.warn("API Plaid link-token failed, falling back:", err.message || err);
-        setIsMockPlaid(true);
+        console.warn("API Plaid link-token failed:", err.message || err);
+        setPlaidError("Plaid service unavailable. Please check credentials or proceed with manual verification.");
       });
-  }, [state.businessSetup.legalName, updateBankDetails]);
-
-  const triggerMockPlaidFlow = useCallback(async () => {
-    setPlaidState("connecting");
-    setTimeout(async () => {
-      try {
-        await apiExchangePlaidPublicToken("public-sandbox-simulated-token");
-        setPlaidState("connected");
-        updateBankDetails({
-          accountHolderName: state.businessSetup.legalName || "Business account",
-          bankName: "Chase Bank (Simulated)",
-          routingNumber: "111000025",
-          accountNumber: "****6789",
-          statementUploaded: true,
-          status: "approved",
-        });
-      } catch (error) {
-        setPlaidState("connected");
-      }
-    }, 1200);
   }, [state.businessSetup.legalName, updateBankDetails]);
 
   // Check if we are resuming from an OAuth redirect
@@ -252,13 +231,9 @@ export function InstantBankVerification() {
                 type="button"
                 onClick={() => {
                   setPlaidState("connecting");
-                  if (isMockPlaid) {
-                    triggerMockPlaidFlow();
-                  } else {
-                    open();
-                  }
+                  open();
                 }}
-                disabled={(!ready && !isMockPlaid) || plaidState !== "idle"}
+                disabled={!ready || plaidState !== "idle"}
                 className={cn(
                   "flex h-11 min-w-[160px] items-center justify-center gap-2 rounded-[7px] px-5 text-[15px] font-semibold transition-colors sm:text-[16px]",
                   plaidState === "connected"

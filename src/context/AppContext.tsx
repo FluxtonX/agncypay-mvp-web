@@ -215,6 +215,7 @@ interface AppContextType {
       workspaceType?: WorkspaceType;
       agencyId?: string;
       uid?: string;
+      kybStatus?: string;
     }
   ) => void;
   verifyEmail: (code: string) => boolean;
@@ -232,6 +233,7 @@ interface AppContextType {
   switchWorkspace: (workspaceId: string) => void;
   resetState: () => void;
   logoutUser: () => Promise<void>;
+  refreshUser: () => Promise<void>;
   setVerificationStatusDirectly: (status: AppState["verificationStatus"]) => void;
 }
 
@@ -284,13 +286,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             const workspaceType = normalizeWorkspaceType(userData.accountType);
             const workspaceId = `ws-${userData.id}`;
 
+            const verificationStatus = userData.kybStatus === "approved" ? "approved" : "draft";
             const userWorkspace: Workspace = {
               id: workspaceId,
               type: workspaceType,
               name: `${userData.fullName}'s Workspace`,
               agncyId: userData.agncyId,
               verificationTrack: getVerificationTrack(workspaceType),
-              verificationStatus: "draft",
+              verificationStatus,
             };
 
             setState((prev) => ({
@@ -336,6 +339,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       workspaceType?: WorkspaceType;
       agencyId?: string;
       uid?: string;
+      kybStatus?: string;
     }
   ) => {
     const normalizedEmail = email.trim().toLowerCase();
@@ -343,6 +347,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const workspaceName = workspaceOptions?.workspaceName?.trim() || "AgncyPay Workspace";
     const workspaceId = `${workspaceType}-${Date.now()}`;
     const role = getDefaultWorkspaceRole(workspaceType);
+    const kybStatus = workspaceOptions?.kybStatus || "not_started";
+    const verificationStatus = kybStatus === "approved" ? "approved" : "draft";
+
     const workspace: Workspace = {
       id: workspaceId,
       type: workspaceType,
@@ -350,7 +357,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       agncyId: workspaceOptions?.agencyId || createAgncyId("ORG"),
       externalId: workspaceOptions?.agencyId,
       verificationTrack: getVerificationTrack(workspaceType),
-      verificationStatus: "draft",
+      verificationStatus,
     };
     const membership: Membership = {
       id: `mem-${Date.now()}`,
@@ -364,13 +371,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => ({
       ...prev,
       user: {
-        uid: workspaceOptions?.uid || prev.user?.uid || `usr-${Date.now()}`,
-        agncyId: prev.user?.email === normalizedEmail ? prev.user.agncyId : (workspaceOptions?.agencyId || createAgncyId("USR")),
-        fullName,
+        uid: workspaceOptions?.uid || createAgncyId("USR"),
+        agncyId: workspaceOptions?.agencyId || createAgncyId("USR"),
+        fullName: fullName.trim(),
         email: normalizedEmail,
         accountType,
         isLoggedIn: true,
         emailVerified: true,
+        kybStatus,
         activeWorkspaceId: workspaceId,
       },
       workspaces: [
@@ -610,6 +618,56 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setState(DEFAULT_STATE);
   };
 
+  const refreshUser = async () => {
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("agncypay_token") : null;
+      if (!token) return;
+      const userData: any = await apiGetMe();
+      if (userData && userData.email) {
+        const workspaceType = normalizeWorkspaceType(userData.accountType);
+        const workspaceId = `ws-${userData.id}`;
+        const kybStatus = userData.kybStatus || "not_started";
+        const verificationStatus = kybStatus === "approved" ? "approved" : "draft";
+
+        setState((prev) => ({
+          ...prev,
+          user: prev.user ? {
+            ...prev.user,
+            uid: userData.id,
+            agncyId: userData.agncyId,
+            fullName: userData.fullName,
+            email: userData.email,
+            accountType: userData.accountType,
+            kybStatus,
+          } : {
+            uid: userData.id,
+            agncyId: userData.agncyId,
+            fullName: userData.fullName,
+            email: userData.email,
+            accountType: userData.accountType,
+            isLoggedIn: true,
+            emailVerified: true,
+            kybStatus,
+            activeWorkspaceId: workspaceId,
+          },
+          verificationStatus,
+          workspaces: (prev.workspaces && prev.workspaces.length > 0)
+            ? prev.workspaces.map(w => ({ ...w, verificationStatus }))
+            : [{
+                id: workspaceId,
+                type: workspaceType,
+                name: `${userData.fullName}'s Workspace`,
+                agncyId: userData.agncyId,
+                verificationTrack: getVerificationTrack(workspaceType),
+                verificationStatus,
+              }],
+        }));
+      }
+    } catch (err: any) {
+      console.warn("User refresh warning:", err?.message);
+    }
+  };
+
   const logoutUser = async () => {
     await resetState();
     if (typeof window !== "undefined") {
@@ -639,6 +697,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         switchWorkspace,
         resetState,
         logoutUser,
+        refreshUser,
         setVerificationStatusDirectly,
       }}
     >

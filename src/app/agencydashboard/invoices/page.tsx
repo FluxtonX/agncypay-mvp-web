@@ -62,10 +62,16 @@ const INITIAL_INVOICES: InvoiceMock[] = [];
 
 export default function InvoicesQueuePage() {
   const router = useRouter();
-  const { state, resetState } = useApp();
+  const { state, resetState, refreshUser } = useApp();
   const workspaceType = state.user ? state.user.accountType : "brand";
 
   const [isLightTheme, setIsLightTheme] = useState(false);
+
+  useEffect(() => {
+    if (state.user && state.user.kybStatus !== "approved") {
+      refreshUser();
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -128,30 +134,32 @@ export default function InvoicesQueuePage() {
           uiStatus = inv.talentPayoutStatus === "disbursed" ? "talent_disbursed" : "settled";
         }
         
+        const numAmount = typeof inv.amount === "number" ? inv.amount : (Number(inv.amount) || 0);
+        
         return {
           id: inv.id,
-          campaignName: inv.campaign,
-          brandName: inv.brandName || "Adidas Corporate",
+          campaignName: inv.campaign || "Services Rendered",
+          brandName: inv.brandName || "Brand Partner",
           createdDate: inv.createdDate || new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-          dueDate: inv.due,
-          amount: inv.amount,
+          dueDate: inv.due || "Net-30",
+          amount: numAmount,
           location: "Escrow Wallet Active",
           costCenter: "Marketing (Campaign Pool)",
-          initials: [inv.agency?.charAt(0).toUpperCase() || "A"],
+          initials: [(inv.agency || "A").charAt(0).toUpperCase()],
           defaultTerm: "Net-30",
           status: uiStatus,
           vendorFee: {
             name: "Processing Fee",
             role: "Vendor",
-            amount: inv.amount * 0.1,
+            amount: numAmount * 0.1,
             walletId: "@agncypay",
             avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&auto=format&fit=crop&q=80"
           },
           splitPool: {
-            total: inv.amount * 0.9,
+            total: numAmount * 0.9,
             splits: [
-              { name: inv.talent, role: "Talent", percentage: 85, amount: inv.amount * 0.9 * 0.85, walletId: "@talent", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80" },
-              { name: inv.agency, role: "Agency", percentage: 15, amount: inv.amount * 0.9 * 0.15, walletId: "@agency", avatar: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=80&auto=format&fit=crop&q=80" }
+              { name: inv.talent || "Talent Partner", role: "Talent", percentage: 85, amount: numAmount * 0.9 * 0.85, walletId: "@talent", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80" },
+              { name: inv.agency || "Agency", role: "Agency", percentage: 15, amount: numAmount * 0.9 * 0.15, walletId: "@agency", avatar: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=80&auto=format&fit=crop&q=80" }
             ]
           }
         };
@@ -364,17 +372,17 @@ export default function InvoicesQueuePage() {
 
         {/* Ambient KYB Notice Banner if not verified */}
         {state.user && state.user.kybStatus !== "approved" && (
-          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg">
+          <div className={`rounded-xl border p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md transition-colors ${isLightTheme ? "border-amber-300 bg-amber-50/90 text-amber-950" : "border-amber-500/30 bg-amber-950/20 text-amber-100"}`}>
             <div className="flex items-center gap-3">
-              <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0" />
+              <ShieldAlert className={`w-5 h-5 shrink-0 ${isLightTheme ? "text-amber-700" : "text-amber-400"}`} />
               <div>
-                <p className="text-xs font-bold text-amber-200">Business Verification Required</p>
-                <p className="text-[11px] text-amber-300/80">Complete business verification (KYB) to unlock live ACH/Wire/RTP deposit bank accounts for your invoices.</p>
+                <p className={`text-xs font-bold ${isLightTheme ? "text-amber-900" : "text-amber-200"}`}>Business Verification Required</p>
+                <p className={`text-[11px] ${isLightTheme ? "text-amber-800" : "text-amber-300/80"}`}>Complete business verification (KYB) to unlock live ACH/Wire/RTP deposit bank accounts for your invoices.</p>
               </div>
             </div>
             <button
               onClick={() => router.push("/onboarding/business-setup")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shrink-0 shadow"
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shrink-0 shadow-sm ${isLightTheme ? "bg-amber-600 hover:bg-amber-700 text-white" : "bg-amber-400 hover:bg-amber-300 text-black"}`}
             >
               <span>Verify Agency</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -383,13 +391,13 @@ export default function InvoicesQueuePage() {
         )}
 
         {/* Main Tabs */}
-        <div className="flex items-center gap-2 border-b border-white/10 pb-4">
+        <div className={`flex items-center gap-2 border-b pb-4 ${isLightTheme ? "border-black/10" : "border-white/10"}`}>
           <button
             onClick={() => setActiveMainTab("receivables")}
             className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${
               activeMainTab === "receivables"
-                ? "bg-white text-black"
-                : "text-[#8f8f8f] hover:text-white hover:bg-white/5"
+                ? isLightTheme ? "bg-[#0F172A] text-white shadow" : "bg-white text-black"
+                : isLightTheme ? "text-slate-600 hover:text-black hover:bg-slate-100" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"
             }`}
           >
             Receivables (From Brands)
@@ -398,8 +406,8 @@ export default function InvoicesQueuePage() {
             onClick={() => setActiveMainTab("payables")}
             className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${
               activeMainTab === "payables"
-                ? "bg-white text-black"
-                : "text-[#8f8f8f] hover:text-white hover:bg-white/5"
+                ? isLightTheme ? "bg-[#0F172A] text-white shadow" : "bg-white text-black"
+                : isLightTheme ? "text-slate-600 hover:text-black hover:bg-slate-100" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"
             }`}
           >
             Payables (To Talent)
@@ -410,52 +418,52 @@ export default function InvoicesQueuePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {activeMainTab === "receivables" ? (
             <>
-              <div className="bg-[#050505] border border-white/10 rounded-xl p-5 shadow-lg">
-                <p className="text-[11px] font-bold text-[#8f8f8f] uppercase tracking-wider mb-2">Total Expected</p>
-                <p className="text-2xl font-black text-white">
-                  ${invoices.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className={`text-[11px] font-bold uppercase tracking-wider mb-2 ${isLightTheme ? "text-slate-500" : "text-[#8f8f8f]"}`}>Total Expected</p>
+                <p className={`text-2xl font-black ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>
+                  ${invoices.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className="bg-[#050505] border border-white/10 rounded-xl p-5 shadow-lg">
-                <p className="text-[11px] font-bold text-amber-500 uppercase tracking-wider mb-2">Awaiting Brands</p>
-                <p className="text-2xl font-black text-amber-400">
-                  ${invoices.filter(i => i.status === "awaiting_approval").reduce((acc, curr) => acc + curr.amount, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className="text-[11px] font-bold text-amber-600 dark:text-amber-500 uppercase tracking-wider mb-2">Awaiting Brands</p>
+                <p className="text-2xl font-black text-amber-600 dark:text-amber-400">
+                  ${invoices.filter(i => i.status === "awaiting_approval").reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className="bg-[#050505] border border-white/10 rounded-xl p-5 shadow-lg">
-                <p className="text-[11px] font-bold text-emerald-500 uppercase tracking-wider mb-2">Total Settled</p>
-                <p className="text-2xl font-black text-emerald-400">
-                  ${invoices.filter(i => i.status === "settled" || i.status === "talent_disbursed").reduce((acc, curr) => acc + curr.amount, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-500 uppercase tracking-wider mb-2">Total Settled</p>
+                <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
+                  ${invoices.filter(i => i.status === "settled" || i.status === "talent_disbursed").reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
             </>
           ) : (
             <>
-              <div className="bg-[#050505] border border-white/10 rounded-xl p-5 shadow-lg">
-                <p className="text-[11px] font-bold text-[#8f8f8f] uppercase tracking-wider mb-2">Total Owed to Talent</p>
-                <p className="text-2xl font-black text-white">
+              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className={`text-[11px] font-bold uppercase tracking-wider mb-2 ${isLightTheme ? "text-slate-500" : "text-[#8f8f8f]"}`}>Total Owed to Talent</p>
+                <p className={`text-2xl font-black ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>
                   ${invoices.reduce((acc, curr) => {
                     const talentSplit = curr.splitPool.splits.find(s => s.role === "Talent");
-                    return acc + (talentSplit ? talentSplit.amount : 0);
-                  }, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    return acc + (talentSplit ? (Number(talentSplit.amount) || 0) : 0);
+                  }, 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className="bg-[#050505] border border-white/10 rounded-xl p-5 shadow-lg">
-                <p className="text-[11px] font-bold text-amber-500 uppercase tracking-wider mb-2">Pending Payouts</p>
-                <p className="text-2xl font-black text-amber-400">
+              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className="text-[11px] font-bold text-amber-600 dark:text-amber-500 uppercase tracking-wider mb-2">Pending Payouts</p>
+                <p className="text-2xl font-black text-amber-600 dark:text-amber-400">
                   ${invoices.filter(i => i.status !== "talent_disbursed").reduce((acc, curr) => {
                     const talentSplit = curr.splitPool.splits.find(s => s.role === "Talent");
-                    return acc + (talentSplit ? talentSplit.amount : 0);
-                  }, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    return acc + (talentSplit ? (Number(talentSplit.amount) || 0) : 0);
+                  }, 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className="bg-[#050505] border border-white/10 rounded-xl p-5 shadow-lg">
-                <p className="text-[11px] font-bold text-emerald-500 uppercase tracking-wider mb-2">Total Disbursed</p>
-                <p className="text-2xl font-black text-emerald-400">
+              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-500 uppercase tracking-wider mb-2">Total Disbursed</p>
+                <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                   ${invoices.filter(i => i.status === "talent_disbursed").reduce((acc, curr) => {
                     const talentSplit = curr.splitPool.splits.find(s => s.role === "Talent");
-                    return acc + (talentSplit ? talentSplit.amount : 0);
-                  }, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    return acc + (talentSplit ? (Number(talentSplit.amount) || 0) : 0);
+                  }, 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
             </>
@@ -463,7 +471,7 @@ export default function InvoicesQueuePage() {
         </div>
 
         {/* Search & Tabs Controls */}
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-[#050505] p-3 rounded-xl border border-white/20">
+        <div className={`flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center p-3 rounded-xl border transition-colors ${isLightTheme ? "bg-white border-black/10 shadow-sm" : "bg-[#050505] border-white/20"}`}>
           <div className="flex flex-wrap gap-2">
             {activeMainTab === "receivables" ? (
               [
@@ -476,13 +484,13 @@ export default function InvoicesQueuePage() {
                   onClick={() => setActiveReceivableFilter(tab.id as any)}
                   className={`px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all cursor-pointer ${
                     activeReceivableFilter === tab.id
-                      ? "bg-white text-black font-bold"
-                      : "text-[#8f8f8f] hover:text-white bg-transparent hover:bg-white/[0.02]"
+                      ? isLightTheme ? "bg-[#0F172A] text-white font-bold shadow-sm" : "bg-white text-black font-bold"
+                      : isLightTheme ? "text-slate-600 hover:text-black hover:bg-slate-100" : "text-[#8f8f8f] hover:text-white bg-transparent hover:bg-white/[0.02]"
                   }`}
                 >
                   {tab.label}
                   {tab.id === "awaiting_approval" && (
-                    <span className="ml-1.5 px-1.5 py-0.5 rounded bg-[#10b981]/10 text-[#10b981] text-[10px] font-bold">
+                    <span className={`ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold ${isLightTheme ? "bg-amber-100 text-amber-800" : "bg-[#10b981]/10 text-[#10b981]"}`}>
                       {invoices.filter(i => i.status === "awaiting_approval").length}
                     </span>
                   )}
@@ -499,13 +507,13 @@ export default function InvoicesQueuePage() {
                   onClick={() => setActivePayableFilter(tab.id as any)}
                   className={`px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all cursor-pointer ${
                     activePayableFilter === tab.id
-                      ? "bg-white text-black font-bold"
-                      : "text-[#8f8f8f] hover:text-white bg-transparent hover:bg-white/[0.02]"
+                      ? isLightTheme ? "bg-[#0F172A] text-white font-bold shadow-sm" : "bg-white text-black font-bold"
+                      : isLightTheme ? "text-slate-600 hover:text-black hover:bg-slate-100" : "text-[#8f8f8f] hover:text-white bg-transparent hover:bg-white/[0.02]"
                   }`}
                 >
                   {tab.label}
                   {tab.id === "pending_payout" && (
-                    <span className="ml-1.5 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500 text-[10px] font-bold">
+                    <span className={`ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold ${isLightTheme ? "bg-amber-100 text-amber-800" : "bg-amber-500/10 text-amber-500"}`}>
                       {invoices.filter(i => i.status !== "talent_disbursed").length}
                     </span>
                   )}
@@ -515,23 +523,27 @@ export default function InvoicesQueuePage() {
           </div>
 
           <div className="relative md:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8f8f8f]" />
+            <Search className={`absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 ${isLightTheme ? "text-slate-400" : "text-[#8f8f8f]"}`} />
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search campaign, invoice ID..."
-              className="w-full h-9 bg-black border border-white/20 focus:border-white/20 rounded-lg pl-9 pr-4 text-xs outline-none placeholder:text-neutral-600 transition-colors"
+              className={`w-full pl-9 pr-4 py-2 text-xs rounded-lg border outline-none transition-colors ${
+                isLightTheme
+                  ? "bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-slate-400"
+                  : "bg-black/50 border-white/10 text-white placeholder:text-[#8f8f8f] focus:border-white/30"
+              }`}
             />
           </div>
         </div>
 
         {/* Invoices List Grid */}
-        <div className="bg-[#050505] rounded-2xl border border-white/20 overflow-hidden shadow-xl">
+        <div className={`rounded-2xl border overflow-hidden shadow-md transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#050505] border-white/20"}`}>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-white/20 bg-white/[0.01] text-[#8f8f8f] font-bold">
+                <tr className={`border-b font-bold transition-colors ${isLightTheme ? "border-slate-200 bg-slate-50/80 text-slate-600" : "border-white/20 bg-white/[0.01] text-[#8f8f8f]"}`}>
                   <th className="p-4">Invoice ID</th>
                   {activeMainTab === "receivables" ? (
                     <>
@@ -548,42 +560,40 @@ export default function InvoicesQueuePage() {
                   <th className="p-4"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04]">
+              <tbody className={`divide-y ${isLightTheme ? "divide-slate-100" : "divide-white/[0.04]"}`}>
                 {filteredInvoices.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-[#8f8f8f]">
+                    <td colSpan={7} className={`p-8 text-center ${isLightTheme ? "text-slate-400" : "text-[#8f8f8f]"}`}>
                       No invoices match the selected filter.
                     </td>
                   </tr>
                 ) : (
                   filteredInvoices.map((inv) => {
-                    const isAwaiting = inv.status === "awaiting_approval";
-
                     return (
                       <tr
                         key={inv.id}
                         onClick={() => router.push(`/agencydashboard/invoices/${inv.id}`)}
-                        className="hover:bg-white/[0.02] cursor-pointer transition-colors group"
+                        className={`cursor-pointer transition-colors group ${isLightTheme ? "hover:bg-slate-50" : "hover:bg-white/[0.02]"}`}
                       >
-                        <td className="p-4 font-mono font-bold text-neutral-400">{inv.id}</td>
+                        <td className={`p-4 font-mono font-bold ${isLightTheme ? "text-slate-600" : "text-neutral-400"}`}>{inv.id}</td>
                         {activeMainTab === "receivables" ? (
                           <>
                             <td className="p-4">
-                              <p className="text-white font-bold">{inv.brandName}</p>
-                              <p className="text-[10px] text-neutral-500 mt-0.5">{inv.campaignName}</p>
+                              <p className={`font-bold ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>{inv.brandName}</p>
+                              <p className={`text-[10px] mt-0.5 ${isLightTheme ? "text-slate-500" : "text-neutral-500"}`}>{inv.campaignName}</p>
                             </td>
-                            <td className="p-4 text-right font-black text-white">
-                              ${inv.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            <td className={`p-4 text-right font-black ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>
+                              ${(Number(inv.amount) || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </td>
                           </>
                         ) : (
                           <>
                             <td className="p-4">
-                              <p className="text-white font-bold">{inv.splitPool.splits.find(s => s.role === "Talent")?.name || "Talent"}</p>
-                              <p className="text-[10px] text-neutral-500 mt-0.5">{inv.campaignName}</p>
+                              <p className={`font-bold ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>{inv.splitPool.splits.find(s => s.role === "Talent")?.name || "Talent"}</p>
+                              <p className={`text-[10px] mt-0.5 ${isLightTheme ? "text-slate-500" : "text-neutral-500"}`}>{inv.campaignName}</p>
                             </td>
-                            <td className="p-4 text-right font-black text-white">
-                              ${(inv.splitPool.splits.find(s => s.role === "Talent")?.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            <td className={`p-4 text-right font-black ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>
+                              ${(Number(inv.splitPool.splits.find(s => s.role === "Talent")?.amount) || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </td>
                           </>
                         )}
@@ -591,23 +601,23 @@ export default function InvoicesQueuePage() {
                           {activeMainTab === "receivables" ? (
                             <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                               inv.status === "awaiting_approval" 
-                                ? "bg-amber-950/60 text-amber-300 border border-amber-800/30 animate-pulse" 
-                                : "bg-emerald-950/60 text-emerald-300 border border-emerald-800/30"
+                                ? isLightTheme ? "bg-amber-100 text-amber-900 border border-amber-300 animate-pulse" : "bg-amber-950/60 text-amber-300 border border-amber-800/30 animate-pulse" 
+                                : isLightTheme ? "bg-emerald-100 text-emerald-900 border border-emerald-300" : "bg-emerald-950/60 text-emerald-300 border border-emerald-800/30"
                             }`}>
                               {inv.status === "awaiting_approval" ? "Awaiting Brand" : "Settled"}
                             </span>
                           ) : (
                             <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                              inv.status !== "talent_disbursed"
-                                ? "bg-amber-950/60 text-amber-300 border border-amber-800/30 animate-pulse" 
-                                : "bg-emerald-950/60 text-emerald-300 border border-emerald-800/30"
+                              inv.status === "talent_disbursed"
+                                ? isLightTheme ? "bg-emerald-100 text-emerald-900 border border-emerald-300" : "bg-emerald-950/60 text-emerald-300 border border-emerald-800/30"
+                                : isLightTheme ? "bg-amber-100 text-amber-900 border border-amber-300" : "bg-amber-950/60 text-amber-300 border border-amber-800/30"
                             }`}>
-                              {inv.status !== "talent_disbursed" ? "Pending Payout" : "Disbursed"}
+                              {inv.status === "talent_disbursed" ? "Disbursed" : "Pending Payout"}
                             </span>
                           )}
                         </td>
-                        <td className="p-4 text-right pr-6">
-                          <ChevronRight className="h-4 w-4 text-neutral-600 group-hover:text-white transition-colors ml-auto" />
+                        <td className="p-4 text-right">
+                          <ChevronRight className={`h-4 w-4 inline-block transition-transform group-hover:translate-x-0.5 ${isLightTheme ? "text-slate-400 group-hover:text-slate-900" : "text-neutral-500 group-hover:text-white"}`} />
                         </td>
                       </tr>
                     );
