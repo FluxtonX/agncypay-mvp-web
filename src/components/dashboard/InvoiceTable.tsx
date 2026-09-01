@@ -87,8 +87,8 @@ export function InvoiceTable({ invoices, isLocked = false }: InvoiceTableProps) 
                 </td>
 
                 {/* Dates */}
-                <td className="py-4 px-6">{formatDate(invoice.invoiceDate)}</td>
-                <td className="py-4 px-6">{formatDate(invoice.dueDate)}</td>
+                <td className="py-4 px-6">{formatDate(invoice.invoiceDate || invoice.dueDate || "")}</td>
+                <td className="py-4 px-6">{formatDate(invoice.dueDate || "")}</td>
 
                 {/* Amount */}
                 <td className="py-4 px-6 text-right font-bold text-[#F8FAFC]">

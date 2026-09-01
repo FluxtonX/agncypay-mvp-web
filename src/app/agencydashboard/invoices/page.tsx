@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -17,10 +17,17 @@ import {
   ShieldAlert,
   ShieldCheck,
   ArrowRight,
-  X
+  X,
+  Plus,
+  Receipt,
+  Layers,
+  Sparkles
 } from "lucide-react";
 import { useApp } from "../../../context/AppContext";
 import { subscribeInvoicesByBrand, subscribeInvoicesByAgency, apiCreateInvoice } from "../../../lib/api/invoices";
+import { EmptyState } from "../../../components/ui/EmptyState";
+import { LiveRefreshIndicator } from "../../../components/ui/LiveRefreshIndicator";
+import { ToastBanner, ToastMessage } from "../../../components/ui/ToastBanner";
 
 interface SplitItem {
   name: string;
@@ -58,14 +65,30 @@ interface InvoiceMock {
   defaultTerm: "Net-30" | "Net-60" | "Net-90";
 }
 
-const INITIAL_INVOICES: InvoiceMock[] = [];
-
 export default function InvoicesQueuePage() {
   const router = useRouter();
   const { state, resetState, refreshUser } = useApp();
-  const workspaceType = state.user ? state.user.accountType : "brand";
+  const workspaceType = state.user ? state.user.accountType : "agency";
 
   const [isLightTheme, setIsLightTheme] = useState(false);
+  const [invoices, setInvoices] = useState<InvoiceMock[]>([]);
+  const [activeMainTab, setActiveMainTab] = useState<"receivables" | "payables">("receivables");
+  const [activeReceivableFilter, setActiveReceivableFilter] = useState<"all" | "awaiting_approval" | "settled">("awaiting_approval");
+  const [activePayableFilter, setActivePayableFilter] = useState<"all" | "pending_payout" | "disbursed">("pending_payout");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showKybModal, setShowKybModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [toast, setToast] = useState<ToastMessage | null>(null);
+  const [lastSyncText, setLastSyncText] = useState("Just now");
+
+  // Create Invoice Form State
+  const [campaignTitle, setCampaignTitle] = useState("");
+  const [brandPartnerEmail, setBrandPartnerEmail] = useState("martin.safi@adidas.com");
+  const [brandPartnerName, setBrandPartnerName] = useState("Adidas Corporate");
+  const [invoiceAmount, setInvoiceAmount] = useState("18500");
+  const [dueTerms, setDueTerms] = useState("Net-30");
+  const [talentSplitPercent, setTalentSplitPercent] = useState(80);
+  const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
     if (state.user && state.user.kybStatus !== "approved") {
@@ -77,25 +100,10 @@ export default function InvoicesQueuePage() {
     if (typeof window !== "undefined") {
       const savedTheme = localStorage.getItem("agncypay_theme_agency");
       if (savedTheme) {
-        if (savedTheme === "light") {
-          document.documentElement.classList.add("light");
-          document.documentElement.classList.remove("dark");
-          setIsLightTheme(true);
-        } else {
-          document.documentElement.classList.add("dark");
-          document.documentElement.classList.remove("light");
-          setIsLightTheme(false);
-        }
-      } else {
-        if (true) {
-          document.documentElement.classList.add("light");
-          document.documentElement.classList.remove("dark");
-          setIsLightTheme(true);
-        } else {
-          document.documentElement.classList.add("dark");
-          document.documentElement.classList.remove("light");
-          setIsLightTheme(false);
-        }
+        const isLight = savedTheme === "light";
+        document.documentElement.classList.toggle("light", isLight);
+        document.documentElement.classList.toggle("dark", !isLight);
+        setIsLightTheme(isLight);
       }
     }
   }, []);
@@ -103,22 +111,52 @@ export default function InvoicesQueuePage() {
   const toggleTheme = () => {
     if (typeof window !== "undefined") {
       const isLight = document.documentElement.classList.toggle("light");
-      if (isLight) {
-        document.documentElement.classList.remove("dark");
-      } else {
-        document.documentElement.classList.add("dark");
-      }
+      document.documentElement.classList.toggle("dark", !isLight);
       setIsLightTheme(isLight);
       localStorage.setItem("agncypay_theme_agency", isLight ? "light" : "dark");
     }
   };
 
-  const [invoices, setInvoices] = useState<InvoiceMock[]>([]);
-  const [activeMainTab, setActiveMainTab] = useState<"receivables" | "payables">("receivables");
-  const [activeReceivableFilter, setActiveReceivableFilter] = useState<"all" | "awaiting_approval" | "settled">("awaiting_approval");
-  const [activePayableFilter, setActivePayableFilter] = useState<"all" | "pending_payout" | "disbursed">("pending_payout");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showKybModal, setShowKybModal] = useState(false);
+  const handleInvoicesUpdate = useCallback((invoicesList: any[]) => {
+    const mappedList: InvoiceMock[] = invoicesList.map((inv) => {
+      let uiStatus: "awaiting_approval" | "settled" | "talent_disbursed" = "awaiting_approval";
+      if (inv.status === "paid") {
+        uiStatus = inv.talentPayoutStatus === "disbursed" ? "talent_disbursed" : "settled";
+      }
+      
+      const numAmount = typeof inv.amount === "number" ? inv.amount : (Number(inv.amount) || 0);
+      
+      return {
+        id: inv.id,
+        campaignName: inv.campaign || "Services Rendered",
+        brandName: inv.brandName || "Brand Partner",
+        createdDate: inv.createdDate || new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+        dueDate: inv.due || "Net-30",
+        amount: numAmount,
+        location: "Escrow Wallet Active",
+        costCenter: "Marketing (Campaign Pool)",
+        initials: [(inv.agency || "A").charAt(0).toUpperCase()],
+        defaultTerm: "Net-30",
+        status: uiStatus,
+        vendorFee: {
+          name: "Processing Fee",
+          role: "Vendor",
+          amount: numAmount * 0.1,
+          walletId: "@agncypay",
+          avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&auto=format&fit=crop&q=80"
+        },
+        splitPool: {
+          total: numAmount * 0.9,
+          splits: [
+            { name: inv.talent || "Talent Partner", role: "Talent", percentage: 85, amount: numAmount * 0.9 * 0.85, walletId: "@talent", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80" },
+            { name: inv.agency || "Agency", role: "Agency", percentage: 15, amount: numAmount * 0.9 * 0.15, walletId: "@agency", avatar: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=80&auto=format&fit=crop&q=80" }
+          ]
+        }
+      };
+    });
+    setInvoices(mappedList);
+    setLastSyncText(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+  }, []);
 
   useEffect(() => {
     const userEmail = state.user?.email;
@@ -126,46 +164,6 @@ export default function InvoicesQueuePage() {
       setInvoices([]);
       return;
     }
-
-    const handleInvoicesUpdate = (invoicesList: any[]) => {
-      const mappedList: InvoiceMock[] = invoicesList.map((inv) => {
-        let uiStatus: "awaiting_approval" | "settled" | "talent_disbursed" = "awaiting_approval";
-        if (inv.status === "paid") {
-          uiStatus = inv.talentPayoutStatus === "disbursed" ? "talent_disbursed" : "settled";
-        }
-        
-        const numAmount = typeof inv.amount === "number" ? inv.amount : (Number(inv.amount) || 0);
-        
-        return {
-          id: inv.id,
-          campaignName: inv.campaign || "Services Rendered",
-          brandName: inv.brandName || "Brand Partner",
-          createdDate: inv.createdDate || new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-          dueDate: inv.due || "Net-30",
-          amount: numAmount,
-          location: "Escrow Wallet Active",
-          costCenter: "Marketing (Campaign Pool)",
-          initials: [(inv.agency || "A").charAt(0).toUpperCase()],
-          defaultTerm: "Net-30",
-          status: uiStatus,
-          vendorFee: {
-            name: "Processing Fee",
-            role: "Vendor",
-            amount: numAmount * 0.1,
-            walletId: "@agncypay",
-            avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&auto=format&fit=crop&q=80"
-          },
-          splitPool: {
-            total: numAmount * 0.9,
-            splits: [
-              { name: inv.talent || "Talent Partner", role: "Talent", percentage: 85, amount: numAmount * 0.9 * 0.85, walletId: "@talent", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80" },
-              { name: inv.agency || "Agency", role: "Agency", percentage: 15, amount: numAmount * 0.9 * 0.15, walletId: "@agency", avatar: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=80&auto=format&fit=crop&q=80" }
-            ]
-          }
-        };
-      });
-      setInvoices(mappedList);
-    };
 
     let unsubscribe = () => {};
     if (workspaceType === "brand") {
@@ -175,18 +173,83 @@ export default function InvoicesQueuePage() {
     }
 
     return () => unsubscribe();
-  }, [state.user, workspaceType]);
+  }, [state.user, workspaceType, handleInvoicesUpdate]);
+
+  const handleManualSync = async () => {
+    if (refreshUser) await refreshUser();
+    setLastSyncText(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+    setToast({
+      id: `toast-${Date.now()}`,
+      type: "success",
+      title: "Ledger Synced",
+      message: "Latest invoice queue and settlement states have been updated."
+    });
+  };
 
   const handleLogout = () => {
     resetState();
     router.push("/auth/login");
   };
 
+  const handleCreateInvoiceSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (state.user && state.user.kybStatus !== "approved") {
+      setShowCreateModal(false);
+      setShowKybModal(true);
+      return;
+    }
+
+    const numAmount = parseFloat(invoiceAmount);
+    if (!numAmount || numAmount <= 0) {
+      setToast({
+        id: `toast-${Date.now()}`,
+        type: "error",
+        title: "Invalid Amount",
+        message: "Invoice amount must be greater than zero."
+      });
+      return;
+    }
+
+    setIsCreating(true);
+    try {
+      await apiCreateInvoice({
+        campaign: campaignTitle || "Campaign Production & Creative Deliverables",
+        agencyName: state.user?.fullName || "Agency Workspace",
+        agencyEmail: state.user?.email || "agency@agncypay.com",
+        brandName: brandPartnerName || "Brand Partner",
+        brandEmail: brandPartnerEmail,
+        amount: numAmount,
+        due: dueTerms,
+        splits: [
+          { role: "Talent", percentage: talentSplitPercent, amount: numAmount * (talentSplitPercent / 100) },
+          { role: "Agency", percentage: 100 - talentSplitPercent, amount: numAmount * ((100 - talentSplitPercent) / 100) }
+        ]
+      });
+
+      setShowCreateModal(false);
+      setToast({
+        id: `toast-${Date.now()}`,
+        type: "success",
+        title: "Invoice Dispatched",
+        message: `Invoice for $${numAmount.toLocaleString()} sent to ${brandPartnerName}.`
+      });
+      setCampaignTitle("");
+    } catch (err: any) {
+      setToast({
+        id: `toast-${Date.now()}`,
+        type: "error",
+        title: "Invoice Creation Failed",
+        message: err.message || "Could not dispatch invoice. Please try again."
+      });
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
   // Filter logic
   const filteredInvoices = invoices.filter(inv => {
     const isReceivable = activeMainTab === "receivables";
     
-    // Determine if it matches the sub-filter
     let matchesFilter = true;
     if (isReceivable) {
       if (activeReceivableFilter !== "all") {
@@ -242,7 +305,7 @@ export default function InvoicesQueuePage() {
               onClick={() => router.push("/agencydashboard/invoices")}
               className="px-4 py-1.5 rounded-full text-xs font-bold bg-white light:bg-[#0F172A] text-black light:text-white shadow-sm border border-white/20 light:border-black/10 transition-all cursor-pointer"
             >
-              Payments
+              Payments & Invoices
             </button>
             <button 
               onClick={() => router.push("/agencydashboard/wallet")}
@@ -259,34 +322,12 @@ export default function InvoicesQueuePage() {
           </nav>
 
           <div className="flex items-center gap-3">
-            {workspaceType === "agency" && (
-              <>
-                <div className="flex items-center gap-1.5">
-                  <button
-                    disabled
-                    className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white/40 light:bg-[#0F172A]/40 text-black/40 light:text-white/40 border border-white/10 light:border-black/5 shadow-sm transition-all flex items-center gap-1.5 cursor-not-allowed blur-[0.6px]"
-                  >
-                    <Lock className="h-3.5 w-3.5" />
-                    Switch to Agency Banking
-                  </button>
-                  <button 
-                    onClick={() => alert("Agency Banking is currently locked. Complete your compliance verification to unlock this feature.")}
-                    className="p-1 text-neutral-400 hover:text-white transition-colors"
-                    title="Why is this locked?"
-                  >
-                    <HelpCircle className="h-4 w-4" />
-                  </button>
-                </div>
-                <div className="h-4 w-[1px] bg-white/20" />
-
-              </>
-            )}
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-full bg-white/[0.05] border border-white/20 flex items-center justify-center font-bold text-xs text-white">
-                {state.user?.fullName ? state.user.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "AD"}
+                {state.user?.fullName ? state.user.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "AG"}
               </div>
               <span className={`text-xs font-bold ${isLightTheme ? "text-[#0F172A]" : "text-[#E5E5EA]"} hidden sm:inline`}>
-                {state.user?.fullName || "Adidas Corporate"}
+                {state.user?.fullName || "Agency Workspace"}
               </span>
             </div>
             <button
@@ -320,52 +361,27 @@ export default function InvoicesQueuePage() {
             Back to Dashboard
           </Link>
           <span className="text-xs text-neutral-500">/</span>
-          <span className="text-xs text-neutral-300 font-semibold">Approval Queue</span>
+          <span className="text-xs text-neutral-300 font-semibold">Invoices & Settlement Queue</span>
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Payments Manager</h1>
-            <p className="text-xs text-[#8f8f8f] mt-1">Manage brand receivables and talent payables in one place.</p>
+            <p className="text-xs text-[#8f8f8f] mt-1">Manage brand invoice receivables and talent payables in one real-time ledger.</p>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              onClick={async () => {
-                if (state.user && state.user.kybStatus !== "approved") {
-                  setShowKybModal(true);
-                  return;
-                }
-
-                try {
-                  await apiCreateInvoice({
-                    campaign: `Global Fall Campaign #${Math.floor(100 + Math.random() * 900)}`,
-                    agencyName: state.user?.fullName || "Elite Agency",
-                    agencyEmail: state.user?.email || "agency@elite.com",
-                    brandName: "Adidas Corporate",
-                    brandEmail: "martin.safi@adidas.com",
-                    amount: 25000 + Math.floor(Math.random() * 15000),
-                    due: "30/08/2026",
-                  });
-                  alert("Invoice created and sent to Adidas Corporate! Check Brand Portal.");
-                } catch (e: any) {
-                  router.push("/dashboard/send-request");
-                }
-              }}
-              className={`h-10 px-5 rounded-lg text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shrink-0 ${isLightTheme ? "bg-white border border-black/10 text-[#0F172A] hover:bg-neutral-100" : "bg-white/10 hover:bg-white/20 border border-white/20 text-white"}`}
-            >
-              Request Payment
-            </button>
             <button
               onClick={() => {
                 if (state.user && state.user.kybStatus !== "approved") {
                   setShowKybModal(true);
                   return;
                 }
-                alert("Send Payment to Talent flow initiated.");
+                setShowCreateModal(true);
               }}
-              className={`h-10 px-5 rounded-lg text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shrink-0 ${isLightTheme ? "bg-[#0F172A] text-white hover:bg-[#1E293B]" : "bg-white text-black hover:bg-neutral-200"}`}
+              className="h-10 px-5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shrink-0 bg-white text-black hover:bg-white/90"
             >
-              Send Payment
+              <Plus className="h-4 w-4" />
+              Create & Send Invoice
             </button>
           </div>
         </div>
@@ -377,7 +393,7 @@ export default function InvoicesQueuePage() {
               <ShieldAlert className={`w-5 h-5 shrink-0 ${isLightTheme ? "text-amber-700" : "text-amber-400"}`} />
               <div>
                 <p className={`text-xs font-bold ${isLightTheme ? "text-amber-900" : "text-amber-200"}`}>Business Verification Required</p>
-                <p className={`text-[11px] ${isLightTheme ? "text-amber-800" : "text-amber-300/80"}`}>Complete business verification (KYB) to unlock live ACH/Wire/RTP deposit bank accounts for your invoices.</p>
+                <p className={`text-[11px] ${isLightTheme ? "text-amber-800" : "text-amber-300/80"}`}>Complete business verification (KYB) to unlock live ACH/Wire deposit bank accounts for your invoices.</p>
               </div>
             </div>
             <button
@@ -394,23 +410,23 @@ export default function InvoicesQueuePage() {
         <div className={`flex items-center gap-2 border-b pb-4 ${isLightTheme ? "border-black/10" : "border-white/10"}`}>
           <button
             onClick={() => setActiveMainTab("receivables")}
-            className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${
+            className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
               activeMainTab === "receivables"
                 ? isLightTheme ? "bg-[#0F172A] text-white shadow" : "bg-white text-black"
                 : isLightTheme ? "text-slate-600 hover:text-black hover:bg-slate-100" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"
             }`}
           >
-            Receivables (From Brands)
+            Brand Receivables
           </button>
           <button
             onClick={() => setActiveMainTab("payables")}
-            className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${
+            className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
               activeMainTab === "payables"
                 ? isLightTheme ? "bg-[#0F172A] text-white shadow" : "bg-white text-black"
                 : isLightTheme ? "text-slate-600 hover:text-black hover:bg-slate-100" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"
             }`}
           >
-            Payables (To Talent)
+            Talent Payables
           </button>
         </div>
 
@@ -418,20 +434,20 @@ export default function InvoicesQueuePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {activeMainTab === "receivables" ? (
             <>
-              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+              <div className={`border rounded-2xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
                 <p className={`text-[11px] font-bold uppercase tracking-wider mb-2 ${isLightTheme ? "text-slate-500" : "text-[#8f8f8f]"}`}>Total Expected</p>
                 <p className={`text-2xl font-black ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>
                   ${invoices.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
-                <p className="text-[11px] font-bold text-amber-600 dark:text-amber-500 uppercase tracking-wider mb-2">Awaiting Brands</p>
+              <div className={`border rounded-2xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className="text-[11px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2">Awaiting Brand Settlement</p>
                 <p className="text-2xl font-black text-amber-600 dark:text-amber-400">
                   ${invoices.filter(i => i.status === "awaiting_approval").reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
-                <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-500 uppercase tracking-wider mb-2">Total Settled</p>
+              <div className={`border rounded-2xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2">Total Settled & Received</p>
                 <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                   ${invoices.filter(i => i.status === "settled" || i.status === "talent_disbursed").reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
@@ -439,8 +455,8 @@ export default function InvoicesQueuePage() {
             </>
           ) : (
             <>
-              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
-                <p className={`text-[11px] font-bold uppercase tracking-wider mb-2 ${isLightTheme ? "text-slate-500" : "text-[#8f8f8f]"}`}>Total Owed to Talent</p>
+              <div className={`border rounded-2xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className={`text-[11px] font-bold uppercase tracking-wider mb-2 ${isLightTheme ? "text-slate-500" : "text-[#8f8f8f]"}`}>Total Talent Pool</p>
                 <p className={`text-2xl font-black ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>
                   ${invoices.reduce((acc, curr) => {
                     const talentSplit = curr.splitPool.splits.find(s => s.role === "Talent");
@@ -448,8 +464,8 @@ export default function InvoicesQueuePage() {
                   }, 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
-                <p className="text-[11px] font-bold text-amber-600 dark:text-amber-500 uppercase tracking-wider mb-2">Pending Payouts</p>
+              <div className={`border rounded-2xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className="text-[11px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2">Pending Payouts</p>
                 <p className="text-2xl font-black text-amber-600 dark:text-amber-400">
                   ${invoices.filter(i => i.status !== "talent_disbursed").reduce((acc, curr) => {
                     const talentSplit = curr.splitPool.splits.find(s => s.role === "Talent");
@@ -457,8 +473,8 @@ export default function InvoicesQueuePage() {
                   }, 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
-              <div className={`border rounded-xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
-                <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-500 uppercase tracking-wider mb-2">Total Disbursed</p>
+              <div className={`border rounded-2xl p-5 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#0A0A0A] border-white/10"}`}>
+                <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2">Total Disbursed</p>
                 <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                   ${invoices.filter(i => i.status === "talent_disbursed").reduce((acc, curr) => {
                     const talentSplit = curr.splitPool.splits.find(s => s.role === "Talent");
@@ -471,7 +487,7 @@ export default function InvoicesQueuePage() {
         </div>
 
         {/* Search & Tabs Controls */}
-        <div className={`flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center p-3 rounded-xl border transition-colors ${isLightTheme ? "bg-white border-black/10 shadow-sm" : "bg-[#050505] border-white/20"}`}>
+        <div className={`flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center p-3 rounded-2xl border transition-colors ${isLightTheme ? "bg-white border-black/10 shadow-sm" : "bg-[#050505] border-white/20"}`}>
           <div className="flex flex-wrap gap-2">
             {activeMainTab === "receivables" ? (
               [
@@ -482,7 +498,7 @@ export default function InvoicesQueuePage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveReceivableFilter(tab.id as any)}
-                  className={`px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all cursor-pointer ${
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
                     activeReceivableFilter === tab.id
                       ? isLightTheme ? "bg-[#0F172A] text-white font-bold shadow-sm" : "bg-white text-black font-bold"
                       : isLightTheme ? "text-slate-600 hover:text-black hover:bg-slate-100" : "text-[#8f8f8f] hover:text-white bg-transparent hover:bg-white/[0.02]"
@@ -505,7 +521,7 @@ export default function InvoicesQueuePage() {
                 <button
                   key={tab.id}
                   onClick={() => setActivePayableFilter(tab.id as any)}
-                  className={`px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all cursor-pointer ${
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
                     activePayableFilter === tab.id
                       ? isLightTheme ? "bg-[#0F172A] text-white font-bold shadow-sm" : "bg-white text-black font-bold"
                       : isLightTheme ? "text-slate-600 hover:text-black hover:bg-slate-100" : "text-[#8f8f8f] hover:text-white bg-transparent hover:bg-white/[0.02]"
@@ -522,53 +538,78 @@ export default function InvoicesQueuePage() {
             )}
           </div>
 
-          <div className="relative md:w-80">
-            <Search className={`absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 ${isLightTheme ? "text-slate-400" : "text-[#8f8f8f]"}`} />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search campaign, invoice ID..."
-              className={`w-full pl-9 pr-4 py-2 text-xs rounded-lg border outline-none transition-colors ${
-                isLightTheme
-                  ? "bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-slate-400"
-                  : "bg-black/50 border-white/10 text-white placeholder:text-[#8f8f8f] focus:border-white/30"
-              }`}
+          <div className="flex items-center gap-3">
+            <LiveRefreshIndicator
+              onRefresh={handleManualSync}
+              lastUpdatedText={lastSyncText}
             />
+
+            <div className="relative md:w-72">
+              <Search className={`absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 ${isLightTheme ? "text-slate-400" : "text-[#8f8f8f]"}`} />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search campaign or invoice #..."
+                className={`w-full pl-9 pr-4 py-2 text-xs rounded-xl border outline-none transition-colors ${
+                  isLightTheme
+                    ? "bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-slate-400"
+                    : "bg-black/50 border-white/10 text-white placeholder:text-[#8f8f8f] focus:border-white/30"
+                }`}
+              />
+            </div>
           </div>
         </div>
 
         {/* Invoices List Grid */}
         <div className={`rounded-2xl border overflow-hidden shadow-md transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#050505] border-white/20"}`}>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className={`border-b font-bold transition-colors ${isLightTheme ? "border-slate-200 bg-slate-50/80 text-slate-600" : "border-white/20 bg-white/[0.01] text-[#8f8f8f]"}`}>
-                  <th className="p-4">Invoice ID</th>
-                  {activeMainTab === "receivables" ? (
-                    <>
-                      <th className="p-4">Brand / Campaign</th>
-                      <th className="p-4 text-right">Expected Amount</th>
-                    </>
-                  ) : (
-                    <>
-                      <th className="p-4">Talent / Campaign</th>
-                      <th className="p-4 text-right">Payout Amount</th>
-                    </>
-                  )}
-                  <th className="p-4 text-center">Status</th>
-                  <th className="p-4"></th>
-                </tr>
-              </thead>
-              <tbody className={`divide-y ${isLightTheme ? "divide-slate-100" : "divide-white/[0.04]"}`}>
-                {filteredInvoices.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className={`p-8 text-center ${isLightTheme ? "text-slate-400" : "text-[#8f8f8f]"}`}>
-                      No invoices match the selected filter.
-                    </td>
+          {filteredInvoices.length === 0 ? (
+            <div className="p-8">
+              <EmptyState
+                icon={Receipt}
+                badgeText="Ledger Status Active"
+                title="No Invoices in Queue"
+                description={
+                  searchQuery
+                    ? `No invoices match your search query "${searchQuery}". Try clearing filters or searching another invoice ID.`
+                    : "You haven't created any invoices yet. Create your first campaign invoice to receive automated ACH/Wire payments from brands."
+                }
+                actionLabel="Create New Invoice"
+                onAction={() => {
+                  if (state.user && state.user.kybStatus !== "approved") {
+                    setShowKybModal(true);
+                  } else {
+                    setShowCreateModal(true);
+                  }
+                }}
+                actionIcon={Plus}
+                secondaryActionLabel={searchQuery ? "Clear Search" : undefined}
+                onSecondaryAction={searchQuery ? () => setSearchQuery("") : undefined}
+              />
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className={`border-b font-bold transition-colors ${isLightTheme ? "border-slate-200 bg-slate-50/80 text-slate-600" : "border-white/20 bg-white/[0.01] text-[#8f8f8f]"}`}>
+                    <th className="p-4">Invoice ID</th>
+                    {activeMainTab === "receivables" ? (
+                      <>
+                        <th className="p-4">Brand / Campaign</th>
+                        <th className="p-4 text-right">Expected Amount</th>
+                      </>
+                    ) : (
+                      <>
+                        <th className="p-4">Talent / Campaign</th>
+                        <th className="p-4 text-right">Payout Amount</th>
+                      </>
+                    )}
+                    <th className="p-4 text-center">Status</th>
+                    <th className="p-4"></th>
                   </tr>
-                ) : (
-                  filteredInvoices.map((inv) => {
+                </thead>
+                <tbody className={`divide-y ${isLightTheme ? "divide-slate-100" : "divide-white/[0.04]"}`}>
+                  {filteredInvoices.map((inv) => {
                     return (
                       <tr
                         key={inv.id}
@@ -621,11 +662,11 @@ export default function InvoicesQueuePage() {
                         </td>
                       </tr>
                     );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
 
@@ -643,6 +684,142 @@ export default function InvoicesQueuePage() {
           </div>
         </div>
       </footer>
+
+      {/* Create Invoice Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-[#0D0D12] border border-white/20 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 relative text-white">
+            <button
+              onClick={() => setShowCreateModal(false)}
+              className="absolute top-4 right-4 text-neutral-400 hover:text-white p-1 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
+                <Receipt className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">Create Brand Invoice</h3>
+                <p className="text-xs text-neutral-400">Issue invoice with automated Cybrid banking rails</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleCreateInvoiceSubmit} className="space-y-4 text-xs">
+              <div>
+                <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider block mb-1.5">
+                  Campaign / Project Title
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={campaignTitle}
+                  onChange={e => setCampaignTitle(e.target.value)}
+                  placeholder="e.g. Summer Brand Ambassador Campaign"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-black/50 text-white outline-none focus:border-white/40"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider block mb-1.5">
+                    Brand Partner Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={brandPartnerName}
+                    onChange={e => setBrandPartnerName(e.target.value)}
+                    placeholder="Adidas Corporate"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-black/50 text-white outline-none focus:border-white/40"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider block mb-1.5">
+                    Brand Billing Email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={brandPartnerEmail}
+                    onChange={e => setBrandPartnerEmail(e.target.value)}
+                    placeholder="billing@brand.com"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-black/50 text-white outline-none focus:border-white/40"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider block mb-1.5">
+                    Invoice Amount (USD)
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min="1"
+                    value={invoiceAmount}
+                    onChange={e => setInvoiceAmount(e.target.value)}
+                    placeholder="18500"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-black/50 text-white font-mono font-bold outline-none focus:border-white/40"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider block mb-1.5">
+                    Payment Due Terms
+                  </label>
+                  <select
+                    value={dueTerms}
+                    onChange={e => setDueTerms(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-white/10 bg-black/50 text-white outline-none focus:border-white/40"
+                  >
+                    <option value="Due on Receipt">Due on Receipt</option>
+                    <option value="Net-15">Net-15</option>
+                    <option value="Net-30">Net-30</option>
+                    <option value="Net-60">Net-60</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-1.5">
+                  <label className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider">
+                    Talent Allocation Split: <strong className="text-emerald-400">{talentSplitPercent}%</strong>
+                  </label>
+                  <span className="text-[10px] text-neutral-400 font-mono">Agency: {100 - talentSplitPercent}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={talentSplitPercent}
+                  onChange={e => setTalentSplitPercent(Number(e.target.value))}
+                  className="w-full accent-emerald-400 cursor-pointer"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="px-4 py-2.5 rounded-xl border border-white/10 hover:bg-white/5 text-xs font-semibold text-neutral-400 hover:text-white transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isCreating}
+                  className="px-5 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-lg disabled:opacity-50"
+                >
+                  <span>{isCreating ? "Dispatching..." : "Send Invoice to Brand"}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* KYB Gatekeeper Modal */}
       {showKybModal && (
@@ -702,6 +879,9 @@ export default function InvoicesQueuePage() {
           </div>
         </div>
       )}
+
+      {/* Toast Notification Banner */}
+      <ToastBanner toast={toast} onDismiss={() => setToast(null)} />
     </main>
   );
 }
