@@ -20,6 +20,7 @@ export interface AuthResponse {
     fullName: string;
     accountType: "brand" | "agency";
     agncyId: string;
+    kybStatus?: string;
   };
   accessToken: string;
   refreshToken: string;
