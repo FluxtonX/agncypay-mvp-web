@@ -249,16 +249,24 @@ export function IntegrationsPanel({
   );
 
   return (
-    <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200/80 dark:border-white/15 rounded-2xl p-6 sm:p-7 shadow-sm relative text-left transition-all overflow-hidden">
+    <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-xs relative text-left transition-all overflow-hidden">
       {/* Title & Subtitle */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <Plug className="h-5 w-5 text-slate-700 dark:text-white/80" />
+          <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <Plug className="h-5 w-5 text-slate-900" />
             {title}
           </h3>
-          <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1">{subtitle}</p>
+          <p className="text-xs text-slate-500 font-medium mt-1">{subtitle}</p>
         </div>
+        <button
+          type="button"
+          onClick={() => setIsModalOpen(true)}
+          className="text-xs font-bold text-slate-700 hover:text-slate-950 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+        >
+          <span>All Integrations</span>
+          <span className="text-[10px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-mono font-bold">5</span>
+        </button>
       </div>
 
       {/* Status Alert Banner */}
@@ -268,67 +276,84 @@ export function IntegrationsPanel({
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className={`mt-4 px-4 py-3 rounded-xl text-xs font-semibold flex items-center gap-2.5 shadow-sm ${
+            className={`mt-4 px-4 py-3 rounded-xl text-xs font-semibold flex items-center gap-2.5 shadow-xs ${
               statusType === "loading"
-                ? "bg-slate-100 dark:bg-white/10 text-slate-800 dark:text-white border border-slate-200 dark:border-white/20"
+                ? "bg-slate-100 text-slate-800 border border-slate-200"
                 : statusType === "success"
-                ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40"
-                : "bg-red-50 dark:bg-red-950/30 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800/40"
+                ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                : "bg-red-50 text-red-800 border border-red-200"
             }`}
           >
-            {statusType === "loading" && <RefreshCw className="h-4 w-4 animate-spin shrink-0 text-slate-700 dark:text-white" />}
-            {statusType === "success" && <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />}
-            {statusType === "error" && <AlertCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400" />}
+            {statusType === "loading" && <RefreshCw className="h-4 w-4 animate-spin shrink-0 text-slate-700" />}
+            {statusType === "success" && <Check className="h-4 w-4 shrink-0 text-emerald-600" />}
+            {statusType === "error" && <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />}
             <span>{statusMessage}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* 5 Horizontal Tiles */}
+      {/* 5 Horizontal Tiles with Visible Logos & + Badges */}
       <div className="mt-6 pt-1 flex items-start gap-4 sm:gap-5 overflow-x-auto pb-2 scrollbar-none">
         {INTEGRATIONS_LIST.map((app) => {
           const isConn = connectedIds.includes(app.id);
 
           return (
-            <div
+            <motion.div
               key={app.id}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => setIsModalOpen(true)}
               className="flex flex-col items-center cursor-pointer group shrink-0 w-20 sm:w-22"
             >
-              {/* Tile Box */}
+              {/* Tile Box with Badge */}
               <div
-                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border transition-all duration-200 flex items-center justify-center shadow-xs overflow-hidden ${
+                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border transition-all duration-200 flex items-center justify-center shadow-xs overflow-hidden relative ${
                   isConn
-                    ? "bg-slate-50 dark:bg-white/[0.08] border-slate-300 dark:border-white/30 group-hover:border-slate-400 dark:group-hover:border-white p-0"
-                    : "bg-slate-50/60 dark:bg-white/[0.02] border-slate-200 dark:border-white/15 group-hover:border-slate-300 dark:group-hover:border-white/40 group-hover:scale-105 p-3 sm:p-3.5"
+                    ? "bg-emerald-50/40 border-emerald-300 group-hover:border-emerald-500 p-2 sm:p-2.5"
+                    : "bg-slate-50 border-slate-200 group-hover:border-slate-400 group-hover:shadow-md p-2.5 sm:p-3"
                 }`}
               >
-                {isConn ? (
-                  <img src={app.logo} alt={app.name} className="w-full h-full object-cover filter drop-shadow-xs group-hover:scale-110 transition-transform" />
-                ) : (
-                  <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white group-hover:scale-110 transition-all duration-200" />
-                )}
+                {/* Official Brand Logo */}
+                <img 
+                  src={app.logo} 
+                  alt={app.name} 
+                  className={`w-full h-full object-contain filter drop-shadow-xs transition-transform duration-200 group-hover:scale-110 ${!isConn ? "opacity-85 group-hover:opacity-100" : ""}`} 
+                />
+
+                {/* Visible Status Badge (+ or Checkmark) */}
+                <div className="absolute top-1 right-1">
+                  {isConn ? (
+                    <div className="w-4 h-4 rounded-full bg-emerald-600 flex items-center justify-center text-white shadow-xs">
+                      <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                    </div>
+                  ) : (
+                    <div 
+                      className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-slate-900 group-hover:bg-slate-950 flex items-center justify-center text-white shadow-xs transition-transform duration-200 group-hover:scale-110"
+                      style={{ backgroundColor: "#0F172A", color: "#FFFFFF" }}
+                    >
+                      <Plus className="w-3 h-3 text-white" strokeWidth={2.5} style={{ color: "#FFFFFF" }} />
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Tile Label */}
-              <span className={`text-xs font-bold mt-2 transition-colors text-center truncate w-full ${
-                isConn ? "text-slate-900 dark:text-white group-hover:underline" : "text-slate-700 dark:text-neutral-300 group-hover:text-slate-900 dark:group-hover:text-white"
-              }`}>
-                {isConn ? app.name : "Connect"}
+              <span className="text-xs font-bold mt-2 text-slate-800 group-hover:text-slate-950 transition-colors text-center truncate w-full">
+                {app.name}
               </span>
 
               {/* Sub-label */}
               {isConn ? (
-                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center justify-center gap-1 mt-0.5">
+                <span className="text-[10px] text-emerald-600 font-bold flex items-center justify-center gap-1 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Synced
                 </span>
               ) : (
-                <span className="text-[10px] text-slate-500 dark:text-neutral-500 font-medium mt-0.5 text-center truncate w-full">
-                  {app.name}
+                <span className="text-[10px] text-slate-500 group-hover:text-slate-800 font-semibold mt-0.5 text-center truncate w-full flex items-center justify-center gap-0.5">
+                  <Plus className="w-2.5 h-2.5 text-slate-600 inline" strokeWidth={2.5} /> Connect
                 </span>
               )}
-            </div>
+            </motion.div>
           );
         })}
       </div>

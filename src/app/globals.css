@@ -266,12 +266,12 @@ h1, h2, h3, h4, h5, h6, .font-semibold, .font-bold, .font-extrabold, .font-black
 }
 
 :root.light button.bg-white {
-  background-color: #0A0A0A !important;
-  color: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
 }
 
 :root.light button.bg-white:hover {
-  background-color: #1E293B !important;
+  background-color: #F8FAFC !important;
 }
 
 :root.light button.bg-slate-50,
