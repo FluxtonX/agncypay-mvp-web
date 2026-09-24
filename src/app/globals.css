@@ -1,6 +1,27 @@
 @import "tailwindcss";
 
 :root {
+  --background: #FFFFFF;
+  --foreground: #0F172A;
+  
+  --color-brand-deep: #FFFFFF;
+  --color-brand-mid: #F8FAFC;
+  --color-brand-light: #F1F5F9;
+  
+  --color-primary: #0F172A;
+  --color-primary-hover: #1E293B;
+  --color-secondary: #64748B;
+  --color-success: #10B981;
+  --color-warning: #D97706;
+  --color-error: #DC2626;
+  
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --border-color: #E2E8F0;
+  --card-bg: #FFFFFF;
+}
+
+:root.dark {
   --background: #0A0A0A;
   --foreground: #F8FAFC;
   
@@ -19,27 +40,6 @@
   --text-secondary: #8E9196;
   --border-color: rgba(255, 255, 255, 0.1);
   --card-bg: rgba(255, 255, 255, 0.02);
-}
-
-:root.light {
-  --background: #FFFFFF;
-  --foreground: #0A0A0A;
-  
-  --color-brand-deep: #FFFFFF;
-  --color-brand-mid: #F1F5F9;
-  --color-brand-light: #E2E8F0;
-  
-  --color-primary: #0A0A0A;
-  --color-primary-hover: #1E293B;
-  --color-secondary: #64748B;
-  --color-success: #10B981;
-  --color-warning: #D97706;
-  --color-error: #DC2626;
-  
-  --text-primary: #0A0A0A;
-  --text-secondary: #475569;
-  --border-color: rgba(0, 0, 0, 0.1);
-  --card-bg: rgba(0, 0, 0, 0.02);
 }
 
 @theme {
@@ -315,6 +315,18 @@ h1, h2, h3, h4, h5, h6, .font-semibold, .font-bold, .font-extrabold, .font-black
 /* Explicit white text override for dark cards/buttons selected in light mode */
 :root.light .force-white-text,
 :root.light .force-white-text *,
+:root.light .bg-slate-900,
+:root.light .bg-slate-900 *,
+:root.light .bg-slate-950,
+:root.light .bg-slate-950 *,
+:root.light .bg-slate-800,
+:root.light .bg-slate-800 *,
+:root.light button.bg-slate-900,
+:root.light button.bg-slate-900 *,
+:root.light button.bg-slate-950,
+:root.light button.bg-slate-950 *,
+:root.light button.bg-slate-800,
+:root.light button.bg-slate-800 *,
 :root.light .bg-\[\#0F172A\],
 :root.light .bg-\[\#0F172A\] *,
 :root.light button.bg-\[\#0F172A\],

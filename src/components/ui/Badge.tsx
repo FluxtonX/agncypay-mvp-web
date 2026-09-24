@@ -17,13 +17,13 @@ export function Badge({
     "inline-flex items-center gap-1.5 font-medium rounded-full border tracking-wide whitespace-nowrap";
   
   const variants = {
-    primary: "bg-white text-black border-white",
-    secondary: "bg-[#111] text-white border-[#555]",
-    success: "bg-white text-black border-white",
-    warning: "bg-[#111] text-white border-[#555]",
-    error: "bg-[#111] text-white border-[#555]",
-    info: "bg-[#111] text-white border-[#555]",
-    neutral: "bg-white/5 text-[#cfcfcf] border-white/10",
+    primary: "bg-slate-900 text-white border-slate-900 font-semibold",
+    secondary: "bg-slate-100 text-slate-800 border-slate-200 font-medium",
+    success: "bg-emerald-50 text-emerald-700 border-emerald-200 font-medium",
+    warning: "bg-amber-50 text-amber-700 border-amber-200 font-medium",
+    error: "bg-rose-50 text-rose-700 border-rose-200 font-medium",
+    info: "bg-blue-50 text-blue-700 border-blue-200 font-medium",
+    neutral: "bg-slate-50 text-slate-600 border-slate-200 font-medium",
   };
 
   const sizes = {

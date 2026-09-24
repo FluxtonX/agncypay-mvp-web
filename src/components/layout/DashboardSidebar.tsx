@@ -157,90 +157,94 @@ export function DashboardSidebar() {
         key={item.label}
         href={item.path}
         className={cn(
-          "flex h-12 items-center gap-4 rounded-[7px] px-4 text-[17px] font-semibold transition-colors",
+          "flex h-11 items-center gap-3 rounded-xl px-3.5 text-sm font-semibold transition-all duration-150",
           isActive
-            ? "bg-white text-black"
-            : "text-[#9c9c9c] hover:bg-[#0d0d0d] hover:text-white"
+            ? "bg-slate-100 text-slate-950 font-bold shadow-2xs"
+            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
         )}
       >
         <Icon
           className={cn(
-            "h-[22px] w-[22px] shrink-0 stroke-[2]",
-            isActive ? "text-black" : "text-[#9c9c9c]"
+            "h-5 w-5 shrink-0 stroke-[2] transition-colors",
+            isActive ? "text-slate-950" : "text-slate-500"
           )}
         />
-        {item.label}
+        <span>{item.label}</span>
       </Link>
     );
   };
 
   return (
-    <aside className="hidden h-screen w-[312px] shrink-0 overflow-y-auto border-r border-[#171717] bg-black lg:flex lg:flex-col">
-      <div className="flex h-[78px] shrink-0 items-center border-b border-[#111] px-[26px]">
-        <div className="relative flex items-center">
-          <Link href="/dashboard" aria-label="AgncyPay dashboard" className="flex items-center">
-            <img
-              src="/agncypaybrand.png"
-              alt="AgncyPay"
-              className="h-[36px] w-auto object-contain object-left sm:h-[42px]"
-            />
-          </Link>
-          {(workspaceType === "brand" || workspaceType === "agency") && (
-            <span className="absolute -top-1.5 -right-2 translate-x-full rounded-full bg-white/[0.08] border border-white/[0.15] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#A3A3A3]">
-              {workspaceType === "brand" ? "Brand" : "Agency"}
-            </span>
-          )}
-        </div>
+    <aside className="hidden h-screen w-[280px] shrink-0 overflow-y-auto border-r border-slate-200/90 bg-white lg:flex lg:flex-col justify-between">
+      <div className="flex h-16 shrink-0 items-center justify-between border-b border-slate-100 px-6">
+        <Link href="/dashboard" aria-label="AgncyPay dashboard" className="flex items-center gap-2">
+          <img
+            src="/agncypaybrand.png"
+            alt="AgncyPay"
+            className="h-8 w-auto object-contain object-left [filter:invert(1)_brightness(0.2)]"
+          />
+        </Link>
+        {(workspaceType === "brand" || workspaceType === "agency") && (
+          <span className="rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-600">
+            {workspaceType === "brand" ? "Brand" : "Agency"}
+          </span>
+        )}
       </div>
 
-      <nav className="shrink-0 px-[15px] pt-[30px]">
-        <div className="space-y-[1px]">{primaryNav.map(renderItem)}</div>
+      <nav className="flex-1 overflow-y-auto px-3.5 py-4 space-y-6">
+        <div>
+          <p className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">Menu</p>
+          <div className="space-y-1">{primaryNav.map(renderItem)}</div>
+        </div>
 
-        <div className="mt-[58px] space-y-[1px]">
-          {secondaryNav.map((item) => {
-            const Icon = item.icon;
-            const isActive =
-              pathname === item.activePath || pathname.startsWith(`${item.activePath}/`);
+        <div>
+          <p className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">Preferences</p>
+          <div className="space-y-1">
+            {secondaryNav.map((item) => {
+              const Icon = item.icon;
+              const isActive =
+                pathname === item.activePath || pathname.startsWith(`${item.activePath}/`);
 
-            return (
-              <Link
-                key={item.label}
-                href={item.path}
-                className={cn(
-                  "flex h-12 items-center gap-4 rounded-[7px] px-4 text-[17px] font-semibold transition-colors",
-                  isActive
-                    ? "bg-white text-black"
-                    : "text-[#9c9c9c] hover:bg-[#0d0d0d] hover:text-white"
-                )}
-              >
-                <Icon
+              return (
+                <Link
+                  key={item.label}
+                  href={item.path}
                   className={cn(
-                    "h-[22px] w-[22px] shrink-0 stroke-[2]",
-                    isActive ? "text-black" : "text-[#9c9c9c]"
+                    "flex h-11 items-center gap-3 rounded-xl px-3.5 text-sm font-semibold transition-all duration-150",
+                    isActive
+                      ? "bg-slate-100 text-slate-950 font-bold shadow-2xs"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                   )}
-                />
-                {item.label}
-              </Link>
-            );
-          })}
+                >
+                  <Icon
+                    className={cn(
+                      "h-5 w-5 shrink-0 stroke-[2] transition-colors",
+                      isActive ? "text-slate-950" : "text-slate-500"
+                    )}
+                  />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </nav>
 
-      <div ref={accountMenuRef} className="relative shrink-0 border-t border-[#171717] px-8 py-[32px]">
+      <div ref={accountMenuRef} className="relative shrink-0 border-t border-slate-100 p-4">
         {isAccountOpen && (
-          <div className="absolute bottom-[106px] left-5 right-5 z-40 rounded-[8px] border border-[#4f4f4f] bg-[#070707] p-2 shadow-2xl">
-            <div className="border-b border-[#222] px-3 py-3">
-              <p className="truncate text-[15px] font-semibold leading-5 text-white">
+          <div className="absolute bottom-[76px] left-3 right-3 z-40 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
+            <div className="border-b border-slate-100 px-3 py-2.5">
+              <p className="truncate text-sm font-bold text-slate-900 leading-tight">
                 {workspaceName}
               </p>
-              <p className="mt-1 truncate text-[13px] leading-4 text-[#888]">
+              <p className="mt-0.5 truncate text-xs text-slate-500">
                 {userEmail}
               </p>
             </div>
 
             {state.workspaces.length > 0 && (
-              <div className="border-b border-[#222] px-2 py-2">
-                <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#686868]">
+              <div className="border-b border-slate-100 px-2 py-2">
+                <p className="px-1 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Workspaces
                 </p>
                 <div className="max-h-[174px] space-y-1 overflow-y-auto pr-1">
@@ -253,19 +257,19 @@ export function DashboardSidebar() {
                         type="button"
                         onClick={() => handleWorkspaceSwitch(workspace.id)}
                         className={cn(
-                          "flex w-full flex-col rounded-[6px] border px-3 py-2 text-left transition-colors",
+                          "flex w-full flex-col rounded-lg border px-3 py-2 text-left transition-colors cursor-pointer",
                           isActive
-                            ? "border-white bg-white text-black"
-                            : "border-transparent text-[#cfcfcf] hover:border-[#333] hover:bg-white/[0.06] hover:text-white"
+                            ? "border-slate-900 bg-slate-900 text-white"
+                            : "border-transparent text-slate-700 hover:border-slate-200 hover:bg-slate-50"
                         )}
                       >
-                        <span className="truncate text-[13px] font-semibold leading-4">
+                        <span className="truncate text-xs font-semibold">
                           {workspace.name}
                         </span>
                         <span
                           className={cn(
-                            "mt-1 truncate text-[11px] leading-3",
-                            isActive ? "text-[#3b3b3b]" : "text-[#777]"
+                            "mt-0.5 truncate text-[11px]",
+                            isActive ? "text-slate-300" : "text-slate-400"
                           )}
                         >
                           {workspace.agncyId}
@@ -280,25 +284,25 @@ export function DashboardSidebar() {
             <Link
               href="/dashboard/settings"
               onClick={() => setIsAccountOpen(false)}
-              className="mt-2 flex h-10 items-center gap-3 rounded-[6px] px-3 text-[14px] font-semibold text-[#cfcfcf] transition-colors hover:bg-white/[0.06] hover:text-white"
+              className="mt-1 flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
             >
-              <UserRound className="h-[17px] w-[17px]" />
+              <UserRound className="h-4 w-4 text-slate-400" />
               Account Settings
             </Link>
             <Link
               href="/dashboard/verification"
               onClick={() => setIsAccountOpen(false)}
-              className="flex h-10 items-center gap-3 rounded-[6px] px-3 text-[14px] font-semibold text-[#cfcfcf] transition-colors hover:bg-white/[0.06] hover:text-white"
+              className="flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
             >
-              <ShieldCheck className="h-[17px] w-[17px]" />
+              <ShieldCheck className="h-4 w-4 text-slate-400" />
               Security & Verification
             </Link>
             <button
               type="button"
               onClick={handleLogout}
-              className="mt-2 flex h-10 w-full items-center gap-3 rounded-[6px] border-t border-[#181818] px-3 text-left text-[14px] font-semibold text-[#d8d8d8] transition-colors hover:bg-white/[0.06] hover:text-white"
+              className="mt-1 flex h-9 w-full items-center gap-2.5 rounded-lg border-t border-slate-100 px-2.5 text-left text-xs font-semibold text-rose-600 transition-colors hover:bg-rose-50"
             >
-              <LogOut className="h-[17px] w-[17px]" />
+              <LogOut className="h-4 w-4 text-rose-500" />
               Logout
             </button>
           </div>
@@ -309,24 +313,24 @@ export function DashboardSidebar() {
           onClick={() => setIsAccountOpen((open) => !open)}
           aria-expanded={isAccountOpen}
           aria-label="Open account menu"
-          className="flex w-full items-center justify-between gap-3 rounded-[8px] text-left transition-colors hover:bg-[#0d0d0d]"
+          className="flex w-full items-center justify-between gap-3 rounded-xl border border-slate-200/80 bg-slate-50/60 p-2.5 text-left transition-colors hover:bg-slate-100/80 cursor-pointer shadow-2xs"
         >
-          <div className="flex min-w-0 items-center gap-[15px] px-0 py-1">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#4a4a4a] bg-[#2d2d2f] text-[15px] font-medium text-white">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white shadow-2xs">
               {initials}
             </div>
             <div className="min-w-0">
-              <p className="truncate text-[17px] font-semibold leading-5 text-white">
+              <p className="truncate text-sm font-bold leading-tight text-slate-900">
                 {workspaceName}
               </p>
-              <p className="mt-1 truncate text-[15px] leading-4 text-[#888]">
+              <p className="mt-0.5 truncate text-xs text-slate-500">
                 {userEmail}
               </p>
             </div>
           </div>
           <ChevronDown
             className={cn(
-              "h-5 w-5 shrink-0 text-[#8a8a8a] transition-transform",
+              "h-4 w-4 shrink-0 text-slate-400 transition-transform",
               isAccountOpen && "rotate-180"
             )}
           />
@@ -370,37 +374,37 @@ export function MobileDashboardNav() {
   };
 
   return (
-    <div className="border-b border-[#111] bg-black lg:hidden">
+    <div className="border-b border-slate-200 bg-white lg:hidden">
       <div className="relative px-4 py-3">
         <button
           type="button"
           onClick={() => setIsWorkspaceOpen((open) => !open)}
-          className="flex w-full items-center justify-between gap-3 rounded-[8px] border border-[#222] bg-[#050505] px-3 py-2 text-left"
+          className="flex w-full items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-2 text-left cursor-pointer"
           aria-expanded={isWorkspaceOpen}
         >
-          <div className="flex min-w-0 items-center gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#4a4a4a] bg-[#1d1d1d] text-[13px] font-semibold text-white">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white shadow-2xs">
               {initials}
             </span>
             <span className="min-w-0">
-              <span className="block truncate text-[14px] font-semibold leading-4 text-white">
+              <span className="block truncate text-xs font-bold leading-tight text-slate-900">
                 {workspaceName}
               </span>
-              <span className="mt-1 block truncate text-[12px] leading-3 text-[#888]">
+              <span className="block truncate text-[11px] text-slate-500">
                 {userEmail}
               </span>
             </span>
           </div>
           <ChevronDown
             className={cn(
-              "h-5 w-5 shrink-0 text-[#8a8a8a] transition-transform",
+              "h-4 w-4 shrink-0 text-slate-400 transition-transform",
               isWorkspaceOpen && "rotate-180"
             )}
           />
         </button>
 
         {isWorkspaceOpen && (
-          <div className="absolute left-4 right-4 top-[66px] z-40 rounded-[8px] border border-[#3f3f3f] bg-[#070707] p-2 shadow-2xl">
+          <div className="absolute left-4 right-4 top-[58px] z-40 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl">
             {state.workspaces.length > 0 && (
               <div className="max-h-[210px] space-y-1 overflow-y-auto pr-1">
                 {state.workspaces.map((workspace) => {
@@ -412,19 +416,19 @@ export function MobileDashboardNav() {
                       type="button"
                       onClick={() => handleMobileWorkspaceSwitch(workspace.id)}
                       className={cn(
-                        "flex w-full flex-col rounded-[6px] border px-3 py-2 text-left transition-colors",
+                        "flex w-full flex-col rounded-lg border px-3 py-2 text-left transition-colors cursor-pointer",
                         isActive
-                          ? "border-white bg-white text-black"
-                          : "border-transparent text-[#cfcfcf] hover:border-[#333] hover:bg-white/[0.06] hover:text-white"
+                          ? "border-slate-900 bg-slate-900 text-white"
+                          : "border-transparent text-slate-700 hover:border-slate-200 hover:bg-slate-50"
                       )}
                     >
-                      <span className="truncate text-[13px] font-semibold leading-4">
+                      <span className="truncate text-xs font-semibold">
                         {workspace.name}
                       </span>
                       <span
                         className={cn(
-                          "mt-1 truncate text-[11px] leading-3",
-                          isActive ? "text-[#3b3b3b]" : "text-[#777]"
+                          "mt-0.5 truncate text-[10px]",
+                          isActive ? "text-slate-300" : "text-slate-400"
                         )}
                       >
                         {workspace.agncyId}
@@ -435,18 +439,18 @@ export function MobileDashboardNav() {
               </div>
             )}
 
-            <div className="mt-2 grid grid-cols-2 gap-2 border-t border-[#222] pt-2">
+            <div className="mt-2 grid grid-cols-2 gap-2 border-t border-slate-100 pt-2">
               <Link
                 href="/dashboard/settings"
                 onClick={() => setIsWorkspaceOpen(false)}
-                className="flex h-9 items-center justify-center rounded-[6px] border border-[#333] text-[13px] font-semibold text-white"
+                className="flex h-9 items-center justify-center rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
               >
                 Settings
               </Link>
               <button
                 type="button"
                 onClick={handleMobileLogout}
-                className="flex h-9 items-center justify-center rounded-[6px] border border-[#333] text-[13px] font-semibold text-white"
+                className="flex h-9 items-center justify-center rounded-lg border border-slate-200 text-xs font-semibold text-rose-600 hover:bg-rose-50"
               >
                 Logout
               </button>
@@ -456,7 +460,7 @@ export function MobileDashboardNav() {
       </div>
 
       <nav className="px-4 pb-3">
-        <div className="flex gap-2 overflow-x-auto">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar">
           {primaryNav.map((item) => {
             const Icon = item.icon;
             const isActive = isNavActive(pathname, item);
@@ -466,10 +470,10 @@ export function MobileDashboardNav() {
                 key={item.label}
                 href={item.path}
                 className={cn(
-                  "flex h-10 shrink-0 items-center gap-2 rounded-[7px] border px-3 text-[14px] font-semibold transition-colors",
+                  "flex h-9 shrink-0 items-center gap-2 rounded-xl border px-3 text-xs font-semibold transition-colors",
                   isActive
-                    ? "border-white bg-white text-black"
-                    : "border-[#262626] bg-[#050505] text-[#9c9c9c]"
+                    ? "border-slate-900 bg-slate-900 text-white shadow-2xs"
+                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                 )}
               >
                 <Icon className="h-4 w-4" />

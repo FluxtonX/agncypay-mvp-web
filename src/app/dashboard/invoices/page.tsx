@@ -144,32 +144,32 @@ function IntegrationsModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-8 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4 py-8 backdrop-blur-sm"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="w-full max-w-[520px] rounded-[16px] border border-[#2a2a2a] bg-[#0a0a0a] shadow-2xl overflow-hidden">
+      <div className="w-full max-w-[520px] rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#1e1e1e] px-6 py-5">
+        <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-[9px] border border-[#333] bg-[#111]">
-              <Plug className="h-4 w-4 text-white" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-100">
+              <Plug className="h-5 w-5 text-slate-800" />
             </div>
             <div>
-              <h2 className="text-[17px] font-bold text-white">Connect Accounting</h2>
-              <p className="text-[12px] text-[#777] mt-0.5">Sync invoices from your accounting tool</p>
+              <h2 className="text-lg font-bold text-slate-900">Connect Accounting</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Sync invoices from your accounting software</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-[#777] hover:bg-white/[0.06] hover:text-white transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Integration list */}
-        <div className="p-5 space-y-3">
+        <div className="p-6 space-y-3">
           {INTEGRATIONS.map((integration) => {
             const isConnected = connectedSource === integration.id;
             const isComingSoon = !integration.available;
@@ -178,17 +178,17 @@ function IntegrationsModal({
               <div
                 key={integration.id}
                 className={cn(
-                  "flex items-center gap-4 rounded-[12px] border p-4 transition-all",
+                  "flex items-center gap-4 rounded-xl border p-4 transition-all",
                   isConnected
-                    ? "border-[#2a2a2a] bg-[#0d160d]"
+                    ? "border-emerald-200 bg-emerald-50/50"
                     : isComingSoon
-                    ? "border-[#1a1a1a] bg-[#060606] opacity-50"
-                    : "border-[#222] bg-[#0d0d0d] hover:border-[#444] cursor-pointer"
+                    ? "border-slate-200 bg-slate-50/50 opacity-60"
+                    : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-xs cursor-pointer"
                 )}
               >
                 {/* Logo badge */}
                 <div
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] text-[13px] font-black shadow-sm"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-xs font-black shadow-xs"
                   style={{ backgroundColor: integration.color, color: integration.textColor }}
                 >
                   {integration.logoText}
@@ -196,20 +196,20 @@ function IntegrationsModal({
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-[14px] font-bold text-white">{integration.name}</p>
+                    <p className="text-sm font-bold text-slate-900">{integration.name}</p>
                     {isConnected && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-[#082315] border border-[#10b95f]/40 px-2 py-0.5 text-[10px] font-bold text-[#4ade80]">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#4ade80] animate-pulse" />
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 border border-emerald-300 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse" />
                         Connected
                       </span>
                     )}
                     {isComingSoon && (
-                      <span className="rounded-full bg-[#1a1a1a] border border-[#333] px-2 py-0.5 text-[10px] font-bold text-[#666]">
+                      <span className="rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 text-[10px] font-bold text-slate-500">
                         Soon
                       </span>
                     )}
                   </div>
-                  <p className="text-[12px] text-[#666] mt-0.5 leading-4">{integration.description}</p>
+                  <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{integration.description}</p>
                 </div>
 
                 {/* Action button */}
@@ -219,18 +219,18 @@ function IntegrationsModal({
                       type="button"
                       onClick={handleDisconnect}
                       disabled={disconnecting}
-                      className="flex items-center gap-1.5 h-8 rounded-[7px] border border-[#333] bg-[#111] px-3 text-[12px] font-semibold text-[#999] hover:border-red-900/50 hover:text-red-400 transition-colors disabled:opacity-50"
+                      className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-3 text-xs font-bold text-rose-700 hover:bg-rose-100 transition-colors disabled:opacity-50"
                     >
-                      <Link2Off className="h-3.5 w-3.5" />
-                      {disconnecting ? "Disconnecting..." : "Disconnect"}
+                      {disconnecting ? <RefreshCw className="h-3 w-3 animate-spin" /> : <Link2Off className="h-3.5 w-3.5" />}
+                      Disconnect
                     </button>
                   ) : isComingSoon ? (
-                    <span className="text-[11px] font-semibold text-[#444]">Coming Soon</span>
+                    <span className="text-xs font-semibold text-slate-400">Unavailable</span>
                   ) : (
                     <button
                       type="button"
                       onClick={() => handleConnect(integration)}
-                      className="flex items-center gap-1.5 h-8 rounded-[7px] border border-[#444] bg-[#111] px-3 text-[12px] font-semibold text-white hover:border-white/40 hover:bg-white/[0.04] transition-colors"
+                      className="inline-flex h-9 items-center gap-1.5 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 transition-all shadow-xs cursor-pointer"
                     >
                       <Link2 className="h-3.5 w-3.5" />
                       Connect
@@ -241,11 +241,10 @@ function IntegrationsModal({
             );
           })}
         </div>
-
         {/* Footer note */}
-        <div className="border-t border-[#1a1a1a] px-6 py-4">
-          <p className="text-[11px] text-[#555] leading-5">
-            Connecting an accounting tool will import your invoices into AgncyPay for payment and reconciliation. Only invoice read access is requested.
+        <div className="border-t border-slate-100 bg-slate-50/50 px-6 py-4">
+          <p className="text-xs text-slate-500 leading-relaxed">
+            Connecting an accounting tool imports your invoices into AgncyPay for instant automated splitting and reconciliation.
           </p>
         </div>
       </div>
@@ -581,22 +580,26 @@ function MetricPanel({
   className?: string;
 }) {
   return (
-    <section className={cn("rounded-[13px] border border-[#676767] bg-black", className)}>
+    <section className={cn("rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs transition-all", className)}>
       {children}
     </section>
   );
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const norm = status.toLowerCase();
+  const isPaid = norm === "paid";
+  const isApproved = norm === "approved" || norm === "ready";
+  const isPending = norm.includes("pend") || norm.includes("review") || norm.includes("draft") || norm.includes("process");
+
   return (
     <span
       className={cn(
-        "inline-flex h-[28px] items-center rounded-[7px] border px-[11px] text-[15px] font-medium leading-none",
-        status === "Approved" && "border-[#5b5b5b] bg-[#101010] text-white",
-        status === "Paid" && "border-[#e4e4e4] bg-[#8b8b8b] text-black",
-        status !== "Approved" &&
-          status !== "Paid" &&
-          "border-[#323232] bg-[#1d1d1d] text-[#c7c7c7]"
+        "inline-flex h-7 items-center rounded-full border px-2.5 text-xs font-bold leading-none",
+        isPaid && "border-emerald-200 bg-emerald-50 text-emerald-700",
+        isApproved && "border-blue-200 bg-blue-50 text-blue-700",
+        isPending && "border-amber-200 bg-amber-50 text-amber-700",
+        !isPaid && !isApproved && !isPending && "border-slate-200 bg-slate-100 text-slate-700"
       )}
     >
       {status}
@@ -1176,7 +1179,7 @@ export default function InvoicesPortalPage() {
   };
 
   return (
-    <div className="w-full max-w-[1048px]">
+    <div className="w-full max-w-7xl space-y-6">
       {/* ── Integrations modal ── */}
       {isIntegrationsOpen && (
         <IntegrationsModal
@@ -1192,39 +1195,40 @@ export default function InvoicesPortalPage() {
         />
       )}
 
-      <div className="flex flex-col items-start justify-between gap-5 md:flex-row md:gap-8">
+      {/* Page Header */}
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-[34px] font-semibold leading-none text-white">
+          <h1 className="text-2xl font-black tracking-tight text-slate-900">
             Invoices
           </h1>
-          <p className="mt-[18px] text-[20px] leading-6 text-[#9b9b9b]">
+          <p className="mt-1 text-sm text-slate-500 max-w-2xl">
             {invoiceSource.description}
           </p>
         </div>
 
-        <div className="flex w-full flex-col gap-3 sm:flex-row md:mt-[21px] md:w-auto">
-          {/* ── Connect Integrations (+) button ── */}
+        <div className="flex w-full flex-wrap items-center gap-2.5 sm:w-auto">
+          {/* Connect Integrations button */}
           <button
             type="button"
             id="open-integrations-btn"
             onClick={() => setIsIntegrationsOpen(true)}
             title="Connect accounting software"
             className={cn(
-              "inline-flex h-[36px] items-center justify-center gap-[8px] rounded-[6px] border px-3 text-[14px] font-semibold transition-colors whitespace-nowrap",
+              "inline-flex h-10 items-center justify-center gap-2 rounded-xl border px-3.5 text-xs font-bold transition-all shadow-xs cursor-pointer",
               connectedSource
-                ? "border-[#10b95f]/50 bg-[#082315] text-[#4ade80] hover:border-[#10b95f]"
-                : "border-[#5a5a5a] bg-[#0c0c0c] text-white hover:border-[#777]"
+                ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300"
             )}
           >
             {connectedSource ? (
               <>
-                <span className="h-2 w-2 rounded-full bg-[#4ade80] animate-pulse" />
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 {INTEGRATIONS.find((i) => i.id === connectedSource)?.name || "Connected"}
               </>
             ) : (
               <>
-                <Plus className="h-4 w-4" />
-                Connect
+                <Plus className="h-3.5 w-3.5" />
+                Integrations
               </>
             )}
           </button>
@@ -1232,70 +1236,61 @@ export default function InvoicesPortalPage() {
           <button
             type="button"
             onClick={exportInvoices}
-            className="inline-flex h-[36px] items-center justify-center gap-[12px] rounded-[6px] border border-[#5a5a5a] bg-[#0c0c0c] px-5 text-[14px] font-semibold text-white transition-colors hover:border-[#777]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50 hover:border-slate-300 shadow-xs cursor-pointer"
           >
-            <Download className="h-4 w-4" />
+            <Download className="h-3.5 w-3.5 text-slate-500" />
             Export
           </button>
           {canCreateInvoice && (
             <button
               type="button"
               onClick={() => setIsCreateOpen(true)}
-              className="inline-flex h-[36px] items-center justify-center gap-[8px] rounded-[6px] border border-white bg-white px-3 sm:px-5 text-[12px] sm:text-[14px] font-semibold text-black transition-colors hover:bg-[#e8e8e8] whitespace-nowrap"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white transition-all hover:bg-slate-800 active:scale-[0.99] shadow-sm cursor-pointer whitespace-nowrap"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-3.5 w-3.5" />
               {invoiceSource.createTitle}
             </button>
           )}
         </div>
       </div>
 
-      {/* ── QB Sync Status Banner ── */}
+      {/* QB Sync Status Banner */}
       {qbSyncStatus !== "idle" && (
         <div className={cn(
-          "mt-[18px] flex items-center gap-3 rounded-[8px] border px-4 py-3 text-[13px] font-semibold",
-          qbSyncStatus === "loading" && "border-[#333] bg-[#0a0a0a] text-[#aaa]",
-          qbSyncStatus === "success" && "border-[#10b95f]/40 bg-[#082315] text-[#4ade80]",
-          qbSyncStatus === "error" && "border-[#ff3b30]/30 bg-[#180805] text-[#ff9088]"
+          "flex items-center gap-3 rounded-xl border px-4 py-3 text-xs font-semibold",
+          qbSyncStatus === "loading" && "border-slate-200 bg-slate-50 text-slate-600",
+          qbSyncStatus === "success" && "border-emerald-200 bg-emerald-50 text-emerald-800",
+          qbSyncStatus === "error" && "border-rose-200 bg-rose-50 text-rose-800"
         )}>
           {qbSyncStatus === "loading" && (
-            <RefreshCw className="h-4 w-4 animate-spin shrink-0" />
+            <RefreshCw className="h-4 w-4 animate-spin shrink-0 text-slate-500" />
           )}
           {qbSyncStatus === "success" && (
-            <CheckCircle2 className="h-4 w-4 shrink-0" />
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
           )}
           {qbSyncStatus === "error" && (
-            <X className="h-4 w-4 shrink-0" />
+            <X className="h-4 w-4 shrink-0 text-rose-600" />
           )}
           <span className="flex-1">{qbSyncMessage}</span>
-          {qbSyncStatus !== "loading" && (
-            <button
-              type="button"
-              onClick={() => { setQbSyncStatus("idle"); setQbSyncMessage(""); }}
-              className="ml-auto text-current opacity-60 hover:opacity-100"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
-          )}
         </div>
       )}
 
-      {/* ── Xero Sync Status Banner ── */}
+      {/* Xero Sync Status Banner */}
       {xeroSyncStatus !== "idle" && (
         <div className={cn(
-          "mt-[18px] flex items-center gap-3 rounded-[8px] border px-4 py-3 text-[13px] font-semibold",
-          xeroSyncStatus === "loading" && "border-[#333] bg-[#0a0a0a] text-[#aaa]",
-          xeroSyncStatus === "success" && "border-[#10b95f]/40 bg-[#082315] text-[#4ade80]",
-          xeroSyncStatus === "error" && "border-[#ff3b30]/30 bg-[#180805] text-[#ff9088]"
+          "flex items-center gap-3 rounded-xl border px-4 py-3 text-xs font-semibold",
+          xeroSyncStatus === "loading" && "border-slate-200 bg-slate-50 text-slate-600",
+          xeroSyncStatus === "success" && "border-emerald-200 bg-emerald-50 text-emerald-800",
+          xeroSyncStatus === "error" && "border-rose-200 bg-rose-50 text-rose-800"
         )}>
           {xeroSyncStatus === "loading" && (
-            <RefreshCw className="h-4 w-4 animate-spin shrink-0" />
+            <RefreshCw className="h-4 w-4 animate-spin shrink-0 text-slate-500" />
           )}
           {xeroSyncStatus === "success" && (
-            <CheckCircle2 className="h-4 w-4 shrink-0" />
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
           )}
           {xeroSyncStatus === "error" && (
-            <X className="h-4 w-4 shrink-0" />
+            <X className="h-4 w-4 shrink-0 text-rose-600" />
           )}
           <span className="flex-1">{xeroSyncMessage}</span>
           {xeroSyncStatus !== "loading" && (
@@ -1310,29 +1305,30 @@ export default function InvoicesPortalPage() {
         </div>
       )}
 
-      <section className="mt-[27px] rounded-[8px] border border-[#4f4f4f] bg-[#050505] px-5 py-4">
+      {/* Source & Payment Modes Card */}
+      <section className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div>
-            <p className="text-[18px] font-semibold leading-6 text-white">
+            <p className="text-base font-bold text-slate-900">
               {connectedSource === "quickbooks"
                 ? "QuickBooks-synced invoices"
                 : connectedSource === "xero"
                 ? "Xero-synced invoices"
                 : invoiceSource.title}
             </p>
-            <p className="mt-1 text-[14px] leading-5 text-[#8f8f8f]">
+            <p className="mt-0.5 text-xs text-slate-500">
               Source:{" "}
               {connectedSource === "quickbooks" ? (
-                <span className="text-[#4ade80] font-semibold">QuickBooks Online</span>
+                <span className="text-emerald-600 font-bold">QuickBooks Online</span>
               ) : (
                 invoiceSource.source
               )}
             </p>
-            <div className="mt-4 grid grid-cols-1 gap-2 text-[12px] font-semibold text-[#a8a8a8] sm:grid-cols-4">
+            <div className="mt-3.5 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-4">
               {(["pay_now", "batch_pay", "multi_pay", "split_pay"] as PaymentMode[]).map((mode) => (
-                <div key={mode} className="rounded-[7px] border border-[#303030] bg-black px-3 py-2">
-                  <span className="block text-white">{paymentModeCopy[mode].shortLabel}</span>
-                  <span className="mt-1 block font-medium text-[#777]">
+                <div key={mode} className="rounded-xl border border-slate-200/80 bg-slate-50/70 px-3 py-2.5">
+                  <span className="block text-xs font-bold text-slate-900">{paymentModeCopy[mode].shortLabel}</span>
+                  <span className="mt-0.5 block text-[11px] font-medium text-slate-500">
                     {mode === "pay_now" && "Single invoice"}
                     {mode === "batch_pay" && "Selected run"}
                     {mode === "multi_pay" && "Many recipients"}
@@ -1348,13 +1344,13 @@ export default function InvoicesPortalPage() {
                 type="button"
                 onClick={fetchQbInvoices}
                 disabled={qbSyncStatus === "loading"}
-                className="inline-flex h-8 items-center gap-1.5 rounded-[7px] border border-[#333] bg-[#0c0c0c] px-3 text-[12px] font-semibold text-white hover:border-[#555] disabled:opacity-50 transition-colors"
+                className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 disabled:opacity-50 transition-colors shadow-xs cursor-pointer"
               >
                 <RefreshCw className={cn("h-3.5 w-3.5", qbSyncStatus === "loading" && "animate-spin")} />
                 Sync
               </button>
             )}
-            <span className="inline-flex h-8 w-fit items-center rounded-[7px] border border-[#444] px-3 text-[13px] font-semibold text-[#d7d7d7]">
+            <span className="inline-flex h-9 items-center rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-xs font-bold text-slate-700">
               {canProcessInvoices
                 ? "Payment controls enabled"
                 : canCreateInvoice
@@ -1365,9 +1361,10 @@ export default function InvoicesPortalPage() {
         </div>
       </section>
 
-      <div className="mt-[31px] grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_270px_40px] md:gap-[30px]">
+      {/* Filter & Search Bar */}
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_270px_42px]">
         <label className="relative block">
-          <Search className="pointer-events-none absolute left-[13px] top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-[#777]" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
             aria-label="Search invoices"
             value={search}
@@ -1375,12 +1372,12 @@ export default function InvoicesPortalPage() {
               setSearch(event.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search invoices..."
-            className="h-[36px] w-full border border-[#5a5a5a] bg-black pl-[39px] pr-4 text-[15px] text-white outline-none placeholder:text-[#7a7a7a] focus:border-[#7a7a7a]"
+            placeholder="Search invoices by ID, client, or campaign..."
+            className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 text-xs text-slate-900 outline-none placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 transition-all shadow-xs"
           />
         </label>
 
-        <label className="relative block">
+        <div className="relative">
           <select
             aria-label="Filter invoices"
             value={filter}
@@ -1388,7 +1385,7 @@ export default function InvoicesPortalPage() {
               setFilter(event.target.value as InvoiceFilter);
               setCurrentPage(1);
             }}
-            className="h-[36px] w-full appearance-none rounded-[6px] border border-[#5a5a5a] bg-black px-[13px] pr-9 text-[15px] font-medium text-white outline-none focus:border-[#7a7a7a]"
+            className="h-10 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3.5 pr-9 text-xs font-bold text-slate-800 outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 transition-all shadow-xs cursor-pointer"
           >
             {filterOptions.map((option) => (
               <option key={option} value={option}>
@@ -1396,46 +1393,48 @@ export default function InvoicesPortalPage() {
               </option>
             ))}
           </select>
-          <ChevronDown className="pointer-events-none absolute right-[13px] top-1/2 h-4 w-4 -translate-y-1/2 text-[#777]" />
-        </label>
+          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        </div>
 
         <button
           type="button"
           aria-label="Reset invoice filters"
           title="Reset filters"
           onClick={resetFilters}
-          className="flex h-[36px] w-full items-center justify-center rounded-[6px] border border-[#5a5a5a] bg-black text-white transition-colors hover:border-[#777] md:w-10"
+          className="flex h-10 w-full items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900 shadow-xs cursor-pointer md:w-10"
         >
-          <Filter className="h-5 w-5" />
+          <Filter className="h-4 w-4" />
         </button>
       </div>
 
-      <div className="mt-[29px] grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5 md:gap-[29px]">
+      {/* Status Counters */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
         {statusCards.map((card) => (
-          <MetricPanel key={card.label} className="h-[91px] px-[16px] py-[18px]">
-            <p className="text-[15px] leading-4 text-[#777]">{card.label}</p>
-            <p className="mt-[11px] text-[24px] font-semibold leading-none text-white">
+          <MetricPanel key={card.label} className="p-4">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">{card.label}</p>
+            <p className="mt-1 text-2xl font-black text-slate-900 tracking-tight">
               {card.value}
             </p>
           </MetricPanel>
         ))}
       </div>
 
-      <div className="mt-[29px] grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-[29px]">
+      {/* KPI Overview Cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {metricCards.map((card) => {
           const Icon = card.icon;
           return (
-            <MetricPanel key={card.title} className="flex h-[215px] flex-col justify-between px-4 py-[25px]">
+            <MetricPanel key={card.title} className="flex min-h-[130px] flex-col justify-between p-5">
               <div>
-                <h2 className="text-[20px] font-normal leading-6 text-[#777]">
+                <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                   {card.title}
                 </h2>
-                <p className="mt-[26px] text-[36px] font-semibold leading-none text-white">
+                <p className="mt-2 text-3xl font-black text-slate-900 tracking-tight">
                   {card.value}
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-[17px] leading-5 text-[#949494]">
-                <Icon className="h-5 w-5 stroke-[1.8]" />
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 mt-2">
+                <Icon className="h-4 w-4 text-slate-700" />
                 <span>{card.detail}</span>
               </div>
             </MetricPanel>
@@ -1443,24 +1442,24 @@ export default function InvoicesPortalPage() {
         })}
       </div>
 
-      <div className="mt-[29px] overflow-x-auto rounded-[8px] border border-[#686868] bg-black">
-        <table className="min-w-[1048px] table-fixed text-left">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200/90 bg-white shadow-xs">
+        <table className="min-w-[1048px] w-full table-fixed text-left">
           <colgroup>
-            <col className="w-[139px]" />
-            <col className="w-[153px]" />
-            <col className="w-[248px]" />
-            <col className="w-[92px]" />
-            <col className="w-[66px]" />
-            <col className="w-[129px]" />
-            <col className="w-[134px]" />
-            <col className="w-[85px]" />
+            <col className="w-[145px]" />
+            <col className="w-[160px]" />
+            <col className="w-[240px]" />
+            <col className="w-[110px]" />
+            <col className="w-[80px]" />
+            <col className="w-[120px]" />
+            <col className="w-[130px]" />
+            <col className="w-[70px]" />
           </colgroup>
           <thead>
-            <tr className="h-[49px] border-b border-[#686868] text-[17px] font-semibold leading-none text-[#a2a2a2]">
-              <th className="pl-[10px] pr-4">
-                <div className="flex items-center gap-[10px]">
-                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-[4px] bg-[#22a92d] text-white" title="QuickBooks Sync Active">
-                    <span className="rounded-full bg-[#1a8f25] px-1 py-0.5 text-[10px] font-black leading-none">qb</span>
+            <tr className="h-11 bg-slate-50/80 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <th className="pl-4 pr-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-emerald-600 text-white" title="QuickBooks Sync Active">
+                    <span className="text-[10px] font-black leading-none">qb</span>
                   </div>
                   {canSelectInvoices && (
                     <input
@@ -1468,60 +1467,60 @@ export default function InvoicesPortalPage() {
                       aria-label="Select visible invoices"
                       checked={allPagedSelected}
                       onChange={toggleVisibleSelection}
-                      className="h-[16px] w-[16px] shrink-0 rounded-[4px] border border-[#777] bg-black accent-white"
+                      className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer"
                     />
                   )}
                   <span>Invoice ID</span>
                 </div>
               </th>
-              <th className="px-0">{invoiceSource.primaryLabel}</th>
-              <th className="px-0">{invoiceSource.secondaryLabel}</th>
-              <th className="px-0">{invoiceSource.amountLabel}</th>
-              <th className="px-0">{invoiceSource.feeLabel}</th>
-              <th className="px-0">Status</th>
-              <th className="px-0">Due Date</th>
-              <th className="px-0" />
+              <th className="px-3">{invoiceSource.primaryLabel}</th>
+              <th className="px-3">{invoiceSource.secondaryLabel}</th>
+              <th className="px-3">{invoiceSource.amountLabel}</th>
+              <th className="px-3">{invoiceSource.feeLabel}</th>
+              <th className="px-3">Status</th>
+              <th className="px-3">Due Date</th>
+              <th className="pr-4" />
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-100">
             {pagedInvoices.map((invoice) => (
               <tr
                 key={invoice.id}
-                className="h-[64px] border-b border-[#505050] last:border-b-0"
+                className="h-14 hover:bg-slate-50/70 transition-colors"
               >
-                <td className="pl-[11px] pr-4">
-                  <div className="flex items-center gap-[9px]">
+                <td className="pl-4 pr-3">
+                  <div className="flex items-center gap-2.5">
                     {canSelectInvoices && (
                       <input
                         type="checkbox"
                         aria-label={`Select ${invoice.id}`}
                         checked={selectedIds.includes(invoice.id)}
                         onChange={() => toggleInvoiceSelection(invoice.id)}
-                        className="h-[16px] w-[16px] shrink-0 rounded-[4px] border border-[#777] bg-black accent-white"
+                        className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer"
                       />
                     )}
-                    <FileText className="h-[19px] w-[19px] shrink-0 text-[#9a9a9a]" />
-                    <span className="font-mono text-[17px] leading-none text-white">
+                    <FileText className="h-4 w-4 shrink-0 text-slate-400" />
+                    <span className="font-mono text-xs font-bold text-slate-900">
                       {invoice.id}
                     </span>
                   </div>
                 </td>
-                <td className="truncate pr-5 text-[17px] leading-none text-[#c8c8c8]">
+                <td className="truncate px-3 text-xs font-semibold text-slate-700">
                   {invoice.agency}
                 </td>
-                <td className="truncate pr-5 text-[17px] leading-none text-[#a8a8a8]">
+                <td className="truncate px-3 text-xs text-slate-500 font-medium">
                   {invoice.campaign}
                 </td>
-                <td className="text-[17px] font-semibold leading-none text-white">
+                <td className="px-3 text-xs font-bold text-slate-900">
                   {invoice.amount}
                 </td>
-                <td className="text-[17px] leading-none text-[#8f8f8f]">{invoice.fees}</td>
-                <td>
+                <td className="px-3 text-xs text-slate-500 font-medium">{invoice.fees}</td>
+                <td className="px-3">
                   <StatusBadge status={invoice.status} />
                 </td>
-                <td>
-                  <div className="relative flex items-center gap-[12px] text-[17px] leading-none text-[#a8a8a8]">
-                    <CalendarDays className="h-[18px] w-[18px] shrink-0 text-[#d1d1d1]" />
+                <td className="px-3">
+                  <div className="relative flex items-center gap-2 text-xs text-slate-500 font-medium">
+                    <CalendarDays className="h-3.5 w-3.5 shrink-0 text-slate-400" />
                     {canEditInvoiceSource ? (
                       <button
                         type="button"
@@ -1530,7 +1529,7 @@ export default function InvoicesPortalPage() {
                             currentId === invoice.id ? null : invoice.id
                           )
                         }
-                        className="rounded-[5px] border border-transparent px-1 py-1 text-left transition-colors hover:border-[#4a4a4a] hover:text-white"
+                        className="rounded-md border border-transparent px-1 py-0.5 text-left transition-colors hover:border-slate-300 hover:text-slate-900 cursor-pointer"
                         aria-label={`Edit due date for ${invoice.id}`}
                       >
                         {invoice.due}
@@ -1539,17 +1538,17 @@ export default function InvoicesPortalPage() {
                       <span>{invoice.due}</span>
                     )}
                     {canEditInvoiceSource && editingDueId === invoice.id && (
-                      <div className="absolute left-0 top-[32px] z-30 flex items-center gap-2 rounded-[7px] border border-[#555] bg-[#0b0b0b] p-2 shadow-xl">
+                      <div className="absolute left-0 top-8 z-30 flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
                         <input
                           type="date"
                           value={dueDateToInputDate(invoice.due)}
                           onChange={(event) => updateDueDate(invoice.id, event.target.value)}
-                          className="h-[30px] rounded-[5px] border border-[#444] bg-black px-2 text-[13px] text-white outline-none [color-scheme:dark]"
+                          className="h-8 rounded-lg border border-slate-200 bg-slate-50 px-2 text-xs text-slate-900 outline-none"
                         />
                         <button
                           type="button"
                           onClick={() => setEditingDueId(null)}
-                          className="h-[30px] rounded-[5px] border border-[#444] px-2 text-[12px] font-semibold text-white hover:border-[#777]"
+                          className="h-8 rounded-lg bg-slate-900 px-2.5 text-xs font-bold text-white hover:bg-slate-800"
                         >
                           Done
                         </button>
@@ -1557,7 +1556,7 @@ export default function InvoicesPortalPage() {
                     )}
                   </div>
                 </td>
-                <td className="relative pr-[20px] text-right">
+                <td className="relative pr-4 text-right">
                   <button
                     type="button"
                     onClick={() =>
@@ -1565,54 +1564,54 @@ export default function InvoicesPortalPage() {
                         currentId === invoice.id ? null : invoice.id
                       )
                     }
-                    className="ml-auto flex h-8 w-8 items-center justify-center rounded-[6px] border border-transparent text-[#838383] transition-colors hover:border-[#4a4a4a] hover:text-white"
+                    className="ml-auto flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors cursor-pointer"
                     aria-label={`Open actions for ${invoice.id}`}
                   >
-                    <MoreHorizontal className="h-5 w-5" />
+                    <MoreHorizontal className="h-4 w-4" />
                   </button>
                   {openMenuId === invoice.id && (
-                    <div className="absolute right-[20px] top-[48px] z-30 w-[188px] rounded-[7px] border border-[#555] bg-[#0b0b0b] p-2 text-left shadow-xl">
+                    <div className="absolute right-4 top-10 z-30 w-48 rounded-xl border border-slate-200 bg-white p-1 text-left shadow-xl animate-in zoom-in-95 duration-100">
                       {canProcessInvoices && invoice.status !== "Paid" && invoice.status !== "Processing" && (
                         <button
                           type="button"
                           onClick={() => openPaymentFlow("pay_now", [invoice.id])}
-                          className="flex w-full items-center gap-2 rounded-[5px] px-2 py-2 text-left text-[13px] text-[#d7d7d7] hover:bg-white/[0.06] hover:text-white"
+                          className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-semibold text-emerald-700 hover:bg-emerald-50 cursor-pointer"
                         >
-                          <ShieldCheck className="h-4 w-4" />
+                          <ShieldCheck className="h-3.5 w-3.5" />
                           Pay Now
                         </button>
                       )}
                       <button
                         type="button"
                         onClick={() => viewInvoiceDetail(invoice)}
-                        className="flex w-full items-center gap-2 rounded-[5px] px-2 py-2 text-left text-[13px] text-[#d7d7d7] hover:bg-white/[0.06] hover:text-white"
+                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
                       >
-                        <Eye className="h-4 w-4" />
+                        <Eye className="h-3.5 w-3.5 text-slate-400" />
                         View Detail
                       </button>
                       <button
                         type="button"
                         onClick={() => downloadInvoicePdf(invoice)}
-                        className="flex w-full items-center gap-2 rounded-[5px] px-2 py-2 text-left text-[13px] text-[#d7d7d7] hover:bg-white/[0.06] hover:text-white"
+                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
                       >
-                        <Download className="h-4 w-4" />
-                        View PDF
+                        <Download className="h-3.5 w-3.5 text-slate-400" />
+                        Download PDF
                       </button>
                       <button
                         type="button"
                         onClick={() => sendInvoiceEmail(invoice)}
-                        className="flex w-full items-center gap-2 rounded-[5px] px-2 py-2 text-left text-[13px] text-[#d7d7d7] hover:bg-white/[0.06] hover:text-white"
+                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
                       >
-                        <Mail className="h-4 w-4" />
+                        <Mail className="h-3.5 w-3.5 text-slate-400" />
                         Send Email
                       </button>
                       {canEditInvoiceSource && (
                         <button
                           type="button"
                           onClick={() => deleteInvoice(invoice.id)}
-                          className="flex w-full items-center gap-2 rounded-[5px] px-2 py-2 text-left text-[13px] text-[#d7d7d7] hover:bg-white/[0.06] hover:text-white"
+                          className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-semibold text-rose-600 hover:bg-rose-50 cursor-pointer"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3.5 w-3.5" />
                           Delete
                         </button>
                       )}
@@ -1623,8 +1622,8 @@ export default function InvoicesPortalPage() {
             ))}
             {filteredInvoices.length === 0 && (
               <tr>
-                <td colSpan={8} className="h-[144px] text-center text-[17px] text-[#8f8f8f]">
-                  No invoices found.
+                <td colSpan={8} className="h-32 text-center text-xs text-slate-500 font-medium">
+                  No invoices found matching current filter.
                 </td>
               </tr>
             )}
@@ -1633,46 +1632,46 @@ export default function InvoicesPortalPage() {
       </div>
 
       {canSelectInvoices && selectedInvoices.length > 0 && (
-        <div className="mt-[29px] flex flex-col gap-5 rounded-[8px] border border-[#686868] bg-black px-5 py-[18px] md:flex-row md:items-center md:justify-between md:px-[30px]">
-          <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-5">
-            <div className="min-w-0">
-              <p className="text-[14px] leading-4 text-[#777]">Selected Items</p>
-              <p className="mt-[8px] break-words text-[20px] font-semibold leading-tight text-white lg:text-[22px]">
-                {selectedInvoices.length}
+        <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-lg md:flex-row md:items-center md:justify-between">
+          <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Selected</p>
+              <p className="mt-1 text-lg font-black text-slate-900">
+                {selectedInvoices.length} {selectedInvoices.length === 1 ? "item" : "items"}
               </p>
             </div>
-            <div className="min-w-0">
-              <p className="text-[14px] leading-4 text-[#777]">Total Amount</p>
-              <p className="mt-[8px] break-words text-[20px] font-semibold leading-tight text-white lg:text-[22px]">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Subtotal</p>
+              <p className="mt-1 text-lg font-black text-slate-900">
                 {formatMoney(selectedTotalAmount)}
               </p>
             </div>
-            <div className="min-w-0">
-              <p className="text-[14px] leading-4 text-[#777]">Total Tax</p>
-              <p className="mt-[8px] break-words text-[20px] font-semibold leading-tight text-white lg:text-[22px]">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Tax</p>
+              <p className="mt-1 text-lg font-black text-slate-900">
                 {formatMoney(selectedTotalTax)}
               </p>
             </div>
-            <div className="min-w-0">
-              <p className="text-[14px] leading-4 text-[#777]">Grand Total</p>
-              <p className="mt-[8px] break-words text-[20px] font-semibold leading-tight text-white lg:text-[22px]">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Total Run</p>
+              <p className="mt-1 text-lg font-black text-emerald-600">
                 {formatMoney(selectedTotalAmount + selectedTotalTax)}
               </p>
             </div>
           </div>
 
-          <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+          <div className="flex shrink-0 items-center gap-2.5">
             <button
               type="button"
               onClick={() => setSelectedIds([])}
-              className="h-[42px] rounded-[7px] border border-[#555] bg-[#151515] px-[20px] text-[15px] font-semibold text-white transition-colors hover:border-[#777]"
+              className="h-10 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
             >
-              Clear Selection
+              Clear
             </button>
             <button
               type="button"
               onClick={handleSelectedAction}
-              className="h-[42px] rounded-[7px] border border-white bg-white px-[20px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+              className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-slate-900 px-5 text-xs font-bold text-white hover:bg-slate-800 transition-all shadow-sm cursor-pointer"
             >
               {selectedActionLabel}
             </button>
@@ -1818,24 +1817,24 @@ export default function InvoicesPortalPage() {
       )}
 
       {paymentFlow && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/75 px-3 py-5 backdrop-blur-sm sm:px-4">
-          <section className="flex max-h-[calc(100vh-40px)] w-full max-w-[620px] flex-col overflow-hidden rounded-[13px] border border-[#676767] bg-black shadow-2xl">
-            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-[#222] px-4 py-[16px] sm:px-[25px] sm:py-[18px]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-900/40 px-3 py-5 backdrop-blur-sm sm:px-4">
+          <section className="flex max-h-[calc(100vh-40px)] w-full max-w-[620px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-100 bg-slate-50/60 px-5 py-4 sm:px-6">
               <div className="flex min-w-0 items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] border border-[#3d3d3d] bg-[#101010] text-white">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-900 shadow-sm">
                   {paymentFlow.stage === "success" ? (
-                    <CheckCircle2 className="h-5 w-5" />
+                    <CheckCircle2 className="h-5 w-5 text-emerald-600" />
                   ) : (
-                    <ShieldCheck className="h-5 w-5" />
+                    <ShieldCheck className="h-5 w-5 text-slate-700" />
                   )}
                 </div>
                 <div className="min-w-0">
-                  <h2 className="truncate text-[20px] font-semibold leading-tight text-white sm:text-[24px]">
+                  <h2 className="truncate text-[18px] font-semibold leading-tight text-slate-900 sm:text-[20px]">
                     {paymentFlow.stage === "review" && `Review ${paymentCopy?.title}`}
                     {paymentFlow.stage === "processing" && "Processing Payment"}
                     {paymentFlow.stage === "success" && paymentCopy?.successTitle}
                   </h2>
-                  <p className="mt-2 text-[14px] leading-4 text-[#888]">
+                  <p className="mt-1 text-[13px] leading-4 text-slate-500">
                     {paymentInvoices.length} invoice{paymentInvoices.length === 1 ? "" : "s"} selected
                   </p>
                 </div>
@@ -1846,21 +1845,21 @@ export default function InvoicesPortalPage() {
                   type="button"
                   onClick={closePaymentFlow}
                   aria-label="Close payment flow"
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[7px] border border-[#444] text-[#b8b8b8] transition-colors hover:border-[#777] hover:text-white"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                 </button>
               )}
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-[25px] sm:py-[24px]">
+            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6 sm:px-6">
               {paymentFlow.stage === "review" && (
-                <div className="space-y-[22px]">
-                  <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                    <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#777]">
+                <div className="space-y-5">
+                  <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4">
+                    <p className="text-[12px] font-semibold uppercase tracking-wider text-slate-500">
                       {paymentCopy?.shortLabel}
                     </p>
-                    <p className="mt-2 text-[15px] leading-5 text-[#d7d7d7]">
+                    <p className="mt-1.5 text-[14px] leading-5 text-slate-700">
                       {paymentCopy?.description}
                     </p>
                   </div>
@@ -1869,17 +1868,17 @@ export default function InvoicesPortalPage() {
                     {paymentInvoices.map((invoice) => (
                       <div
                         key={invoice.id}
-                        className="flex items-center justify-between gap-4 rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3"
+                        className="flex items-center justify-between gap-4 rounded-xl border border-slate-200/80 bg-slate-50/50 p-3"
                       >
                         <div className="min-w-0">
-                          <p className="truncate font-mono text-[15px] font-semibold leading-5 text-white">
+                          <p className="truncate font-mono text-[14px] font-semibold leading-5 text-slate-900">
                             {invoice.id}
                           </p>
-                          <p className="mt-1 truncate text-[14px] leading-4 text-[#858585]">
-                            {invoice.agency} - {invoice.campaign}
+                          <p className="mt-0.5 truncate text-[13px] leading-4 text-slate-500">
+                            {invoice.agency} · {invoice.campaign}
                           </p>
                         </div>
-                        <p className="shrink-0 text-[17px] font-semibold leading-none text-white">
+                        <p className="shrink-0 text-[16px] font-semibold leading-none text-slate-900">
                           {formatMoney(parseMoney(invoice.amount) + parseMoney(invoice.fees))}
                         </p>
                       </div>
@@ -1887,46 +1886,46 @@ export default function InvoicesPortalPage() {
                   </div>
 
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                    <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                      <p className="text-[13px] leading-4 text-[#777]">Subtotal</p>
-                      <p className="mt-2 break-words text-[17px] font-semibold leading-tight text-white">
+                    <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
+                      <p className="text-[12px] leading-4 text-slate-500">Subtotal</p>
+                      <p className="mt-1.5 break-words text-[16px] font-semibold leading-tight text-slate-900">
                         {formatMoney(paymentTotalAmount)}
                       </p>
                     </div>
-                    <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                      <p className="text-[13px] leading-4 text-[#777]">Fees</p>
-                      <p className="mt-2 break-words text-[17px] font-semibold leading-tight text-white">
+                    <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
+                      <p className="text-[12px] leading-4 text-slate-500">Fees</p>
+                      <p className="mt-1.5 break-words text-[16px] font-semibold leading-tight text-slate-900">
                         {formatMoney(paymentTotalTax)}
                       </p>
                     </div>
-                    <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                      <p className="text-[13px] leading-4 text-[#777]">Total</p>
-                      <p className="mt-2 break-words text-[17px] font-semibold leading-tight text-white">
+                    <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
+                      <p className="text-[12px] leading-4 text-slate-500">Total</p>
+                      <p className="mt-1.5 break-words text-[16px] font-semibold leading-tight text-slate-900">
                         {formatMoney(paymentTotalAmount + paymentTotalTax)}
                       </p>
                     </div>
                   </div>
 
                   <div>
-                    <p className="text-[14px] font-semibold leading-4 text-[#8d8d8d]">
+                    <p className="text-[13px] font-semibold leading-4 text-slate-700">
                       Funding Source
                     </p>
-                    <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <div className="mt-2.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                       <button
                         type="button"
                         onClick={() => updatePaymentFundingMethod("ach")}
                         className={cn(
-                          "rounded-[8px] border px-4 py-4 text-left transition-colors",
+                          "rounded-xl border p-4 text-left transition-all",
                           paymentFlow.fundingMethod === "ach"
-                            ? "border-white bg-white text-black"
-                            : "border-[#444] bg-[#050505] text-white hover:border-[#777]"
+                            ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+                            : "border-slate-200 bg-white text-slate-900 hover:border-slate-300 hover:bg-slate-50"
                         )}
                       >
-                        <span className="flex items-center gap-2 text-[15px] font-semibold">
+                        <span className="flex items-center gap-2 text-[14px] font-semibold">
                           <CreditCard className="h-4 w-4" />
                           Primary ACH
                         </span>
-                        <span className={cn("mt-2 block text-[13px]", paymentFlow.fundingMethod === "ach" ? "text-[#333]" : "text-[#777]")}>
+                        <span className={cn("mt-1.5 block text-[12px]", paymentFlow.fundingMethod === "ach" ? "text-slate-300" : "text-slate-500")}>
                           Chase Business Checking ...1234
                         </span>
                       </button>
@@ -1934,17 +1933,17 @@ export default function InvoicesPortalPage() {
                         type="button"
                         onClick={() => updatePaymentFundingMethod("card")}
                         className={cn(
-                          "rounded-[8px] border px-4 py-4 text-left transition-colors",
+                          "rounded-xl border p-4 text-left transition-all",
                           paymentFlow.fundingMethod === "card"
-                            ? "border-white bg-white text-black"
-                            : "border-[#444] bg-[#050505] text-white hover:border-[#777]"
+                            ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+                            : "border-slate-200 bg-white text-slate-900 hover:border-slate-300 hover:bg-slate-50"
                         )}
                       >
-                        <span className="flex items-center gap-2 text-[15px] font-semibold">
+                        <span className="flex items-center gap-2 text-[14px] font-semibold">
                           <CreditCard className="h-4 w-4" />
                           Corporate Card
                         </span>
-                        <span className={cn("mt-2 block text-[13px]", paymentFlow.fundingMethod === "card" ? "text-[#333]" : "text-[#777]")}>
+                        <span className={cn("mt-1.5 block text-[12px]", paymentFlow.fundingMethod === "card" ? "text-slate-300" : "text-slate-500")}>
                           Visa Signature ...8930
                         </span>
                       </button>
@@ -1952,22 +1951,22 @@ export default function InvoicesPortalPage() {
                   </div>
 
                   <div>
-                    <p className="text-[14px] font-semibold leading-4 text-[#8d8d8d]">
+                    <p className="text-[13px] font-semibold leading-4 text-slate-700">
                       Settlement Option
                     </p>
-                    <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <div className="mt-2.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                       <button
                         type="button"
                         onClick={() => updateSettlementSpeed("instant")}
                         className={cn(
-                          "rounded-[8px] border px-4 py-4 text-left transition-colors",
+                          "rounded-xl border p-4 text-left transition-all",
                           paymentFlow.settlementSpeed === "instant"
-                            ? "border-white bg-white text-black"
-                            : "border-[#444] bg-[#050505] text-white hover:border-[#777]"
+                            ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+                            : "border-slate-200 bg-white text-slate-900 hover:border-slate-300 hover:bg-slate-50"
                         )}
                       >
-                        <span className="text-[15px] font-semibold">Instant settlement</span>
-                        <span className={cn("mt-2 block text-[13px]", paymentFlow.settlementSpeed === "instant" ? "text-[#333]" : "text-[#777]")}>
+                        <span className="text-[14px] font-semibold">Instant settlement</span>
+                        <span className={cn("mt-1.5 block text-[12px]", paymentFlow.settlementSpeed === "instant" ? "text-slate-300" : "text-slate-500")}>
                           Demo release in seconds with immediate receipt.
                         </span>
                       </button>
@@ -1975,14 +1974,14 @@ export default function InvoicesPortalPage() {
                         type="button"
                         onClick={() => updateSettlementSpeed("standard")}
                         className={cn(
-                          "rounded-[8px] border px-4 py-4 text-left transition-colors",
+                          "rounded-xl border p-4 text-left transition-all",
                           paymentFlow.settlementSpeed === "standard"
-                            ? "border-white bg-white text-black"
-                            : "border-[#444] bg-[#050505] text-white hover:border-[#777]"
+                            ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+                            : "border-slate-200 bg-white text-slate-900 hover:border-slate-300 hover:bg-slate-50"
                         )}
                       >
-                        <span className="text-[15px] font-semibold">Standard ACH</span>
-                        <span className={cn("mt-2 block text-[13px]", paymentFlow.settlementSpeed === "standard" ? "text-[#333]" : "text-[#777]")}>
+                        <span className="text-[14px] font-semibold">Standard ACH</span>
+                        <span className={cn("mt-1.5 block text-[12px]", paymentFlow.settlementSpeed === "standard" ? "text-slate-300" : "text-slate-500")}>
                           Normal treasury rail with next-day reconciliation.
                         </span>
                       </button>
@@ -1990,19 +1989,19 @@ export default function InvoicesPortalPage() {
                   </div>
 
                   {paymentFlow.mode === "split_pay" && (
-                    <div className="rounded-[8px] border border-[#303030] bg-[#050505] p-4">
-                      <p className="text-[14px] font-semibold text-[#8d8d8d]">Split Preview</p>
-                      <div className="mt-3 space-y-3">
+                    <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4">
+                      <p className="text-[13px] font-semibold text-slate-700">Split Preview</p>
+                      <div className="mt-3 space-y-2.5">
                         {splitPayRecipients.map((recipient) => {
                           const splitAmount = ((paymentTotalAmount + paymentTotalTax) * recipient.percent) / 100;
 
                           return (
                             <div key={recipient.label} className="flex items-center justify-between gap-4 text-[14px]">
                               <div>
-                                <p className="font-semibold text-white">{recipient.label}</p>
-                                <p className="mt-0.5 text-[12px] text-[#777]">{recipient.percent}% allocation</p>
+                                <p className="font-semibold text-slate-900">{recipient.label}</p>
+                                <p className="mt-0.5 text-[12px] text-slate-500">{recipient.percent}% allocation</p>
                               </div>
-                              <p className="font-semibold text-white">{formatMoney(splitAmount)}</p>
+                              <p className="font-semibold text-slate-900">{formatMoney(splitAmount)}</p>
                             </div>
                           );
                         })}
@@ -2010,23 +2009,23 @@ export default function InvoicesPortalPage() {
                     </div>
                   )}
 
-                  <div className="flex items-start gap-3 rounded-[8px] border border-[#333] bg-[#050505] px-4 py-3 text-[13px] leading-5 text-[#9b9b9b]">
-                    <Lock className="mt-0.5 h-4 w-4 shrink-0 text-[#d7d7d7]" />
+                  <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 text-[13px] leading-5 text-slate-600">
+                    <Lock className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
                     {paymentCopy?.title} will move the invoice queue to Processing, run the selected rail, then mark every completed invoice as Paid after reconciliation.
                   </div>
 
-                  <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:justify-end">
+                  <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-end">
                     <button
                       type="button"
                       onClick={closePaymentFlow}
-                      className="h-[42px] rounded-[7px] border border-[#555] bg-[#151515] px-[22px] text-[15px] font-semibold text-white transition-colors hover:border-[#777]"
+                      className="h-[40px] rounded-xl border border-slate-200 bg-white px-5 text-[14px] font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-900"
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
                       onClick={confirmSelectedPayment}
-                      className="inline-flex h-[42px] items-center justify-center gap-2 rounded-[7px] border border-white bg-white px-[22px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+                      className="inline-flex h-[40px] items-center justify-center gap-2 rounded-xl border border-slate-900 bg-slate-900 px-5 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
                     >
                       <AgncyPayLogo imageClassName="h-4" />
                       <span>{paymentCopy?.primaryAction}</span>
@@ -2037,19 +2036,19 @@ export default function InvoicesPortalPage() {
 
               {paymentFlow.stage === "processing" && (
                 <div className="flex min-h-full flex-col items-center justify-center py-6 text-center">
-                  <div className="relative flex h-[78px] w-[78px] items-center justify-center rounded-full border border-[#4d4d4d] bg-[#070707]">
-                    <RefreshCw className="h-9 w-9 animate-spin text-white" />
-                    <Lock className="absolute h-4 w-4 text-[#9b9b9b]" />
+                  <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-slate-200 bg-slate-50">
+                    <RefreshCw className="h-7 w-7 animate-spin text-slate-700" />
+                    <Lock className="absolute h-3.5 w-3.5 text-slate-400" />
                   </div>
 
-                  <h3 className="mt-5 text-[24px] font-semibold leading-none text-white">
+                  <h3 className="mt-5 text-[22px] font-semibold leading-none text-slate-900">
                     Settling {formatMoney(paymentTotalAmount + paymentTotalTax)}
                   </h3>
-                  <p className="mt-3 text-[15px] leading-5 text-[#8f8f8f]">
+                  <p className="mt-2 text-[14px] leading-5 text-slate-500">
                     Keep this window open while AgncyPay runs {paymentCopy?.shortLabel.toLowerCase()} reconciliation.
                   </p>
 
-                  <div className="mt-7 w-full space-y-3 rounded-[8px] border border-[#303030] bg-[#050505] p-4 text-left">
+                  <div className="mt-6 w-full space-y-3 rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-left">
                     {paymentSteps.map((step, index) => {
                       const isDone = index < paymentFlow.activeStep;
                       const isActive = index === paymentFlow.activeStep;
@@ -2059,15 +2058,15 @@ export default function InvoicesPortalPage() {
                           key={step}
                           className={cn(
                             "flex items-center gap-3 text-[14px] transition-colors",
-                            isDone || isActive ? "text-white" : "text-[#595959]"
+                            isDone ? "font-medium text-emerald-600" : isActive ? "font-semibold text-slate-900" : "text-slate-400"
                           )}
                         >
                           {isDone ? (
-                            <CheckCircle2 className="h-4 w-4 shrink-0" />
+                            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
                           ) : isActive ? (
-                            <RefreshCw className="h-4 w-4 shrink-0 animate-spin" />
+                            <RefreshCw className="h-4 w-4 shrink-0 animate-spin text-slate-700" />
                           ) : (
-                            <span className="h-4 w-4 shrink-0 rounded-full border border-[#444]" />
+                            <span className="h-4 w-4 shrink-0 rounded-full border border-slate-300" />
                           )}
                           <span>{step}</span>
                         </div>
@@ -2079,39 +2078,39 @@ export default function InvoicesPortalPage() {
 
               {paymentFlow.stage === "success" && (
                 <div className="flex flex-col items-center py-6 text-center">
-                  <div className="flex h-[78px] w-[78px] items-center justify-center rounded-full border border-white bg-white text-black">
-                    <CheckCircle2 className="h-10 w-10" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-600">
+                    <CheckCircle2 className="h-8 w-8" />
                   </div>
 
-                  <h3 className="mt-5 text-[25px] font-semibold leading-none text-white">
+                  <h3 className="mt-5 text-[22px] font-semibold leading-none text-slate-900">
                     {paymentCopy?.successTitle}
                   </h3>
-                  <p className="mt-3 max-w-[420px] text-[15px] leading-5 text-[#8f8f8f]">
+                  <p className="mt-2 max-w-[420px] text-[14px] leading-5 text-slate-500">
                     Completed invoices are now marked Paid and the transaction reference is ready for demo records.
                   </p>
 
-                  <div className="mt-7 w-full rounded-[8px] border border-[#303030] bg-[#050505] p-4 text-left">
-                    <div className="flex flex-col gap-2 border-b border-[#222] pb-3 sm:flex-row sm:justify-between">
-                      <span className="text-[14px] text-[#777]">Transaction ID</span>
-                      <span className="break-all font-mono text-[14px] font-semibold text-white sm:text-right">
+                  <div className="mt-6 w-full rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-left">
+                    <div className="flex flex-col gap-2 border-b border-slate-200 pb-3 sm:flex-row sm:justify-between">
+                      <span className="text-[13px] text-slate-500">Transaction ID</span>
+                      <span className="break-all font-mono text-[13px] font-semibold text-slate-900 sm:text-right">
                         {paymentFlow.transactionId}
                       </span>
                     </div>
-                    <div className="flex justify-between gap-4 border-b border-[#222] py-3">
-                      <span className="text-[14px] text-[#777]">Invoices Paid</span>
-                      <span className="text-[14px] font-semibold text-white">
+                    <div className="flex justify-between gap-4 border-b border-slate-200 py-3">
+                      <span className="text-[13px] text-slate-500">Invoices Paid</span>
+                      <span className="text-[13px] font-semibold text-slate-900">
                         {paymentInvoices.length}
                       </span>
                     </div>
-                    <div className="flex flex-col gap-2 pt-3 sm:flex-row sm:justify-between">
-                      <span className="text-[14px] text-[#777]">Final Amount</span>
-                      <span className="break-words text-[14px] font-semibold text-white sm:text-right">
+                    <div className="flex flex-col gap-2 border-b border-slate-200 py-3 sm:flex-row sm:justify-between">
+                      <span className="text-[13px] text-slate-500">Final Amount</span>
+                      <span className="break-words text-[14px] font-bold text-slate-900 sm:text-right">
                         {formatMoney(paymentTotalAmount + paymentTotalTax)}
                       </span>
                     </div>
-                    <div className="flex flex-col gap-2 border-t border-[#222] pt-3 sm:flex-row sm:justify-between">
-                      <span className="text-[14px] text-[#777]">Rail</span>
-                      <span className="break-words text-[14px] font-semibold text-white sm:text-right">
+                    <div className="flex flex-col gap-2 pt-3 sm:flex-row sm:justify-between">
+                      <span className="text-[13px] text-slate-500">Rail</span>
+                      <span className="break-words text-[13px] font-semibold text-slate-900 sm:text-right">
                         {paymentFlow.fundingMethod === "ach" ? "Primary ACH" : "Corporate Card"} / {paymentFlow.settlementSpeed === "instant" ? "Instant" : "Standard ACH"}
                       </span>
                     </div>
@@ -2120,7 +2119,7 @@ export default function InvoicesPortalPage() {
                   <button
                     type="button"
                     onClick={closePaymentFlow}
-                    className="mt-7 h-[42px] rounded-[7px] border border-white bg-white px-[26px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+                    className="mt-6 h-[40px] rounded-xl border border-slate-900 bg-slate-900 px-6 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
                   >
                     Back to Invoices
                   </button>
@@ -2131,8 +2130,8 @@ export default function InvoicesPortalPage() {
         </div>
       )}
 
-      <div className="mt-[29px] flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <p className="text-[17px] leading-none text-[#aaa]">
+      <div className="mt-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <p className="text-[14px] leading-none text-slate-500">
           {filteredInvoices.length === 0
             ? `Showing 0 of ${invoiceRows.length} invoices`
             : `Showing ${(safeCurrentPage - 1) * pageSize + 1}-${Math.min(
@@ -2140,23 +2139,23 @@ export default function InvoicesPortalPage() {
                 filteredInvoices.length
               )} of ${invoiceRows.length} invoices`}
         </p>
-        <div className="flex items-center gap-[9px]">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
             disabled={safeCurrentPage === 1}
-            className="h-[40px] rounded-[6px] border border-[#272727] bg-[#070707] px-[16px] text-[17px] font-semibold text-white transition-colors hover:border-[#555] disabled:cursor-not-allowed disabled:opacity-45"
+            className="h-9 rounded-xl border border-slate-200 bg-white px-4 text-[13px] font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Previous
           </button>
-          <span className="min-w-[64px] text-center text-[15px] font-semibold text-[#aaa]">
-            {safeCurrentPage}/{pageCount}
+          <span className="min-w-[64px] text-center text-[13px] font-semibold text-slate-600">
+            {safeCurrentPage} / {pageCount}
           </span>
           <button
             type="button"
             onClick={() => setCurrentPage((page) => Math.min(pageCount, page + 1))}
             disabled={safeCurrentPage === pageCount}
-            className="h-[40px] rounded-[6px] border border-[#272727] bg-[#070707] px-[16px] text-[17px] font-semibold text-white transition-colors hover:border-[#555] disabled:cursor-not-allowed disabled:opacity-45"
+            className="h-9 rounded-xl border border-slate-200 bg-white px-4 text-[13px] font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Next
           </button>

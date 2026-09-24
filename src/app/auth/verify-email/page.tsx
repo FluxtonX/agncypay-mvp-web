@@ -57,22 +57,30 @@ export default function VerifyEmailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F8FAFC] flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-70" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none" />
+
       <div className="w-full max-w-md space-y-6 z-10">
         {/* Logo */}
         <div className="text-center space-y-2">
-          <Link href="/" className="inline-flex items-center">
-            <img src="/agncypayLogo.png" alt="AgncyPay" className="h-16 w-auto object-contain" />
+          <Link href="/" className="inline-flex items-center hover:opacity-90 transition-opacity">
+            <img
+              src="/agncypaybrand.png"
+              alt="AgncyPay"
+              className="h-10 w-auto object-contain [filter:invert(1)_brightness(0.15)] mx-auto"
+            />
           </Link>
-          <h2 className="text-xl font-bold tracking-tight text-white mt-4">
+          <h2 className="text-2xl font-black tracking-tight text-slate-900 mt-4">
             Verify your email address
           </h2>
-          <p className="text-xs text-[#8f8f8f]">
-            Enter the 6-digit verification code dispatched to <span className="font-semibold text-white">{state.user?.email || "your email"}</span>.
+          <p className="text-sm text-slate-500">
+            Enter the 6-digit confirmation code dispatched to <span className="font-semibold text-slate-800">{state.user?.email || "your email"}</span>.
           </p>
         </div>
 
-        <Card className="border-[#1F1F1F] p-6 space-y-5 bg-[#0D0D0D]">
+        <Card className="border-slate-200/90 p-8 space-y-6 bg-white/95 backdrop-blur-xl shadow-xl shadow-slate-200/50 rounded-3xl">
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               id="code"
@@ -90,17 +98,17 @@ export default function VerifyEmailPage() {
             />
 
             {/* Warning block about enterprise email verification */}
-            <div className="flex items-start gap-2 rounded-lg border border-[#444] bg-black p-3 text-[11px] leading-relaxed text-[#8f8f8f]">
-              <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-white" />
+            <div className="flex items-start gap-2.5 rounded-xl border border-blue-200/80 bg-blue-50/60 p-3.5 text-xs leading-relaxed text-slate-600">
+              <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-blue-600" />
               <div>
-                <span className="font-semibold text-white">Security Tip:</span> Email verification protects your Agncy identity before {workspaceType === "talent_agency" || workspaceType === "talent_independent" ? "KYC" : "KYB"} starts.
+                <span className="font-bold text-slate-900">Security Requirement:</span> Email verification protects your Agncy identity before {workspaceType === "talent_agency" || workspaceType === "talent_independent" ? "KYC" : "KYB"} starts.
               </div>
             </div>
 
             <Button
               type="submit"
               variant="primary"
-              className="w-full mt-2"
+              className="w-full mt-3 h-11 text-xs font-bold rounded-xl shadow-sm"
               isLoading={isLoading}
             >
               Verify & Complete Registration
@@ -108,28 +116,28 @@ export default function VerifyEmailPage() {
           </form>
 
           {/* Resend actions */}
-          <div className="flex items-center justify-between pt-1 text-xs text-[#8f8f8f]">
+          <div className="flex items-center justify-between pt-1 text-xs text-slate-500 font-medium">
             <span>Didn&apos;t receive code?</span>
             <button
               onClick={handleResend}
-              className="cursor-pointer font-semibold text-white hover:underline"
+              className="cursor-pointer font-bold text-slate-900 hover:underline"
             >
               Resend Code
             </button>
           </div>
 
           <div className="relative flex py-1 items-center text-xs">
-            <div className="flex-grow border-t border-[#1F1F1F]" />
-            <span className="mx-4 flex-shrink text-[#777]">SIMULATOR HINT</span>
-            <div className="flex-grow border-t border-[#1F1F1F]" />
+            <div className="flex-grow border-t border-slate-200" />
+            <span className="mx-4 flex-shrink text-[10px] font-bold tracking-wider text-slate-400 uppercase">Simulator Quick-Fill</span>
+            <div className="flex-grow border-t border-slate-200" />
           </div>
 
           <button
             type="button"
             onClick={() => setCode("123456")}
-            className="flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-dashed border-[#444] p-2 text-xs font-semibold text-[#8f8f8f] transition-colors hover:border-[#777] hover:text-white"
+            className="flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-dashed border-slate-300 bg-slate-50/60 p-2.5 text-xs font-semibold text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-900 hover:bg-slate-50"
           >
-            Auto-fill mock code: <span className="font-bold text-white">123456</span>
+            Auto-fill mock code: <span className="font-bold text-slate-900 ml-1">123456</span>
           </button>
         </Card>
       </div>

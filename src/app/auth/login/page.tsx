@@ -3,11 +3,12 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, Loader2, ArrowRight, Building2, Briefcase } from "lucide-react";
 import { useApp } from "../../../context/AppContext";
 import { apiLogin } from "../../../lib/api/auth";
 
-const DEMO_EMAIL = "martin.safi@adidas.com";
+const DEMO_BRAND_EMAIL = "martin.safi@adidas.com";
+const DEMO_AGENCY_EMAIL = "billing@creativeco.com";
 const DEMO_PASSWORD = "password123";
 const isGmailAddress = (value: string) => value.trim().toLowerCase().endsWith("@gmail.com");
 
@@ -31,8 +32,9 @@ export default function LoginPage() {
     setSafeNextPath(nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//") ? nextPath : null);
   }, []);
 
-  const handlePrefillAdidas = () => {
-    setEmail(DEMO_EMAIL);
+  const handlePrefill = (type: "brand" | "agency") => {
+    setRoleType(type);
+    setEmail(type === "brand" ? DEMO_BRAND_EMAIL : DEMO_AGENCY_EMAIL);
     setPassword(DEMO_PASSWORD);
     setErrors({});
     setShowDemoHelper(false);
@@ -94,128 +96,125 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#000000] text-[#F8FAFC] font-sans relative overflow-hidden flex flex-col items-center justify-start pt-16 sm:pt-24 pb-12 px-4 transition-colors duration-200">
-      
-      {/* Strict CSS overrides to force input elements to stay dark `#0B0B0B` and handle browser autofills */}
-      <style dangerouslySetInnerHTML={{__html: `
-        #email, #password {
-          background-color: #0B0B0B !important;
-          border-color: #262626 !important;
-          color: #F8FAFC !important;
-        }
-        #email:focus, #password:focus {
-          border-color: rgba(255, 255, 255, 0.4) !important;
-        }
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover,
-        input:-webkit-autofill:focus,
-        input:-webkit-autofill:active {
-          -webkit-box-shadow: 0 0 0 1000px #0B0B0B inset !important;
-          -webkit-text-fill-color: #F8FAFC !important;
-          border-color: #3A3A3A !important;
-          transition: background-color 5000s ease-in-out 0s;
-        }
-      `}} />
+    <div className="min-h-screen w-full bg-slate-50 text-slate-900 font-sans relative overflow-hidden flex flex-col items-center justify-center py-12 px-4 selection:bg-slate-900 selection:text-white">
+      {/* Background Subtle Grid Texture */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none opacity-70" />
 
-      {/* Abstract Background Effects */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[25%] w-[50%] h-[50%] rounded-full bg-white/[0.03] blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[10%] w-[40%] h-[40%] rounded-full bg-white/[0.02] blur-[100px]" />
-      </div>
-
-      {/* Floating Demo Helper for verification/testing (hidden from mock layout) */}
-      <div className="fixed top-6 right-6 z-50">
+      {/* Floating Demo Helper for verification/testing */}
+      <div className="fixed top-5 right-5 z-50">
         <button
           type="button"
           onClick={() => setShowDemoHelper(!showDemoHelper)}
-          className="px-4 py-2 bg-[#121212]/80 backdrop-blur-md border border-white/10 hover:bg-white/10 text-xs font-medium text-[#A1A1AA] hover:text-white rounded-full transition-all shadow-2xl cursor-pointer"
+          className="px-4 py-2 bg-white/95 backdrop-blur-md border border-slate-200 hover:bg-white text-xs font-bold text-slate-800 hover:text-slate-950 rounded-full transition-all shadow-sm hover:shadow cursor-pointer"
         >
           {showDemoHelper ? "Hide Demo" : "Demo Credentials"}
         </button>
 
         {showDemoHelper && (
-          <div className="absolute right-0 mt-3 w-72 bg-[#121212]/95 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-2xl z-50 text-xs">
-            <h4 className="font-semibold text-white mb-3 text-sm">Demo Access</h4>
-            <div className="space-y-2 mb-4">
-              <p className="flex justify-between text-[#8E8E93]">
-                <span>Email:</span> <span className="text-white font-mono bg-white/5 px-1.5 rounded">{DEMO_EMAIL}</span>
-              </p>
-              <p className="flex justify-between text-[#8E8E93]">
-                <span>Password:</span> <span className="text-white font-mono bg-white/5 px-1.5 rounded">{DEMO_PASSWORD}</span>
-              </p>
+          <div className="absolute right-0 mt-2.5 w-80 bg-white border border-slate-200 rounded-2xl p-5 shadow-2xl z-50 text-xs animate-in fade-in zoom-in-95 duration-150">
+            <h4 className="font-bold text-slate-900 mb-3 text-sm">Demo Accounts</h4>
+            
+            <div className="space-y-3 mb-4">
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                <p className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                  <Building2 className="w-3.5 h-3.5 text-slate-700" /> Brand Demo
+                </p>
+                <p className="text-slate-600 font-mono text-[11px] truncate">{DEMO_BRAND_EMAIL}</p>
+                <p className="text-slate-500 font-mono text-[10px] mt-0.5">Password: {DEMO_PASSWORD}</p>
+                <button
+                  type="button"
+                  onClick={() => handlePrefill("brand")}
+                  className="mt-2 w-full py-1.5 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors cursor-pointer text-[11px]"
+                  style={{ color: "#FFFFFF" }}
+                >
+                  Prefill Brand
+                </button>
+              </div>
+
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                <p className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                  <Briefcase className="w-3.5 h-3.5 text-slate-700" /> Agency Demo
+                </p>
+                <p className="text-slate-600 font-mono text-[11px] truncate">{DEMO_AGENCY_EMAIL}</p>
+                <p className="text-slate-500 font-mono text-[10px] mt-0.5">Password: {DEMO_PASSWORD}</p>
+                <button
+                  type="button"
+                  onClick={() => handlePrefill("agency")}
+                  className="mt-2 w-full py-1.5 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors cursor-pointer text-[11px]"
+                  style={{ color: "#FFFFFF" }}
+                >
+                  Prefill Agency
+                </button>
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={handlePrefillAdidas}
-              className="w-full py-2.5 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
-            >
-              Prefill Form
-            </button>
           </div>
         )}
       </div>
 
-      {/* Logo Header */}
-      <div className="mb-10 text-center z-10">
-        <Link href="/" className="inline-block transition-transform hover:scale-105 duration-300">
-          <img 
-            src="/agncypayLogo.png" 
-            alt="AgncyPay" 
-            style={{ width: "240px", height: "auto", objectFit: "contain" }} 
-          />
-        </Link>
-      </div>
+      <div className="w-full max-w-[540px] sm:max-w-[560px] z-10 space-y-6">
+        {/* Logo Header */}
+        <div className="text-center">
+          <Link href="/" className="inline-block transition-transform hover:scale-105 duration-200">
+            <img 
+              src="/agncypaybrand-dark.png" 
+              alt="AgncyPay" 
+              className="h-11 sm:h-12 w-auto object-contain mx-auto" 
+            />
+          </Link>
+        </div>
 
-      {/* Auth Form Card - Placed in Center Top */}
-      <div className="w-full max-w-[460px] z-10">
-        <div className="bg-[#0A0A0A]/90 backdrop-blur-2xl border border-white/10 rounded-[28px] p-8 sm:p-10 shadow-[0_0_80px_rgba(255,255,255,0.03)] relative overflow-hidden">
-          
-          {/* Glossy top highlight */}
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-
-          <div className="mb-8 text-center">
-            <h2 className="text-2xl font-bold text-white tracking-tight">
+        {/* Auth Form Card */}
+        <div className="bg-white border border-slate-200/90 rounded-[28px] sm:rounded-3xl p-8 sm:p-11 md:p-12 shadow-xl shadow-slate-200/60 relative">
+          <div className="mb-7 text-center">
+            <h2 className="text-3xl sm:text-[34px] font-black text-slate-900 tracking-tight leading-tight">
               Welcome Back
             </h2>
-            <p className="text-[#8E8E93] text-xs mt-1.5 font-normal">
-              Sign in to your AgncyPay account
+            <p className="text-slate-500 text-sm sm:text-base mt-2 font-medium">
+              Sign in to your AgncyPay {roleType === "brand" ? "Brand" : "Agency"} account
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Account Type Segmented Control */}
             <div className="space-y-2">
-              <label className="text-[12px] font-semibold text-[#A1A1AA]">Account Type</label>
-              <div className="p-1.5 bg-[#050505] border border-white/10 rounded-2xl flex items-center justify-between gap-1">
+              <label className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider block">
+                Account Type
+              </label>
+              <div className="p-1.5 bg-slate-100 border border-slate-200/80 rounded-2xl flex items-center justify-between gap-2">
                 {[
-                  { id: "brand", label: "Brand" },
-                  { id: "agency", label: "Agency" },
-                ].map((role) => (
-                  <label
-                    key={role.id}
-                    className={`flex-1 flex justify-center py-2.5 text-xs font-semibold rounded-xl transition-all duration-300 cursor-pointer select-none ${
-                      roleType === role.id
-                        ? "bg-white text-black shadow-lg scale-[1.02]"
-                        : "text-[#8E8E93] hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="roleType"
-                      value={role.id}
-                      checked={roleType === role.id}
-                      onChange={() => setRoleType(role.id as "brand" | "agency")}
-                      className="hidden"
-                    />
-                    {role.label}
-                  </label>
-                ))}
+                  { id: "brand", label: "Brand", icon: Building2 },
+                  { id: "agency", label: "Agency", icon: Briefcase },
+                ].map((role) => {
+                  const Icon = role.icon;
+                  const isSelected = roleType === role.id;
+                  return (
+                    <label
+                      key={role.id}
+                      className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm sm:text-base font-bold rounded-xl transition-all duration-200 cursor-pointer select-none ${
+                        isSelected
+                          ? "bg-white text-slate-900 shadow-sm border border-slate-200/80"
+                          : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="roleType"
+                        value={role.id}
+                        checked={isSelected}
+                        onChange={() => setRoleType(role.id as "brand" | "agency")}
+                        className="hidden"
+                      />
+                      <Icon className={`w-4 h-4 ${isSelected ? "text-slate-900" : "text-slate-500"}`} />
+                      <span>{role.label}</span>
+                    </label>
+                  );
+                })}
               </div>
             </div>
 
             {/* Email Address */}
             <div className="space-y-2">
-              <label htmlFor="email" className="text-[12px] font-semibold text-[#A1A1AA]">
+              <label htmlFor="email" className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider block">
                 Email Address
               </label>
               <div className="relative group">
@@ -227,13 +226,13 @@ export default function LoginPage() {
                     setEmail(e.target.value);
                     if (errors.email) setErrors({});
                   }}
-                  className={`w-full bg-[#0B0B0B] border ${errors.email ? "border-[#ff453a]/50" : "border-[#262626] group-hover:border-white/20"} focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] transition-all outline-none`}
-                  placeholder="you@company.com"
+                  className={`h-13 sm:h-14 w-full bg-white border ${errors.email ? "border-rose-400 focus:border-rose-500 focus:ring-rose-500/10" : "border-slate-200 focus:border-slate-900 focus:ring-slate-900/10"} focus:ring-2 rounded-2xl px-4 sm:px-5 text-base text-slate-900 placeholder:text-slate-400 font-medium transition-all outline-none shadow-2xs`}
+                  placeholder={roleType === "brand" ? "you@brandcompany.com" : "you@agency.com"}
                 />
               </div>
               {errors.email && (
-                <span className="text-xs text-[#ff453a] flex items-center gap-1 mt-1">
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <span className="text-xs sm:text-sm text-rose-600 font-semibold flex items-center gap-1.5 mt-1.5">
+                  <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                   {errors.email}
                 </span>
               )}
@@ -242,12 +241,12 @@ export default function LoginPage() {
             {/* Password */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label htmlFor="password" className="text-[12px] font-semibold text-[#A1A1AA]">
+                <label htmlFor="password" className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider block">
                   Password
                 </label>
                 <Link
                   href="/auth/forgot-password"
-                  className="text-xs font-semibold text-[#8E8E93] hover:text-white transition-colors"
+                  className="text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   Forgot password?
                 </Link>
@@ -261,49 +260,45 @@ export default function LoginPage() {
                     setPassword(e.target.value);
                     if (errors.password) setErrors({});
                   }}
-                  className={`w-full bg-[#0B0B0B] border ${errors.password ? "border-[#ff453a]/50" : "border-[#262626] group-hover:border-white/20"} pr-12 focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] transition-all outline-none`}
+                  className={`h-13 sm:h-14 w-full bg-white border ${errors.password ? "border-rose-400 focus:border-rose-500 focus:ring-rose-500/10" : "border-slate-200 focus:border-slate-900 focus:ring-slate-900/10"} pr-12 focus:ring-2 rounded-2xl px-4 sm:px-5 text-base text-slate-900 placeholder:text-slate-400 font-medium transition-all outline-none shadow-2xs`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8E8E93] hover:text-white transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer p-1"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5 text-slate-400" />}
                 </button>
               </div>
               {errors.password && (
-                <span className="text-xs text-[#ff453a] flex items-center gap-1 mt-1">
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <span className="text-xs sm:text-sm text-rose-600 font-semibold flex items-center gap-1.5 mt-1.5">
+                  <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                   {errors.password}
                 </span>
               )}
             </div>
 
-            {/* Remember Me Checkbox with White Border for High Visibility */}
+            {/* Remember Me Checkbox */}
             <div className="flex items-center gap-3 pt-1">
-              <div className="relative flex items-center">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  checked={rememberMe}
-                  onChange={() => setRememberMe(!rememberMe)}
-                  className="w-4 h-4 rounded border border-white/30 bg-[#0B0B0B] checked:bg-white checked:border-white appearance-none cursor-pointer transition-colors peer hover:border-white/60 focus:outline-none"
-                />
-                <svg className="absolute w-3 h-3 text-black pointer-events-none left-0.5 top-0.5 opacity-0 peer-checked:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
+              <input
+                type="checkbox"
+                id="remember"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+                className="w-5 h-5 rounded-md border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer accent-slate-900"
+              />
               <label
                 htmlFor="remember"
-                className="text-xs text-[#8E8E93] cursor-pointer hover:text-white transition-colors select-none font-medium"
+                className="text-sm text-slate-700 cursor-pointer hover:text-slate-900 transition-colors select-none font-medium"
               >
                 Remember me for 30 days
               </label>
             </div>
 
             {errors.submit ? (
-              <div className="rounded-lg border border-red-950 bg-red-950/30 p-3 text-xs text-red-200">
+              <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700 font-semibold">
                 {errors.submit}
               </div>
             ) : null}
@@ -312,17 +307,18 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 h-12 bg-white hover:bg-neutral-200 active:scale-[0.98] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all duration-200 cursor-pointer mt-6 disabled:opacity-50 disabled:active:scale-100 shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+              style={{ color: "#FFFFFF" }}
+              className="force-white-text !text-white w-full flex items-center justify-center gap-2.5 h-13 sm:h-14 bg-slate-900 hover:bg-slate-800 active:scale-[0.99] font-bold text-base sm:text-lg rounded-2xl transition-all duration-150 cursor-pointer mt-6 disabled:opacity-50 disabled:active:scale-100 shadow-md shadow-slate-900/10"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="h-4.5 w-4.5 animate-spin" />
-                  <span>Authenticating...</span>
+                  <Loader2 className="h-5 w-5 animate-spin !text-white" style={{ color: "#FFFFFF" }} />
+                  <span style={{ color: "#FFFFFF" }} className="!text-white font-bold">Authenticating...</span>
                 </>
               ) : (
                 <>
-                  <span>Sign In</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span style={{ color: "#FFFFFF" }} className="!text-white font-bold">Sign In</span>
+                  <ArrowRight className="w-5 h-5 !text-white" style={{ color: "#FFFFFF" }} />
                 </>
               )}
             </button>
@@ -330,22 +326,19 @@ export default function LoginPage() {
         </div>
 
         {/* Footer Elements */}
-        <div className="mt-8 space-y-6 text-center">
-          <div className="text-xs text-[#8E8E93]">
+        <div className="space-y-4 text-center">
+          <div className="text-sm text-slate-600 font-medium">
             Don't have an account?{" "}
-            <Link href="/auth/register" className="text-white hover:text-neutral-300 font-bold ml-1 transition-colors">
+            <Link href="/auth/register" className="text-slate-900 hover:underline font-bold ml-1 transition-colors">
               Sign up
             </Link>
           </div>
 
-          <div className="flex flex-col items-center gap-3 text-[#52525B]">
-            <div className="w-12 h-[1px] bg-white/10"></div>
-            <div className="flex items-center gap-2 text-[10px] font-bold tracking-wider uppercase">
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-              Bank-Level Security
-            </div>
+          <div className="flex items-center justify-center gap-1.5 text-slate-500 text-xs font-bold tracking-wider uppercase">
+            <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span>Bank-Level Security</span>
           </div>
         </div>
       </div>

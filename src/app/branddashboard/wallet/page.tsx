@@ -247,50 +247,50 @@ export default function WalletDashboardPage() {
       <div className={`absolute bottom-10 right-10 w-[400px] h-[400px] rounded-full blur-[100px] pointer-events-none ${isLightTheme ? "bg-[#4B6BFB]/[0.06]" : "bg-[#4B6BFB]/[0.03]"}`} />
 
       {/* Top Header Bar */}
-      <header className={`border-b sticky top-0 z-40 px-6 py-4 backdrop-blur-md transition-colors ${isLightTheme ? "border-black/10 bg-white/80" : "border-white/10 bg-black/60"}`}>
+      <header className="border-b border-slate-200/80 sticky top-0 z-40 px-6 py-3.5 backdrop-blur-md bg-white/95">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
-              <Link href="/" className="flex items-center gap-2 cursor-pointer">
+              <Link href="/branddashboard" className="flex items-center gap-2 cursor-pointer hover:opacity-85 transition-opacity">
                 <img
                   src="/agncypaybrand.png"
                   alt="AgncyPay"
-                  className="h-10 w-auto object-contain scale-[1.3] origin-left transition-transform"
+                  className={`h-10 w-auto object-contain scale-[1.3] origin-left transition-transform ${isLightTheme ? "[filter:invert(1)_brightness(0.15)]" : ""}`}
                 />
               </Link>
             </div>
-            <span className={`h-4 w-[1px] hidden md:block ${isLightTheme ? "bg-black/20" : "bg-white/20"}`} />
-            <div className={`hidden md:flex items-center gap-2 px-3 py-1 rounded-full border text-[11px] font-bold uppercase tracking-wider ${isLightTheme ? "bg-black/5 border-black/10 text-[#0F172A]" : "bg-white/10 border-white/20 text-white"}`}>
-              <Building2 className={`h-3 w-3 ${isLightTheme ? "text-[#0F172A]" : "text-white"}`} />
+            <span className="h-4 w-[1px] hidden md:block bg-slate-200" />
+            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border border-slate-200 bg-slate-100/70 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <Building2 className="h-3.5 w-3.5 text-slate-700" />
               Brand Portal
             </div>
           </div>
 
-          {/* Bilt-Style Navigation Bar */}
-          <nav className={`hidden lg:flex items-center gap-1 p-1 rounded-full border ${isLightTheme ? "bg-black/[0.05] border-black/10" : "bg-white/[0.05] border-white/20"}`}>
+          {/* Navigation Bar */}
+          <nav className="hidden lg:flex items-center gap-1.5 p-1 rounded-2xl border border-slate-200 bg-slate-100/70">
             <button 
               onClick={() => router.push("/branddashboard")}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${isLightTheme ? "text-[#475569] hover:text-[#0F172A] hover:bg-black/5" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"}`}
+              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
             >
               Home
             </button>
             <button 
               onClick={() => router.push("/branddashboard/invoices")}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${isLightTheme ? "text-[#475569] hover:text-[#0F172A] hover:bg-black/5" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"}`}
+              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
             >
               Payments
             </button>
             {workspaceType !== "brand" && (
               <button 
                 onClick={() => router.push("/branddashboard/nodes")}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${isLightTheme ? "text-[#475569] hover:text-[#0F172A] hover:bg-black/5" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"}`}
+                className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
               >
                 Payout Split Nodes
               </button>
             )}
             <button 
               onClick={() => router.push("/branddashboard/wallet")}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold shadow-sm border transition-all cursor-pointer flex items-center gap-1.5 ${isLightTheme ? "bg-[#0F172A] text-white border-black/10 force-white-text" : "bg-white text-black border-white/20"}`}
+              className="px-4 py-1.5 rounded-xl text-xs font-bold shadow-xs border border-slate-900 bg-slate-900 text-white transition-all cursor-pointer flex items-center gap-1.5"
             >
               <WalletIcon className="w-3.5 h-3.5" />
               Wallet
@@ -301,16 +301,16 @@ export default function WalletDashboardPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={toggleTheme}
-              className={`p-2 rounded-full transition-colors cursor-pointer ${isLightTheme ? "text-[#0F172A] hover:bg-black/5" : "text-neutral-400 hover:text-white hover:bg-white/5"}`}
+              className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               title="Toggle Theme"
             >
               {isLightTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </button>
-            <div className="flex items-center gap-2">
-              <div className={`h-8 w-8 rounded-full border flex items-center justify-center font-bold text-xs ${isLightTheme ? "bg-black/5 border-black/10 text-black" : "bg-white/[0.05] border-white/20 text-white"}`}>
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-full border border-slate-200 bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-800 shadow-2xs">
                 {state.user?.fullName ? state.user.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "AD"}
               </div>
-              <span className={`text-xs font-bold hidden sm:inline ${isLightTheme ? "text-black" : "text-white"}`}>
+              <span className="text-xs font-bold hidden sm:inline text-slate-900">
                 {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Adidas Corporate"}
               </span>
             </div>
@@ -318,37 +318,34 @@ export default function WalletDashboardPage() {
         </div>
       </header>
 
-      {/* Main Body Content - Bilt Wallet Replica */}
+      {/* Main Body Content */}
       <div className="max-w-7xl mx-auto px-6 py-10 flex-1 w-full">
         
         {/* Title & Toggle Bar */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h1 className={`text-2xl md:text-3xl font-black tracking-tight flex items-center gap-2.5 ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>
+            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight flex items-center gap-2.5 text-slate-900">
               Your Wallet
-              <span className="px-2.5 py-1 rounded-full text-[11px] font-mono font-bold bg-white/10 light:bg-black/5 text-[#70ff9e] light:text-[#059669] border border-white/15 light:border-black/10">
+              <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                 {officialWalletId}
               </span>
             </h1>
-            <p className={`text-xs font-medium mt-1 ${isLightTheme ? "text-[#475569]" : "text-neutral-400"}`}>
+            <p className="text-xs font-medium mt-1 text-slate-500">
               Manage commercial cards, treasury balances, and settlement bank accounts for Wallet ID {officialWalletId}.
             </p>
-
           </div>
 
-          {/* Bilt Pill Toggle for Cards | Accounts */}
-          <div className={`p-1.5 rounded-full flex items-center gap-1 shadow-md border ${isLightTheme ? "bg-slate-200 border-slate-300" : "bg-[#111111] border-white/10"}`}>
+          {/* Pill Toggle for Cards | Accounts */}
+          <div className="p-1 rounded-2xl flex items-center gap-1 shadow-xs border border-slate-200 bg-slate-100/70">
             <button
               onClick={() => {
                 setActiveTab("cards");
                 setSelectedItemId("add");
               }}
-              className={`px-4 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-2 transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
                 activeTab === "cards"
-                  ? "bg-white text-black shadow-md scale-[1.02]"
-                  : isLightTheme
-                    ? "text-slate-600 hover:text-black bg-transparent"
-                    : "text-neutral-400 hover:text-white bg-transparent"
+                  ? "bg-slate-900 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900 bg-transparent hover:bg-white/60"
               }`}
             >
               <CreditCard className="w-3.5 h-3.5" />
@@ -359,12 +356,10 @@ export default function WalletDashboardPage() {
                 setActiveTab("accounts");
                 setSelectedItemId("add");
               }}
-              className={`px-4 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-2 transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
                 activeTab === "accounts"
-                  ? "bg-white text-black shadow-md scale-[1.02]"
-                  : isLightTheme
-                    ? "text-slate-600 hover:text-black bg-transparent"
-                    : "text-neutral-400 hover:text-white bg-transparent"
+                  ? "bg-slate-900 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900 bg-transparent hover:bg-white/60"
               }`}
             >
               <Landmark className="w-3.5 h-3.5" />

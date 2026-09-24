@@ -1004,51 +1004,51 @@ export default function BrandDashboardPage() {
       {/* Background radial gradient decoration */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-white/[0.01] rounded-full blur-[100px] pointer-events-none" />
 
-      {/* Header - Adaptive Theme */}
-      <header className={`border-b sticky top-0 z-50 shadow-sm backdrop-blur transition-colors ${isLightTheme ? "border-black/10 bg-white/90" : "border-white/25 bg-background/90"}`}>
+      {/* Header - Modern Clean Light Interface */}
+      <header className="border-b border-slate-200/80 sticky top-0 z-50 shadow-xs backdrop-blur-md bg-white/95">
         <div className="max-w-[1520px] mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <div className="relative flex items-center mr-12">
-              <Link href="/branddashboard" className="flex items-center cursor-pointer z-50 hover:opacity-80 transition-opacity" aria-label="AgncyPay home">
+            <div className="relative flex items-center mr-10">
+              <Link href="/branddashboard" className="flex items-center cursor-pointer z-50 hover:opacity-85 transition-opacity" aria-label="AgncyPay home">
                 <img
                   src="/agncypaybrand.png"
                   alt="AgncyPay"
-                  className="h-12 w-auto object-contain scale-[1.56] origin-left transition-transform"
+                  className={`h-11 w-auto object-contain scale-[1.5] origin-left transition-transform ${isLightTheme ? "[filter:invert(1)_brightness(0.15)]" : ""}`}
                 />
               </Link>
             </div>
-            <span className={`h-4 w-[1px] hidden md:block ${isLightTheme ? "bg-black/20" : "bg-white/20"}`} />
-            <div className={`hidden md:flex items-center gap-2 px-3 py-1 rounded-full border text-[11px] font-bold uppercase tracking-wider ${isLightTheme ? "bg-black/5 border-black/10 text-[#0F172A]" : "bg-white/10 border-white/20 text-white"}`}>
-              <Building2 className={`h-3 w-3 ${isLightTheme ? "text-[#0F172A]" : "text-white"}`} />
+            <span className="h-4 w-[1px] hidden md:block bg-slate-200" />
+            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border border-slate-200 bg-slate-100/70 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <Building2 className="h-3.5 w-3.5 text-slate-700" />
               Brand Portal
             </div>
           </div>
 
-          {/* Center Navigation Tabs (Bilt Style) */}
-          <nav className={`hidden lg:flex items-center gap-1 p-1 rounded-full border transition-colors ${isLightTheme ? "bg-black/5 border-black/10" : "bg-white/[0.03] border-white/20"}`}>
+          {/* Center Navigation Tabs */}
+          <nav className="hidden lg:flex items-center gap-1.5 p-1 rounded-2xl border border-slate-200 bg-slate-100/70">
             <button 
               onClick={() => router.push("/branddashboard")}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold shadow-sm border transition-all cursor-pointer ${isLightTheme ? "bg-[#0F172A] text-white border-black/10 force-white-text" : "bg-white text-black border-white/20"}`}
+              className="px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-xs transition-all cursor-pointer"
             >
               Home
             </button>
             <button 
               onClick={() => router.push("/branddashboard/invoices")}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${isLightTheme ? "text-[#475569] hover:text-[#0F172A] hover:bg-black/5" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"}`}
+              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
             >
               {workspaceType === "brand" ? "Payments" : "Sent Invoices"}
             </button>
             {workspaceType !== "brand" && (
               <button 
                 onClick={() => router.push("/branddashboard/nodes")}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${isLightTheme ? "text-[#475569] hover:text-[#0F172A] hover:bg-black/5" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"}`}
+                className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
               >
                 Payout Split Nodes
               </button>
             )}
             <button 
               onClick={() => router.push("/branddashboard/wallet")}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${isLightTheme ? "text-[#475569] hover:text-[#0F172A] hover:bg-black/5" : "text-[#8f8f8f] hover:text-white hover:bg-white/5"}`}
+              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer flex items-center gap-1.5"
             >
               <Wallet className="w-3.5 h-3.5" />
               Wallet
@@ -1060,34 +1060,34 @@ export default function BrandDashboardPage() {
               <>
                 <button
                   onClick={() => router.push("/agencydashboard/agencybanking")}
-                  className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-600/90 hover:bg-emerald-600 text-white shadow-sm hover:shadow-emerald-500/20 border border-emerald-400/30 transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs border border-emerald-500/30 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
-                  <Landmark className="h-3.5 w-3.5 text-emerald-200" />
+                  <Landmark className="h-3.5 w-3.5 text-emerald-100" />
                   Agency Banking
                 </button>
-                <div className="h-4 w-[1px] bg-white/20" />
+                <div className="h-4 w-[1px] bg-slate-200" />
                 <button
                   onClick={() => router.push("/dashboard")}
-                  className="text-xs font-semibold text-[#8f8f8f] hover:text-white transition-colors flex items-center gap-1"
+                  className="text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1 cursor-pointer"
                 >
                   <ArrowLeft className="h-3.5 w-3.5" />
                   Talent View
                 </button>
-                <div className="h-4 w-[1px] bg-white/20" />
+                <div className="h-4 w-[1px] bg-slate-200" />
               </>
             )}
-            <div className="flex items-center gap-2">
-              <div className={`h-8 w-8 rounded-full border flex items-center justify-center font-bold text-xs ${isLightTheme ? "bg-black/5 border-black/10 text-black" : "bg-white/[0.05] border-white/20 text-white"}`}>
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-full border border-slate-200 bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-800 shadow-2xs">
                 {state.user?.fullName ? state.user.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "AD"}
               </div>
-              <span className={`text-xs font-bold hidden sm:inline ${isLightTheme ? "text-[#0F172A]" : "text-[#E5E5EA]"}`}>
+              <span className="text-xs font-bold hidden sm:inline text-slate-900">
                 {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Adidas Corporate"}
               </span>
             </div>
 
             <button
               onClick={toggleTheme}
-              className={`p-2 transition-colors cursor-pointer ${isLightTheme ? "text-[#0F172A] hover:text-black" : "text-neutral-400 hover:text-white"}`}
+              className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               title="Toggle Theme"
             >
               {isLightTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
@@ -1095,7 +1095,7 @@ export default function BrandDashboardPage() {
 
             <button
               onClick={handleLogout}
-              className={`p-2 transition-colors ${isLightTheme ? "text-[#0F172A] hover:text-black" : "text-neutral-400 hover:text-white"}`}
+              className="p-2 text-slate-500 hover:text-red-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               title="Log Out"
             >
               <LogOut className="h-4 w-4" />
@@ -1105,31 +1105,31 @@ export default function BrandDashboardPage() {
       </header>
 
       {/* Hero Header Space */}
-      <section className={`border-b py-6 shadow-sm transition-colors ${isLightTheme ? "bg-white border-black/10" : "bg-[#000000] border-white/20"}`}>
+      <section className="border-b border-slate-200/80 bg-white py-6 shadow-xs">
         <div className="max-w-[1520px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             {workspaceType === "brand" ? (
               <>
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs font-mono font-bold ${isLightTheme ? "text-[#475569]" : "text-neutral-400"}`}>
+                  <span className="text-xs font-mono font-bold text-slate-600 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md">
                     ID: {state.user?.activeWorkspaceId || state.user?.agncyId || "WS-2026-Q3"}
                   </span>
-                  <span className={`h-3 w-[1px] ${isLightTheme ? "bg-black/20" : "bg-white/20"}`} />
-                  <span className={`text-xs font-mono font-bold ${isLightTheme ? "text-[#475569]" : "text-neutral-400"}`}>
+                  <span className="h-3 w-[1px] bg-slate-200" />
+                  <span className="text-xs font-mono text-slate-500">
                     {state.user?.email || "adidas.admin@company.com"}
                   </span>
                 </div>
-                <h1 className={`text-2xl font-bold mt-1 tracking-tight ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>
+                <h1 className="text-2xl font-extrabold mt-1.5 tracking-tight text-slate-900">
                   {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || (state.user?.fullName ? `${state.user.fullName}'s Workspace` : "Adidas Workspace")}
                 </h1>
               </>
             ) : (
               <>
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs font-bold px-2 py-0.5 rounded border ${isLightTheme ? "text-[#0F172A] bg-black/5 border-black/10" : "text-white bg-white/10 border-white/20"}`}>Agency Account</span>
-                  <span className={`text-xs font-mono ${isLightTheme ? "text-[#475569]" : "text-neutral-400"}`}>ID: {state.user?.agncyId || "AGNCY-9024"}</span>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 border border-slate-200">Agency Account</span>
+                  <span className="text-xs font-mono text-slate-500">ID: {state.user?.agncyId || "AGNCY-9024"}</span>
                 </div>
-                <h1 className={`text-2xl font-bold mt-1 tracking-tight ${isLightTheme ? "text-[#0F172A]" : "text-white"}`}>
+                <h1 className="text-2xl font-extrabold mt-1.5 tracking-tight text-slate-900">
                   {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Agency"} Revenue Portal
                 </h1>
               </>
@@ -1140,7 +1140,7 @@ export default function BrandDashboardPage() {
           {workspaceType === "agency" && (
             <button
               onClick={() => setIsNewInvoiceOpen(true)}
-              className={`h-10 px-5 rounded-lg text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shrink-0 animate-fade-in ${isLightTheme ? "bg-[#0F172A] text-white hover:bg-[#1E293B]" : "bg-white text-black hover:bg-neutral-200"}`}
+              className="h-10 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs shrink-0"
             >
               + New Invoice
             </button>
@@ -1153,8 +1153,6 @@ export default function BrandDashboardPage() {
         
         {/* Left Column - Core Approval and Splits (Wider) */}
         <div className="lg:col-span-8 space-y-6">
-          
-
 
           {/* Analytics Cards Grid */}
           <div className={`grid grid-cols-2 ${workspaceType === "brand" ? "md:grid-cols-2" : "md:grid-cols-4"} gap-4`}>
@@ -1168,8 +1166,6 @@ export default function BrandDashboardPage() {
 
               const displayPaidVolume = dynamicPaidVolume;
               const disbursedVolume = liveFunctionalInvoices.filter(i => i.status === "talent_disbursed").reduce((acc, curr) => acc + curr.amount, 0);
-              const displayNet0Funded = disbursedVolume * 0.85;
-              const displayAutosplitSavings = dynamicPaidVolume * 0.015;
 
               const awaitingItems = workspaceType === "brand"
                 ? liveFunctionalInvoices.filter(i => i.status === "awaiting_approval")
@@ -1200,44 +1196,43 @@ export default function BrandDashboardPage() {
                   ];
  
               return stats.map((stat, idx) => {
-                const isAwaitingApproval = stat.label === "Awaiting Payments";
-              return (
-                <div 
-                  key={idx} 
-                  className="bg-[#050505] rounded-xl border border-white/20 p-4 shadow-sm"
-                >
-                  <div className="flex justify-between items-start">
-                    <span className="text-[11px] font-bold text-[#8f8f8f] uppercase tracking-wider flex items-center gap-1">
-                      {stat.label}
-                    </span>
-                    <stat.icon className="h-4 w-4 text-[#8f8f8f]" />
+                return (
+                  <div 
+                    key={idx} 
+                    className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 transition-all"
+                  >
+                    <div className="flex justify-between items-start">
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                        {stat.label}
+                      </span>
+                      <stat.icon className="h-4 w-4 text-slate-400" />
+                    </div>
+                    <div className="mt-3">
+                      <p className="text-2xl font-extrabold text-slate-900 tracking-tight">{stat.value}</p>
+                      <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5 font-medium">
+                        {stat.trend && <span className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">{stat.trend}</span>}
+                        {stat.count || stat.detail}
+                      </p>
+                    </div>
                   </div>
-                  <div className="mt-2.5">
-                    <p className="text-lg font-bold text-white tracking-tight">{stat.value}</p>
-                    <p className="text-[10px] text-neutral-400 mt-1 flex items-center gap-1 font-semibold">
-                      {stat.trend && <span className="text-emerald-500 font-bold">{stat.trend}</span>}
-                      {stat.count || stat.detail}
-                    </p>
-                  </div>
-                </div>
-              );
+                );
               });
             })()}
           </div>
 
           {/* Pending Invoices Table */}
-          <div className="bg-[#050505] rounded-2xl border border-white/20 shadow-sm overflow-hidden mt-6">
-            <div className="p-6 border-b border-white/20 bg-white/[0.01] flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-white tracking-tight">agncypay</span>
-                <span className="text-neutral-500 font-medium text-xs">•</span>
-                <span className="text-neutral-400 font-semibold text-xs">
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden mt-6">
+            <div className="p-5 sm:p-6 border-b border-slate-200 bg-slate-50/75 flex justify-between items-center">
+              <div className="flex items-center gap-2.5">
+                <span className="font-extrabold text-slate-900 tracking-tight text-sm">agncypay</span>
+                <span className="text-slate-400 font-medium text-xs">•</span>
+                <span className="text-slate-600 font-semibold text-xs">
                   {workspaceType === "brand" ? "Pending Invoices (To Pay)" : "Pending Invoices (Unpaid)"}
                 </span>
               </div>
               {qbSyncStatus === "loading" && (
-                <div className="flex items-center gap-2 text-xs font-semibold text-white bg-white/10 px-3 py-1 rounded-full border border-white/20">
-                  <RefreshCw className="h-3.5 w-3.5 animate-spin text-white" />
+                <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                  <RefreshCw className="h-3.5 w-3.5 animate-spin text-slate-700" />
                   <span>Syncing...</span>
                 </div>
               )}
@@ -1245,20 +1240,20 @@ export default function BrandDashboardPage() {
             
             <div className="overflow-x-auto">
               {qbSyncStatus === "loading" ? (
-                <div className="py-12 flex flex-col items-center justify-center text-center bg-black/40">
-                  <RefreshCw className="h-8 w-8 animate-spin text-white mb-3" />
-                  <p className="text-sm font-bold text-white">Fetching Invoices</p>
-                  <p className="text-xs text-neutral-400 mt-1">{qbSyncMessage || "Syncing with connected accounting platform..."}</p>
+                <div className="py-12 flex flex-col items-center justify-center text-center bg-slate-50/40">
+                  <RefreshCw className="h-8 w-8 animate-spin text-slate-700 mb-3" />
+                  <p className="text-sm font-bold text-slate-900">Fetching Invoices</p>
+                  <p className="text-xs text-slate-500 mt-1">{qbSyncMessage || "Syncing with connected accounting platform..."}</p>
                 </div>
               ) : (
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-white/20 bg-white/[0.02] text-xs font-semibold uppercase tracking-wider text-[#8f8f8f]">
+                  <tr className="border-b border-slate-200 bg-slate-50/60 text-xs font-semibold uppercase tracking-wider text-slate-500">
                     <th className="p-4">
                       {workspaceType === "brand" && (
                         <input 
                           type="checkbox" 
-                          className="h-4 w-4 accent-white rounded border-white/20 bg-transparent"
+                          className="h-4 w-4 accent-slate-900 rounded border-slate-300"
                           onChange={(e) => {
                             const pendingInvs = widgetInvoices.filter(i => i.status === "pending").slice(0, 4);
                             setSelectedIds(e.target.checked ? pendingInvs.map(i => i.id) : []);
@@ -1274,16 +1269,16 @@ export default function BrandDashboardPage() {
                     <th className="py-4 pr-4 font-semibold text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/10">
+                <tbody className="divide-y divide-slate-100">
                   {widgetInvoices.filter(i => i.status === "pending").slice(0, 4).map((inv) => {
                     const isSelected = selectedIds.includes(inv.id);
                     return (
-                      <tr key={inv.id} className={`transition-colors hover:bg-white/[0.02] ${isSelected ? "bg-white/[0.05]" : ""}`}>
+                      <tr key={inv.id} className={`transition-colors hover:bg-slate-50/70 ${isSelected ? "bg-slate-50" : ""}`}>
                         <td className="p-4">
                           {workspaceType === "brand" && (
                             <input 
                               type="checkbox" 
-                              className="h-4 w-4 accent-white rounded border-white/20 bg-transparent"
+                              className="h-4 w-4 accent-slate-900 rounded border-slate-300"
                               checked={isSelected}
                               onChange={(e) => {
                                 setSelectedIds(curr => 
@@ -1293,25 +1288,25 @@ export default function BrandDashboardPage() {
                             />
                           )}
                         </td>
-                        <td className="py-4 text-xs font-mono text-[#8f8f8f]">{inv.id.substring(0,8).toUpperCase()}</td>
+                        <td className="py-4 text-xs font-mono font-semibold text-slate-500">{inv.id.substring(0,8).toUpperCase()}</td>
                         <td className="py-4">
-                          <p className="font-bold text-white">{inv.agency}</p>
+                          <p className="font-bold text-slate-900">{inv.agency}</p>
                         </td>
                         <td className="py-4">
-                          <p className="text-white font-medium">{inv.campaign}</p>
-                          <p className="text-[10px] text-[#8f8f8f]">Due {inv.dueDate || inv.due}</p>
+                          <p className="text-slate-800 font-medium">{inv.campaign}</p>
+                          <p className="text-[11px] text-slate-500">Due {inv.dueDate || inv.due}</p>
                         </td>
-                        <td className="py-4 font-bold text-white">
+                        <td className="py-4 font-bold text-slate-900">
                           ${(inv.amount * (workspaceType === "brand" ? 1.015 : 1)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </td>
                         <td className="py-4 pr-4 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => setViewingInvoice(inv)}
-                              className="p-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-white transition-all cursor-pointer flex items-center justify-center"
+                              className="p-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 hover:text-slate-900 transition-all cursor-pointer flex items-center justify-center shadow-2xs"
                               title="View Invoice Details"
                             >
-                              <Eye className="h-3.5 w-3.5" />
+                              <Eye className="h-4 w-4" />
                             </button>
                             {workspaceType === "brand" && (
                               <button
@@ -1319,7 +1314,7 @@ export default function BrandDashboardPage() {
                                   setSelectedIds([inv.id]);
                                   setIsCheckoutOpen(true);
                                 }}
-                                className="px-3 py-1.5 rounded-lg bg-white hover:bg-neutral-200 text-black font-extrabold text-[11px] transition-all shadow-sm active:scale-95 cursor-pointer"
+                                className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all shadow-xs active:scale-95 cursor-pointer"
                               >
                                 Pay Now
                               </button>
@@ -1331,7 +1326,7 @@ export default function BrandDashboardPage() {
                   })}
                   {widgetInvoices.filter(i => i.status === "pending").length === 0 && (
                     <tr>
-                      <td colSpan={7} className="py-8 text-center text-xs font-medium text-neutral-500">
+                      <td colSpan={7} className="py-12 text-center text-xs font-medium text-slate-500">
                         No pending invoices.
                       </td>
                     </tr>
@@ -1342,10 +1337,10 @@ export default function BrandDashboardPage() {
             </div>
             
             {widgetInvoices.filter(i => i.status === "pending").length > 4 && (
-              <div className="p-4 bg-white/[0.01] border-t border-white/10 flex justify-center items-center">
+              <div className="p-4 bg-slate-50/50 border-t border-slate-200 flex justify-center items-center">
                 <button
                   onClick={() => router.push("/branddashboard/invoices")}
-                  className="px-5 py-2.5 rounded-xl bg-white text-black hover:bg-neutral-200 font-bold text-xs flex items-center gap-2 transition-all shadow-sm cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-bold text-xs flex items-center gap-2 transition-all shadow-xs cursor-pointer"
                 >
                   <span>View All ({widgetInvoices.filter(i => i.status === "pending").length}) Invoices</span>
                   <ChevronRight className="h-4 w-4" />
@@ -1354,15 +1349,15 @@ export default function BrandDashboardPage() {
             )}
             
             {workspaceType === "brand" && selectedIds.length > 0 && (
-              <div className="p-4 bg-[#111] light:bg-white border-t border-white/20 light:border-black/10 flex justify-between items-center">
+              <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
                 <div>
-                  <p className="text-sm font-bold text-white light:text-[#0F172A]">{selectedIds.length} invoice(s) selected</p>
-                  <p className="text-[11px] text-[#8f8f8f] light:text-[#475569]">Ready for batch payment.</p>
+                  <p className="text-sm font-bold text-slate-900">{selectedIds.length} invoice(s) selected</p>
+                  <p className="text-xs text-slate-500">Ready for batch payment.</p>
                 </div>
                 <div className="flex gap-3">
-                  <button onClick={() => setSelectedIds([])} className="px-4 py-2 text-xs font-bold text-white light:text-[#475569] hover:bg-white/10 light:hover:bg-black/5 rounded-lg transition-colors">Clear</button>
-                  <button onClick={() => setIsCheckoutOpen(true)} className="px-4 py-2 text-xs font-bold bg-white light:bg-[#0F172A] text-black light:text-white hover:bg-neutral-200 light:hover:bg-[#1E293B] border border-white/20 light:border-black/10 rounded-lg flex items-center gap-2 transition-all shadow-sm cursor-pointer">
-                    <ShieldCheck className="w-4 h-4 text-black light:text-white" /> Batch Pay
+                  <button onClick={() => setSelectedIds([])} className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer">Clear</button>
+                  <button onClick={() => setIsCheckoutOpen(true)} className="px-4 py-2 text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 rounded-xl flex items-center gap-2 transition-all shadow-xs cursor-pointer">
+                    <ShieldCheck className="w-4 h-4 text-white" /> Batch Pay
                   </button>
                 </div>
               </div>
@@ -1370,7 +1365,7 @@ export default function BrandDashboardPage() {
           </div>
 
           {/* Open an Account Banner under Pending Invoices */}
-          <div className="mt-6 w-full h-[300px] md:h-[360px] rounded-2xl overflow-hidden shadow-lg transition-transform hover:scale-[1.005] duration-300 relative">
+          <div className="mt-6 w-full h-[300px] md:h-[360px] rounded-2xl overflow-hidden shadow-xs border border-slate-200 transition-transform hover:scale-[1.005] duration-300 relative">
             <img 
               src="/models/homepagebottomimage1.png" 
               alt="Open an Account" 
@@ -1378,13 +1373,11 @@ export default function BrandDashboardPage() {
             />
           </div>
 
-</div>
+        </div>
 
         {/* Right Column - Queue and History Ledger (Narrower) */}
         <div id="approval-queue-section" className="lg:col-span-4 space-y-6">
           
-          {/* Brand Treasury Balance Section Removed */}
-
           {/* Integrations Widget */}
           <IntegrationsPanel
             onSync={(provider) => {
@@ -1397,26 +1390,26 @@ export default function BrandDashboardPage() {
           />
 
           {/* Connected Banking Feeds */}
-          <div className="bg-[#0A0A0A] light:bg-white rounded-xl border border-white/10 light:border-black/10 overflow-hidden shadow-sm flex flex-col">
-            <div className="p-5 border-b border-white/10 light:border-black/10 bg-white/[0.01] light:bg-slate-50 flex items-center justify-between">
+          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs flex flex-col">
+            <div className="p-5 sm:p-6 border-b border-slate-200 bg-slate-50/75 flex items-center justify-between">
               <div>
-                <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#8f8f8f] light:text-[#475569]">CONNECTED BANKING FEEDS</h3>
-                <p className="text-[11px] text-neutral-500 mt-0.5">Real-time commercial balances verified via Plaid</p>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">CONNECTED BANKING FEEDS</h3>
+                <p className="text-xs text-slate-500 mt-0.5">Real-time commercial balances verified via Plaid</p>
               </div>
               <button
                 type="button"
                 onClick={handleConnectPlaid}
                 disabled={isPlaidLoading}
-                className="px-3.5 py-1.5 rounded-lg bg-white light:bg-black border border-white light:border-black text-black light:text-white text-[11px] font-bold hover:bg-neutral-200 light:hover:bg-neutral-800 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-sm"
+                className="px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-xs"
               >
                 {isPlaidLoading ? (
                   <>
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-black light:text-white" />
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-white" />
                     Connecting...
                   </>
                 ) : (
                   <>
-                    <Plus className="h-3.5 w-3.5 text-black light:text-white" />
+                    <Plus className="h-3.5 w-3.5 text-white" />
                     + Connect Bank (Plaid)
                   </>
                 )}
@@ -1424,49 +1417,49 @@ export default function BrandDashboardPage() {
             </div>
 
             {plaidError && (
-              <div className="p-3 bg-white/10 light:bg-slate-100 border-b border-white/20 light:border-black/20 text-white light:text-black text-xs font-semibold flex items-center justify-between px-5">
+              <div className="p-3 bg-red-50 border-b border-red-200 text-red-700 text-xs font-semibold flex items-center justify-between px-5">
                 <span>{plaidError}</span>
-                <button onClick={() => setPlaidError(null)} className="text-white light:text-black hover:opacity-75 cursor-pointer">
+                <button onClick={() => setPlaidError(null)} className="text-red-700 hover:opacity-75 cursor-pointer">
                   <X className="h-3.5 w-3.5" />
                 </button>
               </div>
             )}
             
-            <div className="p-5 flex flex-col gap-3 bg-white/[0.01] light:bg-white">
+            <div className="p-5 flex flex-col gap-3 bg-white">
               {plaidAccounts.length > 0 ? (
                 plaidAccounts.map((acc) => (
                   <div
                     key={acc.id}
-                    className="flex items-center justify-between p-4 rounded-xl border border-white/15 light:border-black/15 bg-white/[0.03] light:bg-slate-50 hover:border-white/30 light:hover:border-black/30 transition-all shadow-sm"
+                    className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50/60 hover:border-slate-300 transition-all shadow-2xs"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-20 h-12 rounded-lg border border-white/15 light:border-black/15 bg-black flex items-center justify-center shrink-0 shadow-inner overflow-hidden">
+                      <div className="w-16 h-10 rounded-lg border border-slate-200 bg-white flex items-center justify-center shrink-0 shadow-2xs overflow-hidden">
                         {getCardImage(acc.institutionName) ? (
                           <img src={getCardImage(acc.institutionName)} alt={acc.name} className="h-full w-full object-cover" />
                         ) : (
-                          <Building2 className="h-6 w-6 text-white light:text-black" />
+                          <Building2 className="h-5 w-5 text-slate-700" />
                         )}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <h4 className="text-[13px] font-bold text-white light:text-black">{acc.institutionName} — {acc.name}</h4>
+                          <h4 className="text-xs sm:text-sm font-bold text-slate-900">{acc.institutionName} — {acc.name}</h4>
                         </div>
-                        <p className="text-[11px] font-medium text-neutral-400 mt-0.5 font-mono">
+                        <p className="text-[11px] font-medium text-slate-500 mt-0.5 font-mono">
                           {acc.subtype?.toUpperCase()} ••••{acc.mask}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="text-right">
-                        <span className="text-[14px] font-bold text-white light:text-black font-mono block">
+                        <span className="text-sm font-bold text-slate-900 font-mono block">
                           ${acc.availableBalance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
-                        <span className="text-[10px] text-neutral-400 font-medium">Available Balance</span>
+                        <span className="text-[10px] text-slate-500 font-medium">Available Balance</span>
                       </div>
                       <button
                         onClick={() => handleDisconnectPlaidAccount(acc.id)}
                         title="Disconnect Bank Feed"
-                        className="p-1.5 rounded-lg border border-white/10 light:border-black/10 bg-white/5 light:bg-white text-neutral-400 light:text-neutral-500 hover:text-white light:hover:text-black hover:border-white/30 light:hover:border-black/30 transition-all cursor-pointer"
+                        className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-all cursor-pointer"
                       >
                         <X className="h-3.5 w-3.5" />
                       </button>
@@ -1474,7 +1467,7 @@ export default function BrandDashboardPage() {
                   </div>
                 ))
               ) : (
-                <div className="py-8 text-center text-xs font-medium text-neutral-500">
+                <div className="py-8 text-center text-xs font-medium text-slate-500">
                   No bank feeds connected. Click &quot;+ Connect Bank (Plaid)&quot; above to link your commercial checking or treasury account.
                 </div>
               )}
@@ -1486,27 +1479,27 @@ export default function BrandDashboardPage() {
       {/* New Invoice Modal */}
       <AnimatePresence>
         {isNewInvoiceOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 px-4 backdrop-blur-[2px]">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 dark:bg-black/65 px-4 backdrop-blur-xs">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              exit={{ opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.2 }}
-              className="w-full max-w-[440px] rounded-2xl border border-white/20 bg-[#0A0A0A] p-6 shadow-2xl relative text-left"
+              className="w-full max-w-[460px] rounded-2xl border border-slate-200 dark:border-white/20 bg-white dark:bg-[#0A0A0A] p-6 sm:p-7 shadow-2xl relative text-left"
             >
-              <div className="pb-4 border-b border-white/20">
-                <h2 className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-white" />
+              <div className="pb-4 border-b border-slate-200 dark:border-white/20">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-slate-800 dark:text-white" />
                   Create New Invoice
                 </h2>
-                <p className="text-[11px] text-neutral-400 mt-1">
+                <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1">
                   Issue a campaign split invoice. Payout structures (15% agency, 85% talent) will auto-generate.
                 </p>
               </div>
 
-              <form onSubmit={handleCreateInvoice} className="mt-6 space-y-4">
+              <form onSubmit={handleCreateInvoice} className="mt-5 space-y-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-slate-600 dark:text-neutral-400 uppercase tracking-wider">
                     Campaign Name
                   </label>
                   <input
@@ -1515,25 +1508,25 @@ export default function BrandDashboardPage() {
                     placeholder="e.g. Autumn Brand Socials"
                     value={newCampaign}
                     onChange={(e) => setNewCampaign(e.target.value)}
-                    className="mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all"
+                    className="mt-1.5 h-11 w-full border border-slate-200 dark:border-white/20 bg-slate-50 dark:bg-black rounded-xl px-4 text-xs font-semibold text-slate-900 dark:text-white outline-none focus:border-slate-900 dark:focus:border-white focus:bg-white transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-slate-600 dark:text-neutral-400 uppercase tracking-wider">
                     Select Brand Client
                   </label>
                   <select
                     required
                     value={selectedBrandEmail}
                     onChange={(e) => setSelectedBrandEmail(e.target.value)}
-                    className="mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all cursor-pointer"
+                    className="mt-1.5 h-11 w-full border border-slate-200 dark:border-white/20 bg-slate-50 dark:bg-black rounded-xl px-4 text-xs font-semibold text-slate-900 dark:text-white outline-none focus:border-slate-900 dark:focus:border-white focus:bg-white transition-all cursor-pointer"
                   >
                     {registeredBrands.length === 0 ? (
                       <option value="" disabled>No registered brands found</option>
                     ) : (
                       registeredBrands.map((b) => (
-                        <option key={b.uid} value={b.email} className="bg-[#0A0A0A] text-white">
+                        <option key={b.uid} value={b.email} className="bg-white text-slate-900">
                           {b.workspaceName} ({b.email})
                         </option>
                       ))
@@ -1543,18 +1536,18 @@ export default function BrandDashboardPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-slate-600 dark:text-neutral-400 uppercase tracking-wider">
                       Select Talent
                     </label>
                     <select
                       value={selectedTalentEmail}
                       onChange={(e) => setSelectedTalentEmail(e.target.value)}
                       disabled={newSplits.length > 0}
-                      className={`mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all cursor-pointer ${newSplits.length > 0 ? "opacity-60 cursor-not-allowed" : ""}`}
+                      className={`mt-1.5 h-11 w-full border border-slate-200 dark:border-white/20 bg-slate-50 dark:bg-black rounded-xl px-3 text-xs font-semibold text-slate-900 dark:text-white outline-none focus:border-slate-900 dark:focus:border-white focus:bg-white transition-all cursor-pointer ${newSplits.length > 0 ? "opacity-60 cursor-not-allowed" : ""}`}
                     >
-                      <option value="">Select Talent (Optional)</option>
+                      <option value="">Select Talent</option>
                       {registeredTalents.map((t) => (
-                        <option key={t.uid} value={t.email} className="bg-[#0A0A0A] text-white">
+                        <option key={t.uid} value={t.email} className="bg-white text-slate-900">
                           {t.fullName}
                         </option>
                       ))}
@@ -1562,7 +1555,7 @@ export default function BrandDashboardPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-slate-600 dark:text-neutral-400 uppercase tracking-wider">
                       Invoice Total ($)
                     </label>
                     <input
@@ -1573,27 +1566,27 @@ export default function BrandDashboardPage() {
                       placeholder="e.g. 14999.98"
                       value={newAmount}
                       onChange={(e) => setNewAmount(e.target.value)}
-                      className={`mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all ${newSplits.length > 0 ? "opacity-60 cursor-not-allowed" : ""}`}
+                      className={`mt-1.5 h-11 w-full border border-slate-200 dark:border-white/20 bg-slate-50 dark:bg-black rounded-xl px-4 text-xs font-semibold text-slate-900 dark:text-white outline-none focus:border-slate-900 dark:focus:border-white focus:bg-white transition-all ${newSplits.length > 0 ? "opacity-60 cursor-not-allowed" : ""}`}
                     />
                   </div>
                 </div>
 
                 {/* Multi-Talent Splits Builder Section */}
-                <div className="border border-white/10 rounded-xl p-3 bg-white/[0.01] space-y-3">
-                  <span className="block text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+                <div className="border border-slate-200 dark:border-white/10 rounded-xl p-3.5 bg-slate-50/70 dark:bg-white/[0.01] space-y-3">
+                  <span className="block text-[11px] font-bold text-slate-600 dark:text-neutral-400 uppercase tracking-wider">
                     Campaign splits (Multi-Talent Payouts)
                   </span>
 
                   {newSplits.length > 0 && (
                     <div className="space-y-1.5 max-h-[120px] overflow-y-auto pr-1">
                       {newSplits.map((split, idx) => (
-                        <div key={idx} className="flex items-center justify-between text-xs bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5">
+                        <div key={idx} className="flex items-center justify-between text-xs bg-white dark:bg-white/5 px-3 py-2 rounded-xl border border-slate-200 dark:border-white/5 shadow-2xs">
                           <div className="flex flex-col">
-                            <span className="font-bold text-white text-[11px]">{split.talentName}</span>
-                            <span className="text-[9px] text-neutral-400 font-mono">{split.talentEmail}</span>
+                            <span className="font-bold text-slate-900 dark:text-white text-xs">{split.talentName}</span>
+                            <span className="text-[10px] text-slate-500 font-mono">{split.talentEmail}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-[#13d463] font-semibold">${split.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                            <span className="font-mono text-emerald-600 font-bold">${split.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                             <button
                               type="button"
                               onClick={() => {
@@ -1607,7 +1600,7 @@ export default function BrandDashboardPage() {
                                   setSelectedTalentEmail("");
                                 }
                               }}
-                              className="text-red-400 hover:text-red-300 font-bold px-1 text-sm cursor-pointer"
+                              className="text-red-500 hover:text-red-700 font-bold px-1 text-sm cursor-pointer"
                             >
                               ×
                             </button>
@@ -1622,26 +1615,26 @@ export default function BrandDashboardPage() {
                       <select
                         value={splitTalentEmail}
                         onChange={(e) => setSplitTalentEmail(e.target.value)}
-                        className="h-9 w-full border border-white/10 bg-black rounded-lg px-2 text-[11px] font-semibold text-white outline-none focus:border-white transition-all cursor-pointer"
+                        className="h-9.5 w-full border border-slate-200 dark:border-white/10 bg-white dark:bg-black rounded-lg px-2 text-xs font-semibold text-slate-900 dark:text-white outline-none focus:border-slate-900 transition-all cursor-pointer"
                       >
                         <option value="">Choose Talent</option>
                         {registeredTalents
                           .filter(t => !newSplits.some(s => s.talentEmail === t.email))
                           .map((t) => (
-                            <option key={t.uid} value={t.email} className="bg-[#0A0A0A] text-white">
+                            <option key={t.uid} value={t.email} className="bg-white text-slate-900">
                               {t.fullName}
                             </option>
                           ))
                         }
                       </select>
                     </div>
-                    <div className="w-[85px]">
+                    <div className="w-[90px]">
                       <input
                         type="number"
                         placeholder="USD ($)"
                         value={splitAmount}
                         onChange={(e) => setSplitAmount(e.target.value)}
-                        className="h-9 w-full border border-white/10 bg-black rounded-lg px-2 text-[11px] font-semibold text-white outline-none focus:border-white transition-all"
+                        className="h-9.5 w-full border border-slate-200 dark:border-white/10 bg-white dark:bg-black rounded-lg px-2.5 text-xs font-semibold text-slate-900 dark:text-white outline-none focus:border-slate-900 transition-all"
                       />
                     </div>
                     <button
@@ -1671,28 +1664,28 @@ export default function BrandDashboardPage() {
                         setSplitTalentEmail("");
                         setSplitAmount("");
                       }}
-                      className="h-9 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] transition-all cursor-pointer"
+                      className="h-9.5 px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all cursor-pointer"
                     >
                       + Add
                     </button>
                   </div>
 
                   {newSplits.length > 0 && (
-                    <div className="text-[10px] text-neutral-400 space-y-0.5 pt-1 border-t border-white/5 font-medium leading-4">
+                    <div className="text-xs text-slate-500 space-y-0.5 pt-1.5 border-t border-slate-200 font-medium leading-4">
                       <div className="flex justify-between">
                         <span>Total Talent Payout (85%):</span>
-                        <span className="font-semibold text-white">${newSplits.reduce((acc, cur) => acc + cur.amount, 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                        <span className="font-semibold text-slate-900">${newSplits.reduce((acc, cur) => acc + cur.amount, 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                       </div>
                       <div className="flex justify-between">
                         <span>Agency Commission (15%):</span>
-                        <span className="font-semibold text-white">${(newSplits.reduce((acc, cur) => acc + cur.amount, 0) * 0.15 / 0.85).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                        <span className="font-semibold text-slate-900">${(newSplits.reduce((acc, cur) => acc + cur.amount, 0) * 0.15 / 0.85).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                       </div>
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-slate-600 dark:text-neutral-400 uppercase tracking-wider">
                     Due Date
                   </label>
                   <input
@@ -1700,31 +1693,31 @@ export default function BrandDashboardPage() {
                     required
                     value={newDue}
                     onChange={(e) => setNewDue(e.target.value)}
-                    className="mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all [color-scheme:dark]"
+                    className="mt-1.5 h-11 w-full border border-slate-200 dark:border-white/20 bg-slate-50 dark:bg-black rounded-xl px-4 text-xs font-semibold text-slate-900 dark:text-white outline-none focus:border-slate-900 transition-all"
                   />
                 </div>
 
-                <div className="pt-4 border-t border-white/20 flex gap-3 justify-end text-xs">
+                <div className="pt-4 border-t border-slate-200 dark:border-white/20 flex gap-3 justify-end text-xs">
                   <button
                     type="button"
                     onClick={() => setIsNewInvoiceOpen(false)}
-                    className="h-10 px-4 rounded-lg border border-white/20 bg-[#050505] font-bold text-white hover:bg-white/5 transition-all cursor-pointer"
+                    className="h-10 px-4 rounded-xl border border-slate-200 bg-white font-bold text-slate-700 hover:bg-slate-100 transition-all cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isCreatingInvoice}
-                    className="h-10 px-5 rounded-lg bg-white hover:bg-neutral-200 text-black font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 animate-pulse"
+                    className="h-10 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-xs"
                   >
                     {isCreatingInvoice ? (
                       <>
-                        <Loader2 className="h-4 w-4 animate-spin text-black" />
+                        <Loader2 className="h-4 w-4 animate-spin text-white" />
                         Creating...
                       </>
                     ) : (
                       <>
-                        <Check className="h-4 w-4 text-black" />
+                        <Check className="h-4 w-4 text-white" />
                         Create Invoice
                       </>
                     )}
@@ -1736,7 +1729,7 @@ export default function BrandDashboardPage() {
         )}
       </AnimatePresence>
 
-      {/* Bilt-Style High-Contrast Batch Payment Checkout Overlay */}
+      {/* High-Contrast Batch Payment Checkout Overlay */}
       <BatchPaymentCheckoutModal
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
@@ -1744,35 +1737,35 @@ export default function BrandDashboardPage() {
         onAuthorizePayment={handleProcessPayment}
       />
 
-      {/* Plaid Institution Link Sandbox Modal */}
+      {/* Plaid Institution Link Modal */}
       {isPlaidModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-[#0A0A0A] light:bg-white border border-white/20 light:border-black/15 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl flex flex-col">
-            <div className="p-6 border-b border-white/10 light:border-black/10 flex items-center justify-between bg-white/[0.02] light:bg-slate-50">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/20 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl flex flex-col">
+            <div className="p-6 border-b border-slate-200 dark:border-white/10 flex items-center justify-between bg-slate-50/70 dark:bg-white/[0.02]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-white/10 light:bg-slate-200 border border-white/20 light:border-black/20 flex items-center justify-center shrink-0">
-                  <ShieldCheck className="h-5 w-5 text-white light:text-black" />
+                <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/20 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="h-5 w-5 text-slate-800 dark:text-white" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-base font-bold text-white light:text-black">Link Bank Account</h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 light:bg-slate-200 text-white light:text-black border border-white/20 light:border-black/20">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white">Link Bank Account</h3>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
                       Verified by Plaid
                     </span>
                   </div>
-                  <p className="text-xs text-neutral-400 light:text-neutral-500 mt-0.5">Select an institution to connect your commercial banking feed</p>
+                  <p className="text-xs text-slate-500 dark:text-neutral-400 mt-0.5">Select an institution to connect your commercial banking feed</p>
                 </div>
               </div>
               <button
                 onClick={() => !connectingBankName && setIsPlaidModalOpen(false)}
-                className="p-1.5 rounded-lg border border-white/10 light:border-black/10 text-neutral-400 hover:text-white light:hover:text-black hover:bg-white/5 light:hover:bg-slate-200 transition-all cursor-pointer"
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
             <div className="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
-              <p className="text-xs font-semibold text-neutral-400 light:text-neutral-500 uppercase tracking-wider">Major Commercial Institutions</p>
+              <p className="text-xs font-semibold text-slate-500 dark:text-neutral-400 uppercase tracking-wider">Major Commercial Institutions</p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {availablePlaidBanks.map((bank) => {
@@ -1786,38 +1779,38 @@ export default function BrandDashboardPage() {
                       disabled={isConnected || !!connectingBankName}
                       className={`p-4 rounded-xl border text-left flex flex-col justify-between transition-all relative overflow-hidden ${
                         isConnected 
-                          ? "bg-white/[0.02] light:bg-slate-100 border-white/10 light:border-black/10 opacity-50 cursor-not-allowed"
+                          ? "bg-slate-100/60 border-slate-200 opacity-60 cursor-not-allowed"
                           : isThisConnecting
-                          ? "bg-white/10 light:bg-slate-200 border-white/40 light:border-black/40 cursor-wait"
-                          : "bg-white/[0.03] light:bg-slate-50 border-white/15 light:border-black/15 hover:border-white/40 light:hover:border-black/40 hover:bg-white/[0.06] light:hover:bg-slate-100 cursor-pointer shadow-sm hover:shadow-md"
+                          ? "bg-slate-100 border-slate-400 cursor-wait"
+                          : "bg-slate-50/60 border-slate-200 hover:border-slate-300 hover:bg-white cursor-pointer shadow-2xs hover:shadow-xs"
                       }`}
                     >
                       <div className="flex items-start justify-between gap-2 mb-3">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-lg bg-white/10 light:bg-white border border-white/15 light:border-black/15 flex items-center justify-center shrink-0">
-                            <Building2 className="w-4 h-4 text-white light:text-black" />
+                          <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-2xs">
+                            <Building2 className="w-4 h-4 text-slate-700" />
                           </div>
                           <div>
-                            <p className="text-sm font-bold text-white light:text-black leading-tight">{bank.institutionName}</p>
-                            <p className="text-[10px] text-neutral-400 mt-0.5 font-mono">••••{bank.mask}</p>
+                            <p className="text-sm font-bold text-slate-900 leading-tight">{bank.institutionName}</p>
+                            <p className="text-[10px] text-slate-500 mt-0.5 font-mono">••••{bank.mask}</p>
                           </div>
                         </div>
                         {isConnected && (
-                          <span className="text-[10px] font-extrabold text-white light:text-black px-2 py-0.5 bg-white/10 light:bg-slate-200 rounded-full border border-white/20 light:border-black/20">
+                          <span className="text-[10px] font-bold text-emerald-700 px-2 py-0.5 bg-emerald-50 rounded-full border border-emerald-200">
                             Linked
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center justify-between border-t border-white/10 light:border-black/10 pt-2.5 mt-1">
-                        <span className="text-[10px] text-neutral-400 font-medium">{bank.name}</span>
+                      <div className="flex items-center justify-between border-t border-slate-200 pt-2.5 mt-1">
+                        <span className="text-[10px] text-slate-500 font-medium">{bank.name}</span>
                         {isThisConnecting ? (
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-white light:text-black">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
                             <span>Linking...</span>
                           </div>
                         ) : (
-                          <span className="text-xs font-bold font-mono text-white light:text-black">
+                          <span className="text-xs font-bold font-mono text-slate-900">
                             ${bank.balance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </span>
                         )}
@@ -1828,14 +1821,14 @@ export default function BrandDashboardPage() {
               </div>
             </div>
 
-            <div className="p-4 bg-white/[0.01] light:bg-slate-50 border-t border-white/10 light:border-black/10 flex items-center justify-between text-xs text-neutral-500 px-6">
+            <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 px-6">
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-white light:text-black" />
+                <ShieldCheck className="w-4 h-4 text-slate-700" />
                 256-bit AES end-to-end encryption via Plaid
               </span>
               <button 
                 onClick={() => !connectingBankName && setIsPlaidModalOpen(false)}
-                className="font-bold text-white light:text-black hover:underline cursor-pointer"
+                className="font-bold text-slate-900 hover:underline cursor-pointer"
               >
                 Close
               </button>

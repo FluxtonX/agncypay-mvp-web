@@ -18,8 +18,8 @@ export function Card({
   children,
   ...props
 }: CardProps) {
-  const baseStyles = "glass-panel rounded-xl p-5 overflow-hidden relative";
-  const hoverStyles = hoverEffect ? "glass-panel-hover" : "";
+  const baseStyles = "bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-xs overflow-hidden relative transition-all duration-200";
+  const hoverStyles = hoverEffect ? "hover:border-slate-300 hover:shadow-sm hover:-translate-y-0.5" : "";
 
   if (animate) {
     return (

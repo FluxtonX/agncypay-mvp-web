@@ -27,7 +27,7 @@ export default function AnalyticsDashboardPage() {
   const { state, resetState } = useApp();
   const workspaceType = state.user ? state.user.accountType : "brand";
 
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isLightTheme, setIsLightTheme] = useState(true);
   const [invoices, setInvoices] = useState<FirestoreInvoice[]>([]);
 
   useEffect(() => {

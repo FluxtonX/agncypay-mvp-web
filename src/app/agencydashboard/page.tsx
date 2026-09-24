@@ -256,7 +256,7 @@ export default function AgencyDashboardPage() {
   }, [state.user]);
 
 
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isLightTheme, setIsLightTheme] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -718,24 +718,22 @@ export default function AgencyDashboardPage() {
   return (
     <main className="min-h-screen bg-background text-foreground flex flex-col font-sans antialiased relative transition-colors duration-200">
       {/* Background radial gradient decoration */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-white/[0.01] rounded-full blur-[100px] pointer-events-none" />
-
-      {/* Header - Adaptive Theme */}
-      <header className="border-b border-white/25 light:border-black/15 bg-background/90 sticky top-0 z-50 shadow-sm backdrop-blur">
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-white/[0.01] rounded-full blur-[100px] pointer-events-none" />      {/* Header - Modern Clean Light Interface */}
+      <header className="border-b border-slate-200/80 bg-white/95 sticky top-0 z-50 shadow-xs backdrop-blur-md">
         <div className="max-w-[1520px] mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <div className="relative flex items-center mr-12">
-              <Link href="/agencydashboard" className="flex items-center cursor-pointer z-50 hover:opacity-80 transition-opacity" aria-label="AgncyPay home">
+            <div className="relative flex items-center mr-10">
+              <Link href="/agencydashboard" className="flex items-center cursor-pointer z-50 hover:opacity-85 transition-opacity" aria-label="AgncyPay home">
                 <img
                   src="/agncypaybrand.png"
                   alt="AgncyPay"
-                  className="h-12 w-auto object-contain scale-[1.56] origin-left transition-transform"
+                  className={`h-11 w-auto object-contain scale-[1.5] origin-left transition-transform ${isLightTheme ? "[filter:invert(1)_brightness(0.15)]" : ""}`}
                 />
               </Link>
             </div>
-            <span className="h-4 w-[1px] bg-white/20 hidden md:block" />
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 light:bg-black/5 border border-white/20 light:border-black/10 text-[11px] font-bold uppercase tracking-wider text-white light:text-[#0F172A]">
-              <Building2 className="h-3 w-3 text-white light:text-[#0F172A]" />
+            <span className="h-4 w-[1px] bg-slate-200 hidden md:block" />
+            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100/70 border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <Building2 className="h-3.5 w-3.5 text-slate-700" />
               {workspaceType === "brand" 
                 ? "Brand Portal" 
                 : workspaceType === "agency" 
@@ -744,30 +742,30 @@ export default function AgencyDashboardPage() {
             </div>
           </div>
 
-          {/* Center Navigation Tabs (Bilt Style) */}
-          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.03] p-1 rounded-full border border-white/20">
+          {/* Center Navigation Tabs */}
+          <nav className="hidden lg:flex items-center gap-1.5 p-1 rounded-2xl border border-slate-200 bg-slate-100/70">
             <button 
               onClick={() => router.push("/agencydashboard")}
-              className="px-4 py-1.5 rounded-full text-xs font-bold bg-white light:bg-[#0F172A] text-black light:text-white shadow-sm border border-white/20 light:border-black/10 transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-xs border border-slate-900 transition-all cursor-pointer"
             >
               Home
             </button>
             <button 
               onClick={() => router.push("/agencydashboard/invoices")}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold text-[#8f8f8f] light:text-[#475569] hover:text-white light:hover:text-[#0F172A] transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
             >
               Payments
             </button>
             <button 
               onClick={() => router.push("/agencydashboard/wallet")}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold text-[#8f8f8f] light:text-[#475569] hover:text-white light:hover:text-[#0F172A] transition-all cursor-pointer flex items-center gap-1.5"
+              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer flex items-center gap-1.5"
             >
               <Wallet className="w-3.5 h-3.5" />
               Wallet
             </button>
             <button 
               onClick={() => router.push("/agencydashboard/contacts")}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold text-[#8f8f8f] light:text-[#475569] hover:text-white light:hover:text-[#0F172A] transition-all cursor-pointer flex items-center gap-1.5"
+              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer flex items-center gap-1.5"
             >
               <Users className="w-3.5 h-3.5" />
               Contacts
@@ -780,43 +778,42 @@ export default function AgencyDashboardPage() {
                 <div className="flex items-center gap-1.5">
                   <button
                     disabled
-                    className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white/40 light:bg-[#0F172A]/40 text-black/40 light:text-white/40 border border-white/10 light:border-black/5 shadow-sm transition-all flex items-center gap-1.5 cursor-not-allowed blur-[0.6px]"
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 transition-all flex items-center gap-1.5 cursor-not-allowed shadow-2xs"
                   >
-                    <Lock className="h-3.5 w-3.5" />
+                    <Lock className="h-3.5 w-3.5 text-slate-400" />
                     Switch to Agency Banking
                   </button>
                   <button 
                     onClick={() => alert("Agency Banking is currently locked. Complete your compliance verification to unlock this feature.")}
-                    className="p-1 text-neutral-400 hover:text-white transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors"
                     title="Why is this locked?"
                   >
                     <HelpCircle className="h-4 w-4" />
                   </button>
                 </div>
-                <div className="h-4 w-[1px] bg-white/20" />
-
+                <div className="h-4 w-[1px] bg-slate-200" />
               </>
             )}
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-white/[0.05] border border-white/20 flex items-center justify-center font-bold text-xs text-white">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-800 shadow-2xs">
                 {state.user?.fullName ? state.user.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "AD"}
               </div>
-              <span className="text-xs font-bold text-[#E5E5EA] hidden sm:inline">
+              <span className="text-xs font-bold text-slate-900 hidden sm:inline">
                 {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Adidas Corporate"}
               </span>
             </div>
 
             <button
               onClick={toggleTheme}
-              className="p-2 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+              className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               title="Toggle Theme"
             >
-              {isLightTheme ? <Moon className="h-4 w-4 text-neutral-400 hover:text-white" /> : <Sun className="h-4 w-4 text-neutral-400 hover:text-white" />}
+              {isLightTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </button>
 
             <button
               onClick={handleLogout}
-              className="p-2 text-neutral-400 hover:text-white transition-colors"
+              className="p-2 text-slate-500 hover:text-red-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               title="Log Out"
             >
               <LogOut className="h-4 w-4" />
@@ -826,24 +823,24 @@ export default function AgencyDashboardPage() {
       </header>
 
       {/* Hero Header Space */}
-      <section className="bg-[#000000] border-b border-white/20 py-6 shadow-sm">
+      <section className="bg-white border-b border-slate-200/80 py-6 shadow-xs">
         <div className="max-w-[1520px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             {workspaceType === "brand" ? (
               <>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded">Active Campaign</span>
-                  <span className="text-xs text-neutral-400 font-mono">ID: ADIDAS-2026-Q3</span>
+                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">Active Campaign</span>
+                  <span className="text-xs text-slate-500 font-mono">ID: ADIDAS-2026-Q3</span>
                 </div>
-                <h1 className="text-2xl font-bold text-white mt-1 tracking-tight">Adidas Executive Billing</h1>
+                <h1 className="text-2xl font-extrabold text-slate-900 mt-1.5 tracking-tight">Adidas Executive Billing</h1>
               </>
             ) : (
               <>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-white bg-white/10 border border-white/20 px-2 py-0.5 rounded">Agency Account</span>
-                  <span className="text-xs text-neutral-400 font-mono">ID: {state.user?.agncyId || "AGNCY-9024"}</span>
+                  <span className="text-xs font-bold text-slate-800 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md">Agency Account</span>
+                  <span className="text-xs text-slate-500 font-mono">ID: {state.user?.agncyId || "AGNCY-9024"}</span>
                 </div>
-                <h1 className="text-2xl font-bold text-white mt-1 tracking-tight">
+                <h1 className="text-2xl font-extrabold text-slate-900 mt-1.5 tracking-tight">
                   {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Agency"} Revenue Portal
                 </h1>
               </>
@@ -854,9 +851,9 @@ export default function AgencyDashboardPage() {
           {workspaceType === "agency" && (
             <button
               onClick={() => setIsNewInvoiceOpen(true)}
-              className="h-10 px-5 rounded-lg bg-white hover:bg-neutral-200 text-black text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shrink-0 animate-fade-in"
+              className="h-10 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs shrink-0"
             >
-              <Sparkles className="h-4 w-4 text-black" />
+              <Sparkles className="h-4 w-4 text-white" />
               + New Invoice
             </button>
           )}
@@ -868,8 +865,6 @@ export default function AgencyDashboardPage() {
         
         {/* Left Column - Core Approval and Splits (Wider) */}
         <div className="lg:col-span-8 space-y-6">
-          
-
 
           {/* Analytics Cards Grid */}
           <div className={`grid gap-4 ${workspaceType === "brand" ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2"}`}>
@@ -912,36 +907,37 @@ export default function AgencyDashboardPage() {
                   ];
 
               return stats.map((stat, idx) => {
-                const isAwaitingApproval = stat.label === "Awaiting Approval";
-              return (
-                <div 
-                  key={idx} 
-                  className="bg-[#050505] rounded-xl border border-white/20 p-4 shadow-sm"
-                >
-                  <div className="flex justify-between items-start">
-                    <span className="text-[11px] font-bold text-[#8f8f8f] uppercase tracking-wider flex items-center gap-1">
-                      {stat.label}
-                    </span>
-                    <stat.icon className="h-4 w-4 text-[#8f8f8f]" />
+                return (
+                  <div 
+                    key={idx} 
+                    className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 transition-all"
+                  >
+                    <div className="flex justify-between items-start">
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                        {stat.label}
+                      </span>
+                      <stat.icon className="h-4 w-4 text-slate-400" />
+                    </div>
+                    <div className="mt-3">
+                      <p className="text-2xl font-extrabold text-slate-900 tracking-tight">{stat.value}</p>
+                      <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5 font-medium">
+                        {stat.trend && <span className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">{stat.trend}</span>}
+                        {stat.count || stat.detail}
+                      </p>
+                    </div>
                   </div>
-                  <div className="mt-2.5">
-                    <p className="text-lg font-bold text-white tracking-tight">{stat.value}</p>
-                    <p className="text-[10px] text-neutral-400 mt-1 flex items-center gap-1 font-semibold">
-                      {stat.trend && <span className="text-emerald-500 font-bold">{stat.trend}</span>}
-                      {stat.count || stat.detail}
-                    </p>
-                  </div>
-                </div>
-              );
+                );
               });
             })()}
-          </div>          {/* Pending Invoices Table */}
-          <div className="bg-[#050505] rounded-2xl border border-white/20 shadow-sm overflow-hidden mt-6">
-            <div className="p-6 border-b border-white/20 bg-white/[0.01] flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-white tracking-tight">agncypay</span>
-                <span className="text-neutral-500 font-medium text-xs">•</span>
-                <span className="text-neutral-400 font-semibold text-xs">
+          </div>
+
+          {/* Pending Invoices Table */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden mt-6">
+            <div className="p-5 sm:p-6 border-b border-slate-200 bg-slate-50/75 flex justify-between items-center">
+              <div className="flex items-center gap-2.5">
+                <span className="font-extrabold text-slate-900 tracking-tight text-sm">agncypay</span>
+                <span className="text-slate-400 font-medium text-xs">•</span>
+                <span className="text-slate-600 font-semibold text-xs">
                   Pending Invoices (Unpaid)
                 </span>
               </div>
@@ -951,15 +947,15 @@ export default function AgencyDashboardPage() {
               {isFetchingInvoices ? (
                 <InvoiceFetchingLoader title="Loading Pending Invoices" subtitle="Fetching platform and manual ledgers..." count={2} />
               ) : pendingInvoices.length === 0 ? (
-                <div className="py-12 flex flex-col items-center justify-center text-center bg-black/40">
-                  <CheckCircle2 className="h-8 w-8 text-[#10b95f] mx-auto mb-3 opacity-80" />
-                  <p className="text-sm font-bold text-white">No pending invoices</p>
-                  <p className="text-xs text-neutral-400 mt-1">All campaign ledgers are currently settled.</p>
+                <div className="py-12 flex flex-col items-center justify-center text-center bg-slate-50/40">
+                  <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto mb-3 opacity-90" />
+                  <p className="text-sm font-bold text-slate-900">No pending invoices</p>
+                  <p className="text-xs text-slate-500 mt-1">All campaign ledgers are currently settled.</p>
                 </div>
               ) : (
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="border-b border-white/20 bg-white/[0.02] text-xs font-semibold uppercase tracking-wider text-[#8f8f8f]">
+                    <tr className="border-b border-slate-200 bg-slate-50/60 text-xs font-semibold uppercase tracking-wider text-slate-500">
                       <th className="py-4 pl-6 font-semibold">Invoice</th>
                       <th className="py-4 font-semibold">Payer</th>
                       <th className="py-4 font-semibold">Job</th>
@@ -967,10 +963,10 @@ export default function AgencyDashboardPage() {
                       <th className="py-4 pr-6 font-semibold text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/10">
+                  <tbody className="divide-y divide-slate-100">
                     {pendingInvoices.slice(0, 4).map((inv) => (
-                      <tr key={inv.id} className="transition-colors hover:bg-white/[0.02]">
-                        <td className="py-4 pl-6 text-xs font-mono text-[#8f8f8f]">
+                      <tr key={inv.id} className="transition-colors hover:bg-slate-50/70">
+                        <td className="py-4 pl-6 text-xs font-mono font-semibold text-slate-500">
                           <div className="flex items-center gap-1.5">
                             {inv.isCrmSynced && inv.providerLogo && (
                               <img src={inv.providerLogo} alt="CRM" className="h-3.5 w-3.5 object-contain shrink-0" title="CRM Synced Invoice" />
@@ -978,14 +974,14 @@ export default function AgencyDashboardPage() {
                             <span>#{inv.id.substring(0, 8).toUpperCase()}</span>
                           </div>
                         </td>
-                        <td className="py-4 font-bold text-white max-w-[140px] truncate" title={inv.agency}>
+                        <td className="py-4 font-bold text-slate-900 max-w-[140px] truncate" title={inv.agency}>
                           {inv.agency}
                         </td>
                         <td className="py-4">
-                          <p className="text-white font-medium">{inv.campaign}</p>
-                          <p className="text-[10px] text-[#8f8f8f]">Due {inv.dueDate}</p>
+                          <p className="text-slate-800 font-medium">{inv.campaign}</p>
+                          <p className="text-[11px] text-slate-500">Due {inv.dueDate}</p>
                         </td>
-                        <td className="py-4 font-bold text-white">
+                        <td className="py-4 font-bold text-slate-900">
                           ${inv.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </td>
                         <td className="py-4 pr-6 text-right">
@@ -993,12 +989,12 @@ export default function AgencyDashboardPage() {
                             <button
                               type="button"
                               onClick={() => router.push(`/agencydashboard/invoices`)}
-                              className="p-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-white transition-all cursor-pointer flex items-center justify-center"
+                              className="p-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 hover:text-slate-900 transition-all cursor-pointer flex items-center justify-center shadow-2xs"
                               title="View Invoice Details"
                             >
-                              <Eye className="h-3.5 w-3.5" />
+                              <Eye className="h-4 w-4" />
                             </button>
-                            <span className="text-[10px] font-bold text-neutral-500">Awaiting Payer</span>
+                            <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Awaiting Payer</span>
                           </div>
                         </td>
                       </tr>
@@ -1009,11 +1005,11 @@ export default function AgencyDashboardPage() {
             </div>
             
             {pendingInvoices.length > 4 && (
-              <div className="p-4 bg-white/[0.01] border-t border-white/10 flex justify-center items-center">
+              <div className="p-4 bg-slate-50/50 border-t border-slate-200 flex justify-center items-center">
                 <button
                   type="button"
                   onClick={() => router.push("/agencydashboard/invoices")}
-                  className="px-5 py-2.5 rounded-xl bg-white text-black hover:bg-neutral-200 font-bold text-xs flex items-center gap-2 transition-all shadow-sm cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-bold text-xs flex items-center gap-2 transition-all shadow-xs cursor-pointer"
                 >
                   <span>View All ({pendingInvoices.length}) Invoices</span>
                   <ChevronRight className="h-4 w-4" />
@@ -1023,7 +1019,7 @@ export default function AgencyDashboardPage() {
           </div>
 
           {/* Open an Account Banner under Pending Invoices */}
-          <div className="mt-6 w-full h-[300px] md:h-[360px] rounded-2xl overflow-hidden shadow-lg transition-transform hover:scale-[1.005] duration-300 relative">
+          <div className="mt-6 w-full h-[300px] md:h-[360px] rounded-2xl overflow-hidden shadow-xs border border-slate-200 transition-transform hover:scale-[1.005] duration-300 relative">
             <img 
               src="/models/homepagebottomimage1.png" 
               alt="Open an Account" 
@@ -1033,11 +1029,11 @@ export default function AgencyDashboardPage() {
 
           {/* Empty State for Agency */}
           {workspaceType === "agency" && !activeInvoice && (
-            <div className="bg-[#050505] rounded-2xl border border-white/20 p-8 text-center shadow-sm mt-6">
-              <CheckCircle2 className="h-8 w-8 text-[#10b95f] mx-auto mb-3 animate-pulse" />
-              <h3 className="text-sm font-bold text-white">No Invoices Found</h3>
-              <p className="text-xs text-neutral-400 mt-1.5 max-w-xs mx-auto leading-relaxed">
-                You haven't created any invoices yet. Click the "+ New Invoice" button to issue your first split campaign invoice.
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-8 text-center shadow-xs mt-6">
+              <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto mb-3 animate-pulse" />
+              <h3 className="text-sm font-bold text-slate-900">No Invoices Found</h3>
+              <p className="text-xs text-slate-500 mt-1.5 max-w-xs mx-auto leading-relaxed">
+                You haven&apos;t created any invoices yet. Click the &quot;+ New Invoice&quot; button to issue your first split campaign invoice.
               </p>
             </div>
           )}
@@ -1050,8 +1046,8 @@ export default function AgencyDashboardPage() {
           <IntegrationsPanel />
 
             {/* Recent Transactions Ledger */}
-            <div className="bg-[#050505] rounded-2xl border border-white/20 p-5 shadow-sm">
-              <h3 className="text-xs font-black uppercase tracking-wider text-[#8f8f8f] pb-3 border-b border-white/20">
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 pb-3 border-b border-slate-200">
                 Recent Transactions
               </h3>
 
@@ -1063,7 +1059,7 @@ export default function AgencyDashboardPage() {
                   
                   if (realTxs.length === 0) {
                     return (
-                      <div className="py-6 text-center text-xs text-neutral-500 font-semibold">
+                      <div className="py-6 text-center text-xs text-slate-400 font-semibold">
                         No recent transactions found
                       </div>
                     );
@@ -1072,8 +1068,8 @@ export default function AgencyDashboardPage() {
                   return realTxs.map((tx) => (
                     <div key={tx.id} className="flex justify-between items-start gap-4 text-xs">
                       <div className="min-w-0">
-                        <p className="font-bold text-white truncate leading-tight">{tx.campaign}</p>
-                        <div className="mt-1 flex items-center gap-2 text-[10px] text-[#8f8f8f] font-semibold">
+                        <p className="font-bold text-slate-900 truncate leading-tight">{tx.campaign}</p>
+                        <div className="mt-1 flex items-center gap-2 text-[11px] text-slate-500 font-medium">
                           <span>{new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                           <span>•</span>
                           <span>{workspaceType === "brand" ? "Net-30" : "Net-0 (Instant)"}</span>
@@ -1081,8 +1077,8 @@ export default function AgencyDashboardPage() {
                       </div>
 
                       <div className="text-right shrink-0">
-                        <p className="font-bold text-white">${tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        <span className="text-[10px] text-white font-bold block mt-0.5">{workspaceType === "brand" ? "ACH Direct" : "AgncyPay Wallet"}</span>
+                        <p className="font-bold text-slate-900">${tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <span className="text-[10px] text-slate-500 font-semibold block mt-0.5">{workspaceType === "brand" ? "ACH Direct" : "AgncyPay Wallet"}</span>
                       </div>
                     </div>
                   ));
@@ -1091,26 +1087,26 @@ export default function AgencyDashboardPage() {
           </div>
 
           {/* Connected Banking Feeds */}
-          <div className="bg-[#0A0A0A] light:bg-white rounded-xl border border-white/10 light:border-black/10 overflow-hidden shadow-sm flex flex-col">
-            <div className="p-5 border-b border-white/10 light:border-black/10 bg-white/[0.01] light:bg-slate-50 flex items-center justify-between">
+          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs flex flex-col">
+            <div className="p-5 sm:p-6 border-b border-slate-200 bg-slate-50/75 flex items-center justify-between">
               <div>
-                <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#8f8f8f] light:text-[#475569]">CONNECTED BANKING FEEDS</h3>
-                <p className="text-[11px] text-neutral-500 mt-0.5">Real-time commercial balances verified via Plaid</p>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">CONNECTED BANKING FEEDS</h3>
+                <p className="text-xs text-slate-500 mt-0.5">Real-time commercial balances verified via Plaid</p>
               </div>
               <button
                 type="button"
                 onClick={handleConnectPlaid}
                 disabled={isPlaidLoading}
-                className="px-3.5 py-1.5 rounded-lg bg-white light:bg-black border border-white light:border-black text-black light:text-white text-[11px] font-bold hover:bg-neutral-200 light:hover:bg-neutral-800 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-sm"
+                className="px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-xs"
               >
                 {isPlaidLoading ? (
                   <>
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-black light:text-white" />
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-white" />
                     Connecting...
                   </>
                 ) : (
                   <>
-                    <Plus className="h-3.5 w-3.5 text-black light:text-white" />
+                    <Plus className="h-3.5 w-3.5 text-white" />
                     + Connect Bank (Plaid)
                   </>
                 )}
@@ -1118,49 +1114,49 @@ export default function AgencyDashboardPage() {
             </div>
 
             {plaidError && (
-              <div className="p-3 bg-white/10 light:bg-slate-100 border-b border-white/20 light:border-black/20 text-white light:text-black text-xs font-semibold flex items-center justify-between px-5">
+              <div className="p-3 bg-red-50 border-b border-red-200 text-red-700 text-xs font-semibold flex items-center justify-between px-5">
                 <span>{plaidError}</span>
-                <button onClick={() => setPlaidError(null)} className="text-white light:text-black hover:opacity-75 cursor-pointer">
+                <button onClick={() => setPlaidError(null)} className="text-red-700 hover:opacity-75 cursor-pointer">
                   <X className="h-3.5 w-3.5" />
                 </button>
               </div>
             )}
             
-            <div className="p-5 flex flex-col gap-3 bg-white/[0.01] light:bg-white">
+            <div className="p-5 flex flex-col gap-3 bg-white">
               {plaidAccounts.length > 0 ? (
                 plaidAccounts.map((acc) => (
                   <div
                     key={acc.id}
-                    className="flex items-center justify-between p-4 rounded-xl border border-white/15 light:border-black/15 bg-white/[0.03] light:bg-slate-50 hover:border-white/30 light:hover:border-black/30 transition-all shadow-sm"
+                    className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50/60 hover:border-slate-300 transition-all shadow-2xs"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-20 h-12 rounded-lg border border-white/15 light:border-black/15 bg-black flex items-center justify-center shrink-0 shadow-inner overflow-hidden">
+                      <div className="w-16 h-10 rounded-lg border border-slate-200 bg-white flex items-center justify-center shrink-0 shadow-2xs overflow-hidden">
                         {getCardImage(acc.institutionName) ? (
                           <img src={getCardImage(acc.institutionName)!} alt={acc.name} className="h-full w-full object-cover bg-white" />
                         ) : (
-                          <Building2 className="h-6 w-6 text-white light:text-black" />
+                          <Building2 className="h-5 w-5 text-slate-700" />
                         )}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <h4 className="text-[13px] font-bold text-white light:text-black">{acc.institutionName} — {acc.name}</h4>
+                          <h4 className="text-xs sm:text-sm font-bold text-slate-900">{acc.institutionName} — {acc.name}</h4>
                         </div>
-                        <p className="text-[11px] font-medium text-neutral-400 mt-0.5 font-mono">
+                        <p className="text-[11px] font-medium text-slate-500 mt-0.5 font-mono">
                           {acc.subtype?.toUpperCase()} ••••{acc.mask}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="text-right">
-                        <span className="text-[14px] font-bold text-white light:text-black font-mono block">
+                        <span className="text-sm font-bold text-slate-900 font-mono block">
                           ${acc.availableBalance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
-                        <span className="text-[10px] text-neutral-400 font-medium">Available Balance</span>
+                        <span className="text-[10px] text-slate-500 font-medium">Available Balance</span>
                       </div>
                       <button
                         onClick={() => handleDisconnectPlaidAccount(acc.id)}
                         title="Disconnect Bank Feed"
-                        className="p-1.5 rounded-lg border border-white/10 light:border-black/10 bg-white/5 light:bg-white text-neutral-400 light:text-neutral-500 hover:text-white light:hover:text-black hover:border-white/30 light:hover:border-black/30 transition-all cursor-pointer"
+                        className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-all cursor-pointer"
                       >
                         <X className="h-3.5 w-3.5" />
                       </button>
@@ -1168,7 +1164,7 @@ export default function AgencyDashboardPage() {
                   </div>
                 ))
               ) : (
-                <div className="py-8 text-center text-xs font-medium text-neutral-500">
+                <div className="py-8 text-center text-xs font-medium text-slate-500">
                   No bank feeds connected. Click &quot;+ Connect Bank (Plaid)&quot; above to link your commercial checking or treasury account.
                 </div>
               )}
@@ -1179,16 +1175,16 @@ export default function AgencyDashboardPage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-white/20 bg-black py-8 text-xs text-neutral-400 mt-12">
+      <footer className="border-t border-slate-200/80 bg-white py-8 text-xs text-slate-500 mt-12">
         <div className="max-w-[1520px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
-            <img src="/agncypaybrand.png" alt="AgncyPay" className="h-8 w-auto filter contrast-125" />
+            <img src="/agncypaybrand.png" alt="AgncyPay" className={`h-8 w-auto ${isLightTheme ? "[filter:invert(1)_brightness(0.15)]" : ""}`} />
             <p>© 2026 AgncyPay. All rights reserved.</p>
           </div>
-          <div className="flex gap-6 font-semibold">
-            <a href="#" className="hover:text-white transition-colors">Integration Help</a>
-            <a href="#" className="hover:text-white transition-colors">ERP Integration API</a>
-            <a href="#" className="hover:text-white transition-colors">Security Rules</a>
+          <div className="flex gap-6 font-medium text-slate-600">
+            <a href="#" className="hover:text-slate-900 transition-colors">Integration Help</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">ERP Integration API</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Security Rules</a>
           </div>
         </div>
       </footer>
@@ -1196,36 +1192,36 @@ export default function AgencyDashboardPage() {
       {/* New Invoice Modal */}
       <AnimatePresence>
         {isNewInvoiceOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 sm:p-6 backdrop-blur-sm overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 sm:p-6 backdrop-blur-xs overflow-y-auto">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
               transition={{ duration: 0.2 }}
-              className="w-full max-w-[480px] max-h-[85vh] overflow-y-auto rounded-3xl border border-white/20 light:border-black/15 bg-[#0A0A0A] light:bg-white p-6 sm:p-7 shadow-2xl relative text-left my-auto text-white light:text-[#0F172A]"
+              className="w-full max-w-[480px] max-h-[85vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 sm:p-7 shadow-2xl relative text-left my-auto text-slate-900"
             >
-              <div className="pb-4 border-b border-white/20 light:border-black/15 flex items-center justify-between">
+              <div className="pb-4 border-b border-slate-200 flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-bold text-white light:text-[#0F172A] tracking-tight">
+                  <h2 className="text-lg font-bold text-slate-900 tracking-tight">
                     Create New Invoice
                   </h2>
-                  <p className="text-[11px] text-neutral-400 light:text-[#475569] mt-1">
+                  <p className="text-xs text-slate-500 mt-1">
                     Issue a campaign split invoice. Payout structures (15% agency, 85% talent) will auto-generate.
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsNewInvoiceOpen(false)}
-                  className="p-2 rounded-xl text-neutral-400 light:text-[#475569] hover:bg-white/10 light:hover:bg-black/5 hover:text-white light:hover:text-[#0F172A] transition-colors cursor-pointer shrink-0"
+                  className="p-2 rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer shrink-0"
                   title="Close Modal"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
-              <form onSubmit={handleCreateInvoice} className="mt-6 space-y-4">
+              <form onSubmit={handleCreateInvoice} className="mt-5 space-y-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Campaign Name
                   </label>
                   <input
@@ -1234,25 +1230,25 @@ export default function AgencyDashboardPage() {
                     placeholder="e.g. Autumn Brand Socials"
                     value={newCampaign}
                     onChange={(e) => setNewCampaign(e.target.value)}
-                    className="mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all"
+                    className="mt-1.5 h-11 w-full border border-slate-200 bg-slate-50 rounded-xl px-4 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 focus:bg-white transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Select Brand Client
                   </label>
                   <select
                     required
                     value={selectedBrandEmail}
                     onChange={(e) => setSelectedBrandEmail(e.target.value)}
-                    className="mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all cursor-pointer"
+                    className="mt-1.5 h-11 w-full border border-slate-200 bg-slate-50 rounded-xl px-4 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 focus:bg-white transition-all cursor-pointer"
                   >
                     {registeredBrands.length === 0 ? (
                       <option value="" disabled>No registered brands found</option>
                     ) : (
                       registeredBrands.map((b, idx) => (
-                        <option key={b.id || b.email || idx} value={b.email} className="bg-[#0A0A0A] text-white">
+                        <option key={b.id || b.email || idx} value={b.email} className="bg-white text-slate-900">
                           {b.fullName || b.workspaceName || b.email} ({b.email})
                         </option>
                       ))
@@ -1262,17 +1258,17 @@ export default function AgencyDashboardPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider">
                       Select Talent (Optional)
                     </label>
                     <select
                       value={selectedTalentEmail}
                       onChange={(e) => setSelectedTalentEmail(e.target.value)}
-                      className="mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all cursor-pointer"
+                      className="mt-1.5 h-11 w-full border border-slate-200 bg-slate-50 rounded-xl px-3 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 focus:bg-white transition-all cursor-pointer"
                     >
                       <option value="">Select Talent (Optional)</option>
                       {registeredTalents.map((t, idx) => (
-                        <option key={t.id || t.email || idx} value={t.email} className="bg-[#0A0A0A] text-white">
+                        <option key={t.id || t.email || idx} value={t.email} className="bg-white text-slate-900">
                           {t.fullName || t.name || t.email}
                         </option>
                       ))}
@@ -1280,7 +1276,7 @@ export default function AgencyDashboardPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider">
                       Invoice Total ($)
                     </label>
                     <input
@@ -1290,13 +1286,13 @@ export default function AgencyDashboardPage() {
                       placeholder="e.g. 14999.98"
                       value={newAmount}
                       onChange={(e) => setNewAmount(e.target.value)}
-                      className="mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all"
+                      className="mt-1.5 h-11 w-full border border-slate-200 bg-slate-50 rounded-xl px-4 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 focus:bg-white transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Due Date
                   </label>
                   <input
@@ -1304,31 +1300,31 @@ export default function AgencyDashboardPage() {
                     required
                     value={newDue}
                     onChange={(e) => setNewDue(e.target.value)}
-                    className="mt-2 h-11 w-full border border-white/20 bg-black rounded-lg px-4 text-xs font-semibold text-white outline-none focus:border-white transition-all [color-scheme:dark]"
+                    className="mt-1.5 h-11 w-full border border-slate-200 bg-slate-50 rounded-xl px-4 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all"
                   />
                 </div>
 
-                <div className="pt-4 border-t border-white/20 flex gap-3 justify-end text-xs">
+                <div className="pt-4 border-t border-slate-200 flex gap-3 justify-end text-xs">
                   <button
                     type="button"
                     onClick={() => setIsNewInvoiceOpen(false)}
-                    className="h-10 px-4 rounded-lg border border-white/20 bg-[#050505] font-bold text-white hover:bg-white/5 transition-all cursor-pointer"
+                    className="h-10 px-4 rounded-xl border border-slate-200 bg-white font-bold text-slate-700 hover:bg-slate-100 transition-all cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isCreatingInvoice}
-                    className="h-10 px-5 rounded-lg bg-white hover:bg-neutral-200 text-black font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 animate-pulse"
+                    className="h-10 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-xs"
                   >
                     {isCreatingInvoice ? (
                       <>
-                        <Loader2 className="h-4 w-4 animate-spin text-black" />
+                        <Loader2 className="h-4 w-4 animate-spin text-white" />
                         Creating...
                       </>
                     ) : (
                       <>
-                        <Check className="h-4 w-4 text-black" />
+                        <Check className="h-4 w-4 text-white" />
                         Create Invoice
                       </>
                     )}
@@ -1343,33 +1339,33 @@ export default function AgencyDashboardPage() {
 
       {/* Plaid Institution Link Sandbox Modal */}
       {isPlaidModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-[#0A0A0A] light:bg-white border border-white/20 light:border-black/15 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl flex flex-col">
-            <div className="p-6 border-b border-white/10 light:border-black/10 flex items-center justify-between bg-white/[0.02] light:bg-slate-50">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl flex flex-col">
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-white/10 light:bg-slate-200 border border-white/20 light:border-black/20 flex items-center justify-center shrink-0">
-                  <ShieldCheck className="h-5 w-5 text-white light:text-black" />
+                <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="h-5 w-5 text-slate-800" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-base font-bold text-white light:text-black">Link Bank Account</h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 light:bg-slate-200 text-white light:text-black border border-white/20 light:border-black/20">
+                    <h3 className="text-base font-bold text-slate-900">Link Bank Account</h3>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
                       Verified by Plaid
                     </span>
                   </div>
-                  <p className="text-xs text-neutral-400 light:text-neutral-500 mt-0.5">Select an institution to connect your commercial banking feed</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Select an institution to connect your commercial banking feed</p>
                 </div>
               </div>
               <button
                 onClick={() => !connectingBankName && setIsPlaidModalOpen(false)}
-                className="p-1.5 rounded-lg border border-white/10 light:border-black/10 text-neutral-400 hover:text-white light:hover:text-black hover:bg-white/5 light:hover:bg-slate-200 transition-all cursor-pointer"
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
             <div className="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
-              <p className="text-xs font-semibold text-neutral-400 light:text-neutral-500 uppercase tracking-wider">Major Commercial Institutions</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Major Commercial Institutions</p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {availablePlaidBanks.map((bank) => {
@@ -1383,38 +1379,38 @@ export default function AgencyDashboardPage() {
                       disabled={isConnected || !!connectingBankName}
                       className={`p-4 rounded-xl border text-left flex flex-col justify-between transition-all relative overflow-hidden ${
                         isConnected 
-                          ? "bg-white/[0.02] light:bg-slate-100 border-white/10 light:border-black/10 opacity-50 cursor-not-allowed"
+                          ? "bg-slate-50 border-slate-200 opacity-60 cursor-not-allowed"
                           : isThisConnecting
-                          ? "bg-white/10 light:bg-slate-200 border-white/40 light:border-black/40 cursor-wait"
-                          : "bg-white/[0.03] light:bg-slate-50 border-white/15 light:border-black/15 hover:border-white/40 light:hover:border-black/40 hover:bg-white/[0.06] light:hover:bg-slate-100 cursor-pointer shadow-sm hover:shadow-md"
+                          ? "bg-slate-100 border-slate-300 cursor-wait"
+                          : "bg-white border-slate-200 hover:border-slate-400 hover:bg-slate-50 cursor-pointer shadow-sm hover:shadow"
                       }`}
                     >
                       <div className="flex items-start justify-between gap-2 mb-3">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-lg bg-white/10 light:bg-white border border-white/15 light:border-black/15 flex items-center justify-center shrink-0">
-                            <Building2 className="w-4 h-4 text-white light:text-black" />
+                          <div className="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
+                            <Building2 className="w-4 h-4 text-slate-700" />
                           </div>
                           <div>
-                            <p className="text-sm font-bold text-white light:text-black leading-tight">{bank.institutionName}</p>
-                            <p className="text-[10px] text-neutral-400 mt-0.5 font-mono">••••{bank.mask}</p>
+                            <p className="text-sm font-bold text-slate-900 leading-tight">{bank.institutionName}</p>
+                            <p className="text-[10px] text-slate-500 mt-0.5 font-mono">••••{bank.mask}</p>
                           </div>
                         </div>
                         {isConnected && (
-                          <span className="text-[10px] font-extrabold text-white light:text-black px-2 py-0.5 bg-white/10 light:bg-slate-200 rounded-full border border-white/20 light:border-black/20">
+                          <span className="text-[10px] font-extrabold text-emerald-700 px-2 py-0.5 bg-emerald-50 rounded-full border border-emerald-200">
                             Linked
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center justify-between border-t border-white/10 light:border-black/10 pt-2.5 mt-1">
-                        <span className="text-[10px] text-neutral-400 font-medium">{bank.name}</span>
+                      <div className="flex items-center justify-between border-t border-slate-100 pt-2.5 mt-1">
+                        <span className="text-[10px] text-slate-500 font-medium">{bank.name}</span>
                         {isThisConnecting ? (
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-white light:text-black">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
                             <span>Linking...</span>
                           </div>
                         ) : (
-                          <span className="text-xs font-bold font-mono text-white light:text-black">
+                          <span className="text-xs font-bold font-mono text-slate-900">
                             ${bank.balance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </span>
                         )}
@@ -1425,14 +1421,14 @@ export default function AgencyDashboardPage() {
               </div>
             </div>
 
-            <div className="p-4 bg-white/[0.01] light:bg-slate-50 border-t border-white/10 light:border-black/10 flex items-center justify-between text-xs text-neutral-500 px-6">
+            <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 px-6">
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-white light:text-black" />
+                <ShieldCheck className="w-4 h-4 text-slate-700" />
                 256-bit AES end-to-end encryption via Plaid
               </span>
               <button 
                 onClick={() => !connectingBankName && setIsPlaidModalOpen(false)}
-                className="font-bold text-white light:text-black hover:underline cursor-pointer"
+                className="font-bold text-slate-900 hover:underline cursor-pointer"
               >
                 Close Sandbox
               </button>

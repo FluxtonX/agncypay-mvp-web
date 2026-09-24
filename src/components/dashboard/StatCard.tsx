@@ -24,31 +24,40 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "rounded-xl border border-[#1F1F1F] bg-[#0A0A0A] p-5 flex flex-col justify-between min-h-[120px]",
+        "rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-2xs hover:shadow-xs hover:border-slate-300/80 transition-all duration-200 flex flex-col justify-between min-h-[135px]",
         className
       )}
     >
-      <div className="flex justify-between items-start">
-        <span className="text-[11px] font-semibold text-[#6B7280] uppercase tracking-wider">
+      <div className="flex justify-between items-start gap-3">
+        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
           {title}
         </span>
         {icon && (
-          <div className="p-2 rounded-lg bg-[#111] border border-[#1F1F1F] text-[#6B7280] shrink-0">
+          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-slate-600 shrink-0">
             {icon}
           </div>
         )}
       </div>
       <div>
-        <h3 className="text-2xl font-bold text-white tracking-tight mt-3">{value}</h3>
+        <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-2.5">
+          {value}
+        </h3>
         {(description || trend) && (
-          <div className="flex items-center gap-1.5 mt-1.5 text-[11px]">
+          <div className="flex flex-wrap items-center gap-2 mt-2 text-xs">
             {trend && (
-              <span className={cn("font-semibold", trend.isPositive ? "text-white" : "text-[#bdbdbd]")}>
+              <span
+                className={cn(
+                  "inline-flex items-center px-2 py-0.5 rounded-full font-semibold text-[11px] border",
+                  trend.isPositive
+                    ? "bg-emerald-50 text-emerald-700 border-emerald-200/60"
+                    : "bg-rose-50 text-rose-700 border-rose-200/60"
+                )}
+              >
                 {trend.value}
               </span>
             )}
             {description && (
-              <span className="text-[#4B5563] truncate">{description}</span>
+              <span className="text-slate-500 font-normal truncate">{description}</span>
             )}
           </div>
         )}

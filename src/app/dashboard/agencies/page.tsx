@@ -94,9 +94,9 @@ function StatCard({
   value: string;
 }) {
   return (
-    <section className="flex h-[135px] flex-col justify-center rounded-[13px] border border-[#676767] bg-black px-[30px]">
-      <p className="text-[17px] leading-5 text-[#777]">{title}</p>
-      <p className="mt-[17px] text-[36px] font-semibold leading-none text-white">
+    <section className="flex flex-col justify-center rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs transition-all">
+      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">{title}</p>
+      <p className="mt-2 text-2xl font-black text-slate-900 tracking-tight">
         {value}
       </p>
     </section>
@@ -111,53 +111,66 @@ function AgencyCard({
   onViewDetails: (agency: Agency) => void;
 }) {
   return (
-    <section className="rounded-[13px] border border-[#676767] bg-black px-[29px] py-[29px]">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex min-w-0 items-center gap-[15px]">
-          <div className="flex h-[41px] w-[41px] shrink-0 items-center justify-center rounded-[8px] border border-[#505050] bg-[#121212] text-[#d8d8d8]">
-            <Building2 className="h-[24px] w-[24px]" />
-          </div>
-          <div className="min-w-0">
-            <div className="flex min-w-0 flex-wrap items-center gap-3">
-              <h2 className="truncate text-[31px] font-semibold leading-none text-white">
-                {agency.name}
-              </h2>
-              <span className="inline-flex h-[28px] items-center rounded-[7px] border border-[#444] bg-[#101010] px-[11px] font-mono text-[13px] font-semibold leading-none text-[#d7d7d7]">
-                {agency.agencyId}
-              </span>
+    <section className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs flex flex-col justify-between transition-all hover:shadow-sm">
+      <div>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-slate-700">
+              <Building2 className="h-5 w-5" />
             </div>
-            <p className="mt-[9px] text-[14px] font-semibold leading-4 text-[#777]">
-              Agency ID
-            </p>
+            <div className="min-w-0">
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
+                <h2 className="truncate text-lg font-bold text-slate-900">
+                  {agency.name}
+                </h2>
+                <span className="inline-flex items-center rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 font-mono text-[11px] font-bold text-slate-600">
+                  {agency.agencyId}
+                </span>
+              </div>
+              <p className="mt-0.5 text-xs text-slate-500 font-medium">
+                Verified Counterparty
+              </p>
+            </div>
+          </div>
+          <span
+            className={cn(
+              "inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold",
+              agency.status === "Active"
+                ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                : "border-slate-200 bg-slate-100 text-slate-600"
+            )}
+          >
+            {agency.status}
+          </span>
+        </div>
+
+        <div className="mt-5 space-y-2 rounded-xl border border-slate-200/70 bg-slate-50/50 p-3.5">
+          <div className="flex items-center gap-2.5 text-xs text-slate-600">
+            <Mail className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+            <span className="truncate">{agency.email}</span>
+          </div>
+          <div className="flex items-center gap-2.5 text-xs text-slate-600">
+            <Phone className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+            <span>{agency.phone}</span>
           </div>
         </div>
-        <span
-          className={cn(
-            "inline-flex h-[28px] min-w-[102px] items-center justify-center rounded-[7px] border px-[15px] text-[15px] font-semibold leading-none",
-            agency.status === "Active"
-              ? "border-[#d7d7d7] bg-[#4a4a4a] text-white"
-              : "border-[#383838] bg-[#161616] text-[#b8b8b8]"
-          )}
-        >
-          {agency.status}
-        </span>
-      </div>
 
-      <div className="mt-[34px] space-y-[14px]">
-        <div className="flex items-center gap-[12px] text-[17px] leading-5 text-[#9b9b9b]">
-          <Mail className="h-[19px] w-[19px] shrink-0" />
-          <span className="truncate">{agency.email}</span>
-        </div>
-        <div className="flex items-center gap-[12px] text-[17px] leading-5 text-[#9b9b9b]">
-          <Phone className="h-[19px] w-[19px] shrink-0" />
-          <span>{agency.phone}</span>
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="rounded-xl border border-slate-200/80 bg-white p-3">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Total Spend</p>
+            <p className="mt-1 text-base font-black text-slate-900">{formatCompactMoney(agency.totalSpend)}</p>
+          </div>
+          <div className="rounded-xl border border-slate-200/80 bg-white p-3">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Invoices</p>
+            <p className="mt-1 text-base font-black text-slate-900">{agency.invoices}</p>
+          </div>
         </div>
       </div>
 
       <button
         type="button"
         onClick={() => onViewDetails(agency)}
-        className="mt-[29px] h-[40px] w-full rounded-[7px] border border-[#686868] bg-[#0c0c0c] text-[17px] font-semibold text-white transition-colors hover:border-[#8a8a8a]"
+        className="mt-5 h-10 w-full rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50 hover:border-slate-300 shadow-xs cursor-pointer"
       >
         View Details
       </button>
@@ -214,35 +227,35 @@ export default function AgenciesPage() {
   };
 
   return (
-    <div className="w-full max-w-[1048px]">
-      <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+    <div className="w-full max-w-7xl space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-[34px] font-semibold leading-none text-white">
+          <h1 className="text-2xl font-black tracking-tight text-slate-900">
             Agencies
           </h1>
-          <p className="mt-[18px] text-[20px] leading-6 text-[#9b9b9b]">
-            Manage your agency relationships and partnerships
+          <p className="mt-1 text-sm text-slate-500 max-w-2xl">
+            Manage your agency partnerships, settlement profiles, and spend distribution.
           </p>
         </div>
 
         <button
           type="button"
           onClick={() => setIsAddOpen(true)}
-          className="inline-flex h-[41px] items-center justify-center gap-[13px] rounded-[7px] border border-white bg-white px-[33px] text-[17px] font-semibold text-black transition-colors hover:bg-[#e8e8e8] md:mt-[14px]"
+          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white transition-all hover:bg-slate-800 active:scale-[0.99] shadow-sm cursor-pointer whitespace-nowrap"
         >
-          <Plus className="h-[18px] w-[18px]" />
+          <Plus className="h-4 w-4" />
           Add Agency
         </button>
       </div>
 
-      <div className="mt-[31px] grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-[29px]">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard title="Total Agencies" value={stats.totalAgencies.toString()} />
         <StatCard title="Total Spend (YTD)" value={formatCompactMoney(stats.totalSpend)} />
         <StatCard title="Active Invoices" value={stats.activeInvoices.toString()} />
         <StatCard title="Avg. Monthly Spend" value={formatCompactMoney(stats.monthlySpend)} />
       </div>
 
-      <div className="mt-[29px] grid grid-cols-1 gap-[29px] xl:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {agencies.map((agency) => (
           <AgencyCard
             key={agency.id}
@@ -253,36 +266,36 @@ export default function AgenciesPage() {
       </div>
 
       {isAddOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4 py-6 backdrop-blur-sm">
           <form
             onSubmit={addAgency}
-            className="w-full max-w-[520px] rounded-[13px] border border-[#676767] bg-black p-[29px] shadow-2xl"
+            className="w-full max-w-[500px] rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-150"
           >
-            <div className="flex items-center justify-between gap-4">
-              <h2 className="text-[29px] font-semibold leading-none text-white">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <h2 className="text-lg font-bold text-slate-900">
                 Add Agency
               </h2>
               <button
                 type="button"
                 onClick={() => setIsAddOpen(false)}
                 aria-label="Close add agency"
-                className="flex h-9 w-9 items-center justify-center rounded-[7px] border border-[#444] text-[#b8b8b8] hover:border-[#777] hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="mt-[28px] grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {[
                 ["Agency Name", "name", "Creative Studio"],
                 ["Agency ID", "agencyId", "AGY-1006"],
                 ["Email", "email", "billing@example.com"],
                 ["Phone", "phone", "+1 (555) 000-0000"],
               ].map(([label, key, placeholder]) => (
-                <label key={key} className="flex flex-col gap-2">
-                  <span className="text-[14px] font-semibold text-[#8d8d8d]">
+                <div key={key} className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                     {label}
-                  </span>
+                  </label>
                   <input
                     required
                     value={form[key as keyof typeof form]}
@@ -293,31 +306,40 @@ export default function AgenciesPage() {
                       }))
                     }
                     placeholder={placeholder}
-                    className="h-[40px] rounded-[7px] border border-[#555] bg-[#0c0c0c] px-3 text-[15px] text-white outline-none placeholder:text-[#666] focus:border-[#8a8a8a]"
+                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 text-xs text-slate-900 outline-none placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 transition-all"
                   />
-                </label>
+                </div>
               ))}
             </div>
 
-            <button
-              type="submit"
-              className="mt-[28px] h-[42px] w-full rounded-[7px] border border-white bg-white text-[16px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
-            >
-              Save Agency
-            </button>
+            <div className="mt-6 flex items-center justify-end gap-2.5 border-t border-slate-100 pt-4">
+              <button
+                type="button"
+                onClick={() => setIsAddOpen(false)}
+                className="h-10 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="h-10 rounded-xl bg-slate-900 px-5 text-xs font-bold text-white hover:bg-slate-800 transition-all shadow-sm cursor-pointer"
+              >
+                Save Agency
+              </button>
+            </div>
           </form>
         </div>
       )}
 
       {activeAgency && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-          <section className="w-full max-w-[560px] rounded-[13px] border border-[#676767] bg-black p-[29px] shadow-2xl">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex min-w-0 items-center gap-[15px]">
-                <div className="flex h-[43px] w-[43px] shrink-0 items-center justify-center rounded-[8px] border border-[#505050] bg-[#121212]">
-                  <Building2 className="h-[24px] w-[24px] text-[#d8d8d8]" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4 py-6 backdrop-blur-sm">
+          <section className="w-full max-w-[500px] rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-100">
+                  <Building2 className="h-5 w-5 text-slate-700" />
                 </div>
-                <h2 className="truncate text-[29px] font-semibold leading-none text-white">
+                <h2 className="truncate text-lg font-bold text-slate-900">
                   {activeAgency.name}
                 </h2>
               </div>
@@ -325,40 +347,50 @@ export default function AgenciesPage() {
                 type="button"
                 onClick={() => setActiveAgency(null)}
                 aria-label="Close agency details"
-                className="flex h-9 w-9 items-center justify-center rounded-[7px] border border-[#444] text-[#b8b8b8] hover:border-[#777] hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="mt-[29px] space-y-[15px] border-b border-[#343434] pb-[24px]">
-              <p className="flex items-center gap-[12px] text-[17px] text-[#b8b8b8]">
-                <span className="font-semibold text-[#777]">Agency ID</span>
-                <span className="font-mono text-white">{activeAgency.agencyId}</span>
+            <div className="mt-5 space-y-3 border-b border-slate-100 pb-5">
+              <p className="flex items-center justify-between text-xs text-slate-600">
+                <span className="font-semibold text-slate-500">Agency ID</span>
+                <span className="font-mono font-bold text-slate-900">{activeAgency.agencyId}</span>
               </p>
-              <p className="flex items-center gap-[12px] text-[17px] text-[#b8b8b8]">
-                <Mail className="h-[19px] w-[19px]" />
-                {activeAgency.email}
+              <p className="flex items-center justify-between text-xs text-slate-600">
+                <span className="font-semibold text-slate-500">Contact Email</span>
+                <span className="font-medium text-slate-900">{activeAgency.email}</span>
               </p>
-              <p className="flex items-center gap-[12px] text-[17px] text-[#b8b8b8]">
-                <Phone className="h-[19px] w-[19px]" />
-                {activeAgency.phone}
+              <p className="flex items-center justify-between text-xs text-slate-600">
+                <span className="font-semibold text-slate-500">Telephone</span>
+                <span className="font-medium text-slate-900">{activeAgency.phone}</span>
               </p>
             </div>
 
-            <div className="mt-[24px] grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-[14px] text-[#777]">Status</p>
-                <p className="mt-2 text-[18px] font-semibold text-white">
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Current Status</p>
+                <p className="mt-1 text-sm font-bold text-slate-900">
                   {activeAgency.status}
                 </p>
               </div>
-              <div>
-                <p className="text-[14px] text-[#777]">Agency ID</p>
-                <p className="mt-2 text-[18px] font-semibold text-white">
-                  {activeAgency.agencyId}
+              <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Total Spend</p>
+                <p className="mt-1 text-sm font-bold text-slate-900">
+                  {formatCompactMoney(activeAgency.totalSpend)}
                 </p>
               </div>
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setActiveAgency(null)}
+                className="h-10 rounded-xl bg-slate-900 px-5 text-xs font-bold text-white hover:bg-slate-800 transition-all cursor-pointer shadow-sm"
+              >
+                Close
+              </button>
             </div>
           </section>
         </div>

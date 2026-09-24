@@ -25,16 +25,16 @@ import {
 } from "../../lib/mainboard";
 
 const statusStyles: Record<MainboardInvoiceStatus, string> = {
-  Ready: "border-white bg-white text-black",
-  Pending: "border-[#3a3a3a] bg-[#111] text-[#d7d7d7]",
-  "Needs approval": "border-[#3a3a3a] bg-[#111] text-[#d7d7d7]",
-  Processing: "border-[#3a3a3a] bg-[#151515] text-white",
-  Paid: "border-[#2a2a2a] bg-black text-[#a7a7a7]",
+  Ready: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  Pending: "border-amber-200 bg-amber-50 text-amber-700",
+  "Needs approval": "border-amber-200 bg-amber-50 text-amber-700",
+  Processing: "border-blue-200 bg-blue-50 text-blue-700",
+  Paid: "border-slate-200 bg-slate-100 text-slate-700",
 };
 
 function StatusBadge({ status }: { status: MainboardInvoiceStatus }) {
   return (
-    <span className={cn("inline-flex h-7 items-center rounded-[6px] border px-3 text-[12px] font-semibold", statusStyles[status])}>
+    <span className={cn("inline-flex h-6 items-center rounded-lg border px-2.5 text-[11px] font-bold", statusStyles[status])}>
       {status}
     </span>
   );
@@ -125,87 +125,87 @@ export default function MainboardPage() {
   const totalToPay = selectedInvoicesList.reduce((sum, inv) => sum + inv.amount + inv.fee, 0);
 
   return (
-    <div className="min-h-screen bg-black text-white relative">
-      <header className="sticky top-0 z-30 border-b border-[#151515] bg-black/95 backdrop-blur">
-        <div className="mx-auto flex h-[76px] max-w-[1480px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans relative">
+      <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex h-[70px] max-w-[1480px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-[#252525] bg-[#050505] px-3 text-[13px] font-semibold text-white hover:border-[#555]">
+            <Link href="/dashboard" className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors">
               <ArrowLeft className="h-4 w-4" />
               Dashboard
             </Link>
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#777]">Mainboard LLC</p>
-              <h1 className="text-[20px] font-semibold text-white">Accounts Payable</h1>
+              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Mainboard LLC</p>
+              <h1 className="text-lg font-black text-slate-900">Accounts Payable</h1>
             </div>
           </div>
 
-          <div className="hidden w-full max-w-[520px] items-center gap-3 lg:flex">
+          <div className="hidden w-full max-w-[480px] items-center gap-3 lg:flex">
             <div className="relative w-full">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#777]" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search invoice, payee, job, or status"
-                className="h-11 w-full rounded-[7px] border border-[#2b2b2b] bg-[#050505] pl-10 pr-4 text-[14px] text-white outline-none placeholder:text-[#666] focus:border-[#666]"
+                className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-10 pr-4 text-xs font-medium text-slate-900 outline-none placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all"
               />
             </div>
           </div>
 
           <button
             onClick={() => setIsCheckoutOpen(true)}
-            className="inline-flex h-11 items-center gap-2 rounded-[7px] border border-white bg-white px-4 text-[13px] font-semibold text-black hover:bg-[#ededed] shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all"
+            className="inline-flex h-10 items-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 shadow-sm transition-all"
           >
-            <ShieldCheck className="w-4 h-4" />
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
             Pay with AgncyPay
           </button>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1480px] px-4 py-5 sm:px-6 lg:px-8">
-        <section className="grid grid-cols-1 gap-4 md:grid-cols-4">
+      <main className="mx-auto max-w-[1480px] px-4 py-8 sm:px-6 lg:px-8">
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             ["Ready to pay", readyInvoices.length.toString(), formatMainboardMoney(totalReady)],
             ["Needs approval", invoices.filter((invoice) => invoice.status === "Needs approval").length.toString(), "Finance review"],
             ["Processing", invoices.filter((invoice) => invoice.status === "Processing").length.toString(), "AgncyPay sync"],
             ["Paid this month", invoices.filter((invoice) => invoice.status === "Paid").length.toString(), "Receipts available"],
           ].map(([label, value, detail]) => (
-            <article key={label} className="rounded-[8px] border border-[#252525] bg-[#050505] p-4">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#777]">{label}</p>
-              <p className="mt-5 text-[30px] font-semibold leading-none text-white">{value}</p>
-              <p className="mt-2 text-[13px] text-[#9a9a9a]">{detail}</p>
+            <article key={label} className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">{label}</p>
+              <p className="mt-3 text-3xl font-black text-slate-900 tracking-tight">{value}</p>
+              <p className="mt-1.5 text-xs font-medium text-slate-500">{detail}</p>
             </article>
           ))}
         </section>
 
-        <section className="mt-5 mx-auto max-w-[1040px] flex flex-col gap-5">
-          <div className="space-y-5">
-            <section className="rounded-[8px] border border-[#252525] bg-[#050505]">
-              <div className="flex flex-col gap-3 border-b border-[#1f1f1f] p-4 sm:flex-row sm:items-center sm:justify-between">
+        <section className="mt-7 mx-auto max-w-[1100px] flex flex-col gap-6">
+          <div className="space-y-6">
+            <section className="rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
+              <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 className="text-[18px] font-semibold text-white">Payments</h2>
-                  <p className="mt-1 text-[13px] text-[#8f8f8f]">Review approved vendor invoices and submit payment through AgncyPay.</p>
+                  <h2 className="text-base font-bold text-slate-900">Payments Ledger</h2>
+                  <p className="mt-0.5 text-xs font-medium text-slate-500">Review approved vendor invoices and submit payment through AgncyPay.</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={exportSelected}
-                    className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-[#333] bg-black px-3 text-[13px] font-semibold text-white hover:border-[#666]"
+                    className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm transition-colors"
                   >
-                    <Download className="h-4 w-4" />
+                    <Download className="h-4 w-4 text-slate-500" />
                     Export
                   </button>
                   <button
                     onClick={() => setIsCheckoutOpen(true)}
-                    className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-[#333] bg-[#0F172A] px-4 text-[13px] font-semibold text-white hover:border-[#1E293B] shadow-[0_0_15px_rgba(15,23,42,0.5)] transition-all"
+                    className="inline-flex h-9 items-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 shadow-sm transition-all"
                   >
-                    <ShieldCheck className="w-4 h-4 text-[#38BDF8]" />
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
                     Pay with AgncyPay
                   </button>
                 </div>
               </div>
 
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[920px] table-fixed text-left">
+                <table className="w-full min-w-[920px] table-fixed text-left text-xs">
                   <colgroup>
                     <col className="w-[48px]" />
                     <col className="w-[116px]" />
@@ -216,7 +216,7 @@ export default function MainboardPage() {
                     <col className="w-[118px]" />
                   </colgroup>
                   <thead>
-                    <tr className="h-11 border-b border-[#202020] text-[11px] font-semibold uppercase tracking-[0.08em] text-[#777]">
+                    <tr className="h-11 border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-500">
                       <th className="pl-4">
                         <input
                           type="checkbox"
@@ -227,7 +227,7 @@ export default function MainboardPage() {
                               current.length === filteredInvoices.length ? [] : filteredInvoices.map((invoice) => invoice.id)
                             )
                           }
-                          className="h-4 w-4 accent-white"
+                          className="h-4 w-4 rounded accent-slate-900"
                         />
                       </th>
                       <th>Invoice</th>
@@ -247,7 +247,7 @@ export default function MainboardPage() {
                         <tr
                           key={invoice.id}
                           onClick={() => setSelectedInvoiceId(invoice.id)}
-                          className={cn("h-[68px] cursor-pointer border-b border-[#1d1d1d] hover:bg-white/[0.03]", isActive && "bg-white/[0.05]")}
+                          className={cn("h-16 cursor-pointer border-b border-slate-100 hover:bg-slate-50/80 transition-colors", isActive && "bg-slate-50")}
                         >
                           <td className="pl-4">
                             <input
@@ -260,20 +260,20 @@ export default function MainboardPage() {
                                 );
                               }}
                               onClick={(event) => event.stopPropagation()}
-                              className="h-4 w-4 accent-white"
+                              className="h-4 w-4 rounded accent-slate-900"
                             />
                           </td>
-                          <td className="font-mono text-[14px] font-semibold text-white">{invoice.invoiceNumber}</td>
+                          <td className="font-mono text-xs font-bold text-slate-900">{invoice.invoiceNumber}</td>
                           <td>
-                            <p className="truncate text-[14px] font-semibold text-white">{invoice.recipient}</p>
-                            <p className="mt-1 truncate text-[12px] text-[#8f8f8f]">{invoice.email}</p>
+                            <p className="truncate text-xs font-bold text-slate-900">{invoice.recipient}</p>
+                            <p className="mt-0.5 truncate text-[11px] text-slate-500">{invoice.email}</p>
                           </td>
                           <td>
-                            <p className="truncate text-[14px] text-white">{invoice.jobType}</p>
-                            <p className="mt-1 text-[12px] text-[#8f8f8f]">{invoice.poNumber}</p>
+                            <p className="truncate text-xs text-slate-800">{invoice.jobType}</p>
+                            <p className="mt-0.5 text-[11px] text-slate-500">{invoice.poNumber}</p>
                           </td>
-                          <td className="text-[13px] text-[#d7d7d7]">{invoice.due}</td>
-                          <td className="text-[14px] font-semibold text-white">{formatMainboardMoney(invoice.amount + invoice.fee)}</td>
+                          <td className="text-xs text-slate-600 font-medium">{invoice.due}</td>
+                          <td className="text-xs font-bold text-slate-900">{formatMainboardMoney(invoice.amount + invoice.fee)}</td>
                           <td>
                             <StatusBadge status={invoice.status} />
                           </td>
@@ -286,25 +286,24 @@ export default function MainboardPage() {
             </section>
 
             {selectedIds.length > 0 && (
-              <section className="rounded-[8px] border border-[#0F172A] bg-[#020617] p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#38BDF8]/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+              <section className="rounded-2xl border border-slate-200 bg-slate-900 text-white p-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between shadow-lg relative overflow-hidden">
                 <div className="relative z-10">
-                  <p className="text-[14px] font-bold text-white">{selectedIds.length} invoice{selectedIds.length === 1 ? "" : "s"} selected</p>
-                  <p className="mt-1 text-[13px] text-[#94A3B8]">Ready for batch payment via AgncyPay integration.</p>
+                  <p className="text-sm font-bold text-white">{selectedIds.length} invoice{selectedIds.length === 1 ? "" : "s"} selected</p>
+                  <p className="mt-0.5 text-xs text-slate-300">Ready for batch payment via AgncyPay integration.</p>
                 </div>
                 <div className="flex items-center gap-3 relative z-10">
                   <button
                     type="button"
                     onClick={() => setSelectedIds([])}
-                    className="h-10 rounded-[7px] border border-[#334155] bg-transparent px-4 text-[13px] font-semibold text-white hover:bg-[#1E293B]"
+                    className="h-9 rounded-xl border border-slate-700 bg-transparent px-4 text-xs font-bold text-white hover:bg-slate-800 transition-colors"
                   >
                     Clear
                   </button>
                   <button
                     onClick={() => setIsCheckoutOpen(true)}
-                    className="h-10 rounded-[7px] bg-[#F8FAFC] px-5 text-[13px] font-bold text-[#0F172A] hover:bg-white shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center gap-2"
+                    className="h-9 rounded-xl bg-white px-4 text-xs font-bold text-slate-900 hover:bg-slate-100 shadow-sm flex items-center gap-2 transition-all active:scale-[0.99]"
                   >
-                    <ShieldCheck className="w-4 h-4 text-[#0F172A]" />
+                    <ShieldCheck className="w-4 h-4 text-slate-900" />
                     Batch Pay
                   </button>
                 </div>

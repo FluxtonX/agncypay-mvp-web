@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Download, Loader2, ChevronLeft } from "lucide-react";
+import { Download, Loader2, ChevronLeft, Users, Building2, DollarSign } from "lucide-react";
 import { cn } from "../../../lib/utils";
 
 export default function VendorsPage() {
@@ -40,105 +40,142 @@ export default function VendorsPage() {
     currency: "USD",
   }).format(totalBalance);
 
+  const activeVendorsCount = vendors.filter((v) => v.active).length;
+
   return (
-    <div className="mx-auto w-full max-w-[1048px] px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-6">
+    <div className="mx-auto w-full max-w-[1200px] px-4 py-6 sm:px-6 lg:px-8 space-y-6">
+      <div>
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#8f8f8f] transition-colors hover:text-white"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors mb-3"
         >
           <ChevronLeft className="h-4 w-4" />
           Back to Dashboard
         </Link>
-      </div>
-
-      <div>
-        <h1 className="text-[34px] font-semibold leading-none text-white">
-          Vendors Registry
-        </h1>
-        <p className="mt-[18px] text-[20px] leading-6 text-[#9b9b9b]">
-          Manage vendor profiles, contact details, account numbers, and outstanding balances.
-        </p>
-      </div>
-
-      <section className="mt-[29px] rounded-[13px] border border-[#676767] bg-black px-[29px] py-[31px]">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h2 className="text-[29px] font-semibold leading-none text-white">
-              Vendor Contacts
-            </h2>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              Vendors Registry
+            </h1>
+            <p className="mt-1 text-sm text-slate-500">
+              Manage vendor profiles, contact details, account numbers, and outstanding balances.
+            </p>
           </div>
-
           <button
             type="button"
-            className="inline-flex h-[40px] items-center justify-center gap-[12px] rounded-[7px] border border-[#5a5a5a] bg-[#0c0c0c] px-[16px] text-[16px] font-semibold text-white transition-colors hover:border-[#777]"
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-2xs transition-colors self-start sm:self-auto"
           >
-            <Download className="h-4 w-4" />
-            Export
+            <Download className="h-4 w-4 text-slate-400" />
+            Export Registry
           </button>
         </div>
+      </div>
 
-        <div className="mt-[32px] overflow-x-auto">
+      {/* KPI Metric Summary Cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold text-slate-500">Total Vendors</p>
+            <p className="mt-1 text-2xl font-bold text-slate-900">{vendors.length}</p>
+          </div>
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+            <Users className="h-5 w-5" />
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold text-slate-500">Active Accounts</p>
+            <p className="mt-1 text-2xl font-bold text-slate-900">{activeVendorsCount}</p>
+          </div>
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+            <Building2 className="h-5 w-5" />
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold text-slate-500">Total Owed Balance</p>
+            <p className="mt-1 text-2xl font-bold text-slate-900">{formattedTotal}</p>
+          </div>
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-50 text-purple-700 border border-purple-200/60">
+            <DollarSign className="h-5 w-5" />
+          </div>
+        </div>
+      </div>
+
+      {/* Main Vendor Table Card */}
+      <section className="rounded-2xl border border-slate-200/80 bg-white shadow-xs overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200/80 flex items-center justify-between">
+          <h2 className="text-base font-bold text-slate-900">
+            Vendor Contacts
+          </h2>
+          <span className="text-xs font-medium text-slate-500">
+            {vendors.length} contacts synced from QuickBooks
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
           {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-6 w-6 animate-spin text-[#8f8f8f]" />
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
             </div>
           ) : (
-            <table className="min-w-[900px] table-fixed text-left w-full">
+            <table className="min-w-[900px] table-fixed text-left w-full text-xs">
               <colgroup>
-                <col className="w-[280px]" />
-                <col className="w-[240px]" />
+                <col className="w-[300px]" />
+                <col className="w-[260px]" />
                 <col className="w-[140px]" />
                 <col className="w-[120px]" />
-                <col className="w-[120px]" />
+                <col className="w-[140px]" />
               </colgroup>
               <thead>
-                <tr className="h-[48px] border-b border-[#555] text-[17px] font-semibold leading-none text-[#8d8d8d]">
-                  <th className="pl-[10px] pr-4">Vendor / Company</th>
-                  <th>Contact Info</th>
-                  <th>Account #</th>
-                  <th className="text-right">Status</th>
-                  <th className="text-right pr-4">Owed Balance</th>
+                <tr className="h-10 border-b border-slate-200 bg-slate-50/75 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                  <th className="pl-6 pr-4">Vendor / Company</th>
+                  <th className="px-3">Contact Info</th>
+                  <th className="px-3">Account #</th>
+                  <th className="px-3 text-right">Status</th>
+                  <th className="pr-6 pl-3 text-right">Owed Balance</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-slate-100">
                 {vendors.map((item, i) => (
                   <tr
                     key={`${item.name}-${i}`}
-                    className="h-[64px] border-b border-[#303030] last:border-b-0 text-[17px] leading-none transition-colors hover:bg-white/[0.02]"
+                    className="h-14 hover:bg-slate-50/70 transition-colors"
                   >
-                    <td className="pl-[10px] pr-4">
+                    <td className="pl-6 pr-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] border border-[#303030] bg-[#060606]">
-                          <span className="text-[14px] font-black text-white">{item.fallback}</span>
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-slate-800 font-bold text-xs">
+                          {item.fallback}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-semibold text-white truncate max-w-[200px]">{item.name}</p>
-                          {item.company && <p className="text-[11px] text-[#7f7f7f] truncate max-w-[200px]">{item.company}</p>}
+                          <p className="font-semibold text-slate-900 truncate max-w-[220px]">{item.name}</p>
+                          {item.company && <p className="text-[11px] text-slate-400 truncate max-w-[220px]">{item.company}</p>}
                         </div>
                       </div>
                     </td>
-                    <td className="text-[#c8c8c8] truncate max-w-[220px]">
+                    <td className="px-3 text-slate-600 truncate max-w-[240px]">
                       <p>{item.email}</p>
-                      {item.phone && item.phone !== "No Phone" && <p className="text-[11px] text-[#7f7f7f]">{item.phone}</p>}
+                      {item.phone && item.phone !== "No Phone" && <p className="text-[11px] text-slate-400">{item.phone}</p>}
                     </td>
-                    <td className="text-[#b8b8b8]">{item.acctNum}</td>
-                    <td className="text-right">
+                    <td className="px-3 font-mono text-slate-500">{item.acctNum}</td>
+                    <td className="px-3 text-right">
                       <span className={cn(
                         "inline-flex h-6 items-center rounded-full border px-2.5 text-[10px] font-bold",
                         item.active
-                          ? "border-[#10b95f]/30 bg-[#082315] text-[#70ff9e]"
-                          : "border-[#3a3a3a] bg-[#1a1a1a] text-[#8f8f8f]"
+                          ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                          : "border-slate-200 bg-slate-100 text-slate-600"
                       )}>
                         {item.active ? "Active" : "Inactive"}
                       </span>
                     </td>
-                    <td className="text-right pr-4 font-semibold text-white">{item.balance}</td>
+                    <td className="pr-6 pl-3 text-right font-bold text-slate-900">{item.balance}</td>
                   </tr>
                 ))}
                 {vendors.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="h-[120px] text-center text-[17px] text-[#8f8f8f]">
+                    <td colSpan={5} className="h-32 text-center text-sm text-slate-400">
                       No vendors found.
                     </td>
                   </tr>
@@ -147,17 +184,6 @@ export default function VendorsPage() {
             </table>
           )}
         </div>
-
-        {!loading && vendors.length > 0 && (
-          <div className="mt-6 flex justify-end">
-            <div className="flex w-full max-w-[320px] items-center justify-between rounded-[9px] border border-[#303030] bg-[#060606] px-5 py-4">
-              <span className="text-[17px] font-semibold text-[#8d8d8d]">Total Owed</span>
-              <span className="text-[24px] font-black tracking-tight text-white">
-                {formattedTotal}
-              </span>
-            </div>
-          </div>
-        )}
       </section>
     </div>
   );

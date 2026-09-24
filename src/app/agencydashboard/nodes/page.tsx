@@ -31,7 +31,7 @@ export default function NodesDashboardPage() {
   const { state, resetState } = useApp();
   const workspaceType = state.user ? state.user.accountType : "brand";
 
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isLightTheme, setIsLightTheme] = useState(true);
   const [invoices, setInvoices] = useState<FirestoreInvoice[]>([]);
   const [processingId, setProcessingId] = useState<string | null>(null);
 

@@ -325,64 +325,64 @@ export default function InvoicesQueuePage() {
   return (
     <main className="min-h-screen bg-background text-foreground flex flex-col font-sans antialiased relative transition-colors duration-200">
       {/* Header */}
-      <header className="border-b border-border-custom bg-background/90 sticky top-0 z-50 shadow-sm backdrop-blur">
+      <header className="border-b border-slate-200/80 bg-white/95 sticky top-0 z-50 shadow-xs backdrop-blur-md">
         <div className="max-w-[1520px] mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <div className="relative flex items-center mr-12">
-              <Link href="/branddashboard" className="flex items-center cursor-pointer z-50 hover:opacity-80 transition-opacity">
+            <div className="relative flex items-center mr-10">
+              <Link href="/branddashboard" className="flex items-center cursor-pointer z-50 hover:opacity-85 transition-opacity">
                 <img
                   src="/agncypaybrand.png"
                   alt="AgncyPay"
-                  className="h-12 w-auto object-contain scale-[1.56] origin-left transition-transform"
+                  className={`h-11 w-auto object-contain scale-[1.5] origin-left transition-transform ${isLightTheme ? "[filter:invert(1)_brightness(0.15)]" : ""}`}
                 />
               </Link>
             </div>
-            <span className="h-4 w-[1px] bg-white/20 hidden md:block" />
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 light:bg-black/5 border border-white/20 light:border-black/10 text-[11px] font-bold uppercase tracking-wider text-white light:text-[#0F172A]">
-              <Building2 className="h-3 w-3 text-white light:text-[#0F172A]" />
+            <span className="h-4 w-[1px] bg-slate-200 hidden md:block" />
+            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100/70 border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <Building2 className="h-3.5 w-3.5 text-slate-700" />
               Brand Portal (Corporate)
             </div>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.03] p-1 rounded-full border border-white/20">
+          <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100/70 p-1 rounded-2xl border border-slate-200">
             <button
               onClick={() => router.push("/branddashboard")}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold text-[#8f8f8f] light:text-[#475569] hover:text-white light:hover:text-[#0F172A] transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
             >
               Home
             </button>
             <button
               onClick={() => router.push("/branddashboard/invoices")}
-              className="px-4 py-1.5 rounded-full text-xs font-bold bg-white light:bg-[#0F172A] text-black light:text-white shadow-sm border border-white/20 light:border-black/10 transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-xs border border-slate-900 transition-all cursor-pointer"
             >
               Invoices & Approvals
             </button>
             <button
               onClick={() => router.push("/branddashboard/wallet")}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold text-[#8f8f8f] light:text-[#475569] hover:text-white light:hover:text-[#0F172A] transition-all cursor-pointer flex items-center gap-1.5"
+              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer flex items-center gap-1.5"
             >
               Treasury
             </button>
           </nav>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-white/[0.05] border border-white/20 flex items-center justify-center font-bold text-xs text-white">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-800 shadow-2xs">
                 {state.user?.fullName ? state.user.fullName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2) : "AD"}
               </div>
-              <span className={`text-xs font-bold ${isLightTheme ? "text-[#0F172A]" : "text-[#E5E5EA]"} hidden sm:inline`}>
+              <span className="text-xs font-bold text-slate-900 hidden sm:inline">
                 {state.user?.fullName || "Adidas Corporate"}
               </span>
             </div>
             <button
               onClick={toggleTheme}
-              className="p-2 text-neutral-400 hover:text-white transition-colors cursor-pointer mr-1"
+              className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer mr-1"
               title="Toggle Theme"
             >
               {isLightTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </button>
 
-            <button onClick={handleLogout} className="p-2 text-neutral-400 hover:text-white transition-colors" title="Log Out">
+            <button onClick={handleLogout} className="p-2 text-slate-500 hover:text-red-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer" title="Log Out">
               <LogOut className="h-4 w-4" />
             </button>
           </div>
@@ -395,33 +395,33 @@ export default function InvoicesQueuePage() {
         <div className="flex items-center gap-2">
           <Link
             href="/branddashboard"
-            className="p-2 rounded-lg border border-white/20 hover:border-white/20 hover:bg-white/[0.02] text-xs font-bold text-[#8f8f8f] hover:text-white transition-all flex items-center gap-1.5 shrink-0"
+            className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-600 hover:text-slate-900 shadow-2xs transition-all flex items-center gap-1.5 shrink-0"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Dashboard
           </Link>
-          <span className="text-xs text-neutral-500">/</span>
-          <span className="text-xs text-neutral-300 font-semibold">Corporate Payables & Invoices</span>
+          <span className="text-xs text-slate-400">/</span>
+          <span className="text-xs text-slate-600 font-semibold">Corporate Payables & Invoices</span>
         </div>
 
         {/* Top Balance Card & Settlement CTA */}
-        <div className="bg-[#050505] rounded-3xl border border-white/20 p-6 md:p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 flex flex-col justify-between shadow-xs relative overflow-hidden">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
-              <span className="text-xs font-bold text-[#8f8f8f] uppercase tracking-wider block">{displayLabel}</span>
-              <span className="text-4xl md:text-5xl font-black text-white tracking-tight mt-1.5 block">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">{displayLabel}</span>
+              <span className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-1.5 block">
                 ${displayAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
-              <div className="mt-4 flex items-center gap-3 text-xs text-neutral-400">
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4 text-[#8f8f8f]" />
+              <div className="mt-4 flex items-center gap-3 text-xs text-slate-500">
+                <span className="flex items-center gap-1.5 font-medium">
+                  <Calendar className="h-4 w-4 text-slate-400" />
                   {selectedIds.length > 0
                     ? `Selected: ${selectedIds.length} invoice(s)`
                     : `Due: ${recentPendingInvoice?.dueDate || activeInvoice?.dueDate || "Net-30"}`}
                 </span>
                 <span>•</span>
-                <span className="text-emerald-400 font-medium flex items-center gap-1">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-emerald-700 font-semibold flex items-center gap-1.5 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Cybrid Cloud Clearing Active
                 </span>
               </div>
@@ -432,10 +432,10 @@ export default function InvoicesQueuePage() {
               <button
                 onClick={handleApproveAndPay}
                 disabled={!isAwaitingStatus}
-                className={`w-full h-12 px-6 rounded-2xl text-xs font-black shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                className={`w-full h-12 px-6 rounded-xl text-xs font-bold shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
                   isAwaitingStatus
-                    ? "bg-white text-black hover:bg-neutral-200 shadow-white/10"
-                    : "bg-white/10 text-neutral-400 cursor-default border border-white/10"
+                    ? "bg-slate-900 text-white hover:bg-slate-800"
+                    : "bg-slate-100 text-slate-400 cursor-default border border-slate-200"
                 }`}
               >
                 {isAwaitingStatus ? (
@@ -445,7 +445,7 @@ export default function InvoicesQueuePage() {
                   </>
                 ) : (
                   <>
-                    <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
+                    <CheckCircle2 className="h-4.5 w-4.5 text-emerald-600" />
                     All Invoices Settled
                   </>
                 )}
@@ -453,24 +453,24 @@ export default function InvoicesQueuePage() {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-            <div className="flex items-center gap-2.5 text-[#8f8f8f]">
-              <Layers className="h-4 w-4 text-neutral-400" />
+          <div className="mt-8 pt-6 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-600">
+            <div className="flex items-center gap-2.5">
+              <Layers className="h-4 w-4 text-slate-400" />
               <span>Automated Payee Routing & Split</span>
             </div>
-            <div className="flex items-center gap-2.5 text-[#8f8f8f]">
-              <Landmark className="h-4 w-4 text-neutral-400" />
+            <div className="flex items-center gap-2.5">
+              <Landmark className="h-4 w-4 text-slate-400" />
               <span>Direct ACH / Fedwire Deposit Available</span>
             </div>
-            <div className="flex items-center gap-2.5 text-[#8f8f8f]">
-              <ShieldCheck className="h-4 w-4 text-emerald-400" />
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="h-4 w-4 text-emerald-600" />
               <span>FDIC-Insured Partner Vault Custody</span>
             </div>
           </div>
         </div>
 
         {/* Filter Controls & Search */}
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center p-3 rounded-2xl border bg-[#050505] border-white/20">
+        <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center p-3 rounded-2xl border border-slate-200/80 bg-white shadow-xs">
           <div className="flex flex-wrap gap-2">
             {[
               { id: "all", label: "All Invoices" },
@@ -485,13 +485,13 @@ export default function InvoicesQueuePage() {
                 }}
                 className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
                   activeFilter === tab.id
-                    ? "bg-white text-black font-bold shadow-sm"
-                    : "text-[#8f8f8f] hover:text-white bg-transparent hover:bg-white/[0.02]"
+                    ? "bg-slate-900 text-white font-bold shadow-xs"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                 }`}
               >
                 {tab.label}
                 {tab.id === "awaiting_approval" && (
-                  <span className="ml-1.5 px-1.5 py-0.5 rounded bg-white/10 text-neutral-300 text-[10px] font-bold">
+                  <span className={`ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold ${activeFilter === tab.id ? "bg-white/20 text-white" : "bg-slate-100 text-slate-700"}`}>
                     {invoices.filter((i) => i.status === "awaiting_approval").length}
                   </span>
                 )}
@@ -506,20 +506,20 @@ export default function InvoicesQueuePage() {
             />
 
             <div className="relative md:w-72">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8f8f8f]" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search campaign, invoice ID..."
-                className="w-full h-9 bg-black border border-white/20 focus:border-white/40 rounded-xl pl-9 pr-4 text-xs outline-none placeholder:text-neutral-600 transition-colors text-white"
+                className="w-full h-10 bg-slate-50 border border-slate-200 focus:border-slate-900 focus:bg-white rounded-xl pl-9 pr-4 text-xs outline-none placeholder:text-slate-400 transition-all text-slate-900"
               />
             </div>
           </div>
         </div>
 
         {/* Invoices List Table */}
-        <div className="bg-[#050505] rounded-2xl border border-white/20 overflow-hidden shadow-xl">
+        <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
           {filteredInvoices.length === 0 ? (
             <div className="p-8">
               <EmptyState
@@ -539,11 +539,11 @@ export default function InvoicesQueuePage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="border-b border-white/20 bg-white/[0.01] text-[#8f8f8f] font-bold">
+                  <tr className="border-b border-slate-200 bg-slate-50/75 text-slate-500 font-bold uppercase tracking-wider">
                     <th className="p-4 w-10">
                       <input
                         type="checkbox"
-                        className="h-4 w-4 accent-white rounded border-white/20 bg-transparent cursor-pointer"
+                        className="h-4 w-4 accent-slate-900 rounded border-slate-300 cursor-pointer"
                         onChange={(e) => {
                           const awaitingInvs = filteredInvoices.filter((i) => i.status === "awaiting_approval");
                           setSelectedIds(e.target.checked ? awaitingInvs.map((i) => i.id) : []);
@@ -564,7 +564,7 @@ export default function InvoicesQueuePage() {
                     <th className="p-4 text-right pr-6">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/[0.04]">
+                <tbody className="divide-y divide-slate-100">
                   {filteredInvoices.map((inv) => {
                     const isAwaiting = inv.status === "awaiting_approval";
                     const isSelected = selectedInvoiceId === inv.id;
@@ -578,15 +578,15 @@ export default function InvoicesQueuePage() {
                         }}
                         className={`cursor-pointer transition-all group ${
                           isSelected || selectedIds.includes(inv.id)
-                            ? "bg-white/[0.07] border-l-4 border-l-white"
-                            : "hover:bg-white/[0.02]"
+                            ? "bg-slate-50 border-l-4 border-l-slate-900"
+                            : "hover:bg-slate-50/60"
                         }`}
                       >
                         <td className="p-4 w-10" onClick={(e) => e.stopPropagation()}>
                           {isAwaiting && (
                             <input
                               type="checkbox"
-                              className="h-4 w-4 accent-white rounded border-white/20 bg-transparent cursor-pointer"
+                              className="h-4 w-4 accent-slate-900 rounded border-slate-300 cursor-pointer"
                               checked={selectedIds.includes(inv.id)}
                               onChange={() => {
                                 setSelectedIds((curr) =>
@@ -596,24 +596,24 @@ export default function InvoicesQueuePage() {
                             />
                           )}
                         </td>
-                        <td className="p-4 font-mono font-bold text-neutral-300">
+                        <td className="p-4 font-mono font-bold text-slate-600">
                           {inv.id}
                         </td>
                         <td className="p-4">
-                          <p className="text-white font-bold">{inv.campaignName}</p>
-                          <p className="text-[10px] text-neutral-500 mt-0.5">{inv.brandName}</p>
+                          <p className="text-slate-900 font-bold">{inv.campaignName}</p>
+                          <p className="text-[11px] text-slate-500 mt-0.5">{inv.brandName}</p>
                         </td>
-                        <td className="p-4 text-white font-semibold">{inv.vendorFee?.name || "Agency Workspace"}</td>
-                        <td className="p-4 text-neutral-400 font-mono">{inv.dueDate || "Net-30"}</td>
-                        <td className="p-4 text-right font-black text-white">
+                        <td className="p-4 text-slate-800 font-semibold">{inv.vendorFee?.name || "Agency Workspace"}</td>
+                        <td className="p-4 text-slate-500 font-mono">{inv.dueDate || "Net-30"}</td>
+                        <td className="p-4 text-right font-black text-slate-900 text-sm">
                           ${inv.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </td>
                         <td className="p-4 text-center">
                           <span
                             className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                               isAwaiting
-                                ? "bg-amber-950/60 text-amber-300 border border-amber-800/30 animate-pulse"
-                                : "bg-emerald-950/60 text-emerald-300 border border-emerald-800/30"
+                                ? "bg-amber-50 text-amber-800 border border-amber-200 animate-pulse"
+                                : "bg-emerald-50 text-emerald-800 border border-emerald-200"
                             }`}
                           >
                             {isAwaiting ? "Awaiting Settlement" : "Settled"}
@@ -631,12 +631,12 @@ export default function InvoicesQueuePage() {
                                 });
                                 setIsSinglePaymentOpen(true);
                               }}
-                              className="px-3.5 py-1.5 rounded-xl bg-white text-black hover:bg-white/90 text-xs font-bold transition-transform active:scale-95"
+                              className="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer"
                             >
                               Pay Now
                             </button>
                           ) : (
-                            <span className="text-xs text-neutral-500 font-medium">Reconciled</span>
+                            <span className="text-xs text-slate-400 font-medium">Reconciled</span>
                           )}
                         </td>
                       </tr>
