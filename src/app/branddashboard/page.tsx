@@ -89,7 +89,7 @@ interface PlaidAccount {
 const getCardImage = (institutionName: string) => {
   const norm = institutionName.toLowerCase();
   if (norm.includes("chase")) return "/chase-ink-business-unlimited.png";
-  if (norm.includes("mercury")) return "/mercurycard.png";
+  if (norm.includes("mercury")) return "/mercury-io-cards-3x2.png";
   if (norm.includes("bank of america")) return "https://business.bankofamerica.com/content/dam/consumer/business/deposits/checking-accounts/debit-cards/bofa_busdbtcm_v.png";
   return undefined;
 };
@@ -1009,11 +1009,11 @@ export default function BrandDashboardPage() {
         <div className="max-w-[1520px] mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="relative flex items-center mr-10">
-              <Link href="/branddashboard" className="flex items-center cursor-pointer z-50 hover:opacity-85 transition-opacity" aria-label="AgncyPay home">
+              <Link href="/branddashboard" className="flex items-center cursor-pointer z-50 hover:opacity-90 transition-opacity" aria-label="AgncyPay home">
                 <img
-                  src="/agncypaybrand.png"
+                  src="/agncypaybrand-dark.png"
                   alt="AgncyPay"
-                  className={`h-11 w-auto object-contain scale-[1.5] origin-left transition-transform ${isLightTheme ? "[filter:invert(1)_brightness(0.15)]" : ""}`}
+                  className="h-8 sm:h-9 w-auto object-contain"
                 />
               </Link>
             </div>
@@ -1110,26 +1110,30 @@ export default function BrandDashboardPage() {
           <div>
             {workspaceType === "brand" ? (
               <>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold text-slate-600 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-mono font-bold text-slate-700 bg-slate-100 border border-slate-200/90 px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     ID: {state.user?.activeWorkspaceId || state.user?.agncyId || "WS-2026-Q3"}
                   </span>
                   <span className="h-3 w-[1px] bg-slate-200" />
-                  <span className="text-xs font-mono text-slate-500">
+                  <span className="text-xs font-mono text-slate-500 font-medium">
                     {state.user?.email || "adidas.admin@company.com"}
                   </span>
                 </div>
-                <h1 className="text-2xl font-extrabold mt-1.5 tracking-tight text-slate-900">
+                <h1 className="text-3xl font-black mt-2 tracking-tight text-slate-950 font-sans">
                   {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || (state.user?.fullName ? `${state.user.fullName}'s Workspace` : "Adidas Workspace")}
                 </h1>
               </>
             ) : (
               <>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 border border-slate-200">Agency Account</span>
-                  <span className="text-xs font-mono text-slate-500">ID: {state.user?.agncyId || "AGNCY-9024"}</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 border border-slate-200/90 flex items-center gap-1.5 shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    Agency Account
+                  </span>
+                  <span className="text-xs font-mono text-slate-500 font-medium">ID: {state.user?.agncyId || "AGNCY-9024"}</span>
                 </div>
-                <h1 className="text-2xl font-extrabold mt-1.5 tracking-tight text-slate-900">
+                <h1 className="text-3xl font-black mt-2 tracking-tight text-slate-950 font-sans">
                   {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Agency"} Revenue Portal
                 </h1>
               </>
@@ -1197,24 +1201,30 @@ export default function BrandDashboardPage() {
  
               return stats.map((stat, idx) => {
                 return (
-                  <div 
+                  <motion.div 
                     key={idx} 
-                    className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 transition-all"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: idx * 0.08 }}
+                    whileHover={{ y: -2 }}
+                    className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:border-slate-300 hover:shadow-md transition-all relative overflow-hidden"
                   >
                     <div className="flex justify-between items-start">
                       <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
                         {stat.label}
                       </span>
-                      <stat.icon className="h-4 w-4 text-slate-400" />
+                      <div className="p-2 rounded-xl bg-slate-100/80 text-slate-700 border border-slate-200/60 shadow-2xs">
+                        <stat.icon className="h-4 w-4" />
+                      </div>
                     </div>
                     <div className="mt-3">
-                      <p className="text-2xl font-extrabold text-slate-900 tracking-tight">{stat.value}</p>
-                      <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5 font-medium">
-                        {stat.trend && <span className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">{stat.trend}</span>}
-                        {stat.count || stat.detail}
-                      </p>
+                      <p className="text-3xl font-black text-slate-950 tracking-tight font-sans">{stat.value}</p>
+                      <div className="text-xs text-slate-500 mt-2 flex items-center gap-2 font-medium">
+                        {stat.trend && <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">{stat.trend}</span>}
+                        <span>{stat.count || stat.detail}</span>
+                      </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               });
             })()}
@@ -1326,8 +1336,16 @@ export default function BrandDashboardPage() {
                   })}
                   {widgetInvoices.filter(i => i.status === "pending").length === 0 && (
                     <tr>
-                      <td colSpan={7} className="py-12 text-center text-xs font-medium text-slate-500">
-                        No pending invoices.
+                      <td colSpan={7} className="py-16 text-center">
+                        <div className="flex flex-col items-center justify-center max-w-sm mx-auto px-4">
+                          <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center mb-3.5 shadow-2xs">
+                            <CheckCircle2 className="w-7 h-7 text-emerald-600" />
+                          </div>
+                          <h4 className="text-base font-bold text-slate-900 tracking-tight">No Pending Invoices</h4>
+                          <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                            All invoices are clear and settled. New incoming payment requests will appear here for one-click approval.
+                          </p>
+                        </div>
                       </td>
                     </tr>
                   )}
@@ -1390,27 +1408,28 @@ export default function BrandDashboardPage() {
           />
 
           {/* Connected Banking Feeds */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs flex flex-col">
-            <div className="p-5 sm:p-6 border-b border-slate-200 bg-slate-50/75 flex items-center justify-between">
+          <div className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs flex flex-col">
+            <div className="p-5 sm:p-6 border-b border-slate-200 bg-slate-50/75 flex items-center justify-between gap-4">
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">CONNECTED BANKING FEEDS</h3>
-                <p className="text-xs text-slate-500 mt-0.5">Real-time commercial balances verified via Plaid</p>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">CONNECTED BANKING FEEDS</h3>
+                <p className="text-xs text-slate-500 mt-0.5 font-medium">Real-time commercial balances verified via Plaid</p>
               </div>
               <button
                 type="button"
                 onClick={handleConnectPlaid}
                 disabled={isPlaidLoading}
-                className="px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-xs"
+                className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-xs shrink-0"
+                style={{ backgroundColor: "#0F172A", color: "#FFFFFF" }}
               >
                 {isPlaidLoading ? (
                   <>
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-white" />
-                    Connecting...
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-white" style={{ color: "#FFFFFF" }} />
+                    <span style={{ color: "#FFFFFF" }}>Connecting...</span>
                   </>
                 ) : (
                   <>
-                    <Plus className="h-3.5 w-3.5 text-white" />
-                    + Connect Bank (Plaid)
+                    <Plus className="h-3.5 w-3.5 text-white" strokeWidth={2.5} style={{ color: "#FFFFFF" }} />
+                    <span style={{ color: "#FFFFFF" }}>+ Connect Bank (Plaid)</span>
                   </>
                 )}
               </button>
@@ -1427,17 +1446,27 @@ export default function BrandDashboardPage() {
             
             <div className="p-5 flex flex-col gap-3 bg-white">
               {plaidAccounts.length > 0 ? (
-                plaidAccounts.map((acc) => (
-                  <div
+                plaidAccounts.map((acc, accIdx) => (
+                  <motion.div
                     key={acc.id}
-                    className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50/60 hover:border-slate-300 transition-all shadow-2xs"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: accIdx * 0.05 }}
+                    className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50/70 hover:border-slate-300 hover:bg-slate-50 transition-all shadow-2xs"
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-10 rounded-lg border border-slate-200 bg-white flex items-center justify-center shrink-0 shadow-2xs overflow-hidden">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-14 h-9 sm:w-16 sm:h-10 rounded-lg border border-slate-200 bg-slate-900 flex items-center justify-center shrink-0 shadow-2xs overflow-hidden relative">
                         {getCardImage(acc.institutionName) ? (
-                          <img src={getCardImage(acc.institutionName)} alt={acc.name} className="h-full w-full object-cover" />
+                          <img
+                            src={getCardImage(acc.institutionName)}
+                            alt={acc.name}
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = "none";
+                            }}
+                          />
                         ) : (
-                          <Building2 className="h-5 w-5 text-slate-700" />
+                          <CreditCard className="h-4 w-4 text-white" />
                         )}
                       </div>
                       <div>
@@ -1449,7 +1478,7 @@ export default function BrandDashboardPage() {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                       <div className="text-right">
                         <span className="text-sm font-bold text-slate-900 font-mono block">
                           ${acc.availableBalance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -1457,14 +1486,16 @@ export default function BrandDashboardPage() {
                         <span className="text-[10px] text-slate-500 font-medium">Available Balance</span>
                       </div>
                       <button
+                        type="button"
                         onClick={() => handleDisconnectPlaidAccount(acc.id)}
                         title="Disconnect Bank Feed"
-                        className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-all cursor-pointer"
+                        className="p-2 rounded-xl border border-slate-200 hover:border-red-300 hover:bg-red-50 text-slate-400 hover:text-red-600 transition-all cursor-pointer group shadow-2xs shrink-0"
+                        style={{ backgroundColor: "#F1F5F9" }}
                       >
-                        <X className="h-3.5 w-3.5" />
+                        <X className="h-3.5 w-3.5 transition-colors group-hover:scale-110" />
                       </button>
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               ) : (
                 <div className="py-8 text-center text-xs font-medium text-slate-500">
