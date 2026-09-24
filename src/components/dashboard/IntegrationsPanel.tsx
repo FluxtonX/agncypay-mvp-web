@@ -249,15 +249,15 @@ export function IntegrationsPanel({
   );
 
   return (
-    <div className="bg-[#0A0A0A] light:bg-white border border-white/15 light:border-black/10 rounded-2xl p-6 sm:p-7 shadow-2xl relative text-left transition-all overflow-hidden">
+    <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200/80 dark:border-white/15 rounded-2xl p-6 sm:p-7 shadow-sm relative text-left transition-all overflow-hidden">
       {/* Title & Subtitle */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-bold text-white light:text-[#0F172A] tracking-tight flex items-center gap-2">
-            <Plug className="h-5 w-5 text-white/80 light:text-[#0F172A]" />
+          <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <Plug className="h-5 w-5 text-slate-700 dark:text-white/80" />
             {title}
           </h3>
-          <p className="text-xs text-neutral-400 light:text-[#475569] mt-1">{subtitle}</p>
+          <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1">{subtitle}</p>
         </div>
       </div>
 
@@ -268,27 +268,26 @@ export function IntegrationsPanel({
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className={`mt-4 px-4 py-3 rounded-xl text-xs font-semibold flex items-center gap-2.5 shadow-md ${
+            className={`mt-4 px-4 py-3 rounded-xl text-xs font-semibold flex items-center gap-2.5 shadow-sm ${
               statusType === "loading"
-                ? "bg-white/10 light:bg-slate-100 text-white light:text-black border border-white/20 light:border-black/20"
+                ? "bg-slate-100 dark:bg-white/10 text-slate-800 dark:text-white border border-slate-200 dark:border-white/20"
                 : statusType === "success"
-                ? "bg-white/[0.08] light:bg-slate-100 text-white light:text-black border border-white/20 light:border-black/20"
-                : "bg-white/[0.08] light:bg-slate-100 text-white light:text-black border border-white/20 light:border-black/20"
+                ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40"
+                : "bg-red-50 dark:bg-red-950/30 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800/40"
             }`}
           >
-            {statusType === "loading" && <RefreshCw className="h-4 w-4 animate-spin shrink-0 text-white light:text-black" />}
-            {statusType === "success" && <Check className="h-4 w-4 shrink-0 text-white light:text-black" />}
-            {statusType === "error" && <AlertCircle className="h-4 w-4 shrink-0 text-white light:text-black" />}
+            {statusType === "loading" && <RefreshCw className="h-4 w-4 animate-spin shrink-0 text-slate-700 dark:text-white" />}
+            {statusType === "success" && <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />}
+            {statusType === "error" && <AlertCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400" />}
             <span>{statusMessage}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* 5 Horizontal Tiles Matching User Image */}
-      <div className="mt-7 pt-1 flex items-start gap-5 sm:gap-7 overflow-x-auto pb-4 scrollbar-none">
+      {/* 5 Horizontal Tiles */}
+      <div className="mt-6 pt-1 flex items-start gap-4 sm:gap-5 overflow-x-auto pb-2 scrollbar-none">
         {INTEGRATIONS_LIST.map((app) => {
           const isConn = connectedIds.includes(app.id);
-          const isConnLoading = connectingId === app.id;
 
           return (
             <div
@@ -298,34 +297,34 @@ export function IntegrationsPanel({
             >
               {/* Tile Box */}
               <div
-                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl border transition-all duration-200 flex items-center justify-center shadow-md overflow-hidden ${
+                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border transition-all duration-200 flex items-center justify-center shadow-xs overflow-hidden ${
                   isConn
-                    ? "bg-white/[0.08] light:bg-slate-100 border-white/30 light:border-black/30 group-hover:border-white light:group-hover:border-black shadow-sm p-0"
-                    : "bg-white/[0.02] light:bg-slate-50 border-white/15 light:border-black/15 group-hover:border-white/40 light:group-hover:border-black/40 group-hover:scale-105 p-3 sm:p-3.5"
+                    ? "bg-slate-50 dark:bg-white/[0.08] border-slate-300 dark:border-white/30 group-hover:border-slate-400 dark:group-hover:border-white p-0"
+                    : "bg-slate-50/60 dark:bg-white/[0.02] border-slate-200 dark:border-white/15 group-hover:border-slate-300 dark:group-hover:border-white/40 group-hover:scale-105 p-3 sm:p-3.5"
                 }`}
               >
                 {isConn ? (
-                  <img src={app.logo} alt={app.name} className="w-full h-full object-cover filter drop-shadow-sm group-hover:scale-110 transition-transform" />
+                  <img src={app.logo} alt={app.name} className="w-full h-full object-cover filter drop-shadow-xs group-hover:scale-110 transition-transform" />
                 ) : (
-                  <Plus className="w-6 h-6 sm:w-7 sm:h-7 text-neutral-400 group-hover:text-white light:group-hover:text-black group-hover:scale-110 transition-all duration-200" />
+                  <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white group-hover:scale-110 transition-all duration-200" />
                 )}
               </div>
 
               {/* Tile Label */}
-              <span className={`text-xs font-bold mt-2.5 transition-colors text-center truncate w-full ${
-                isConn ? "text-white light:text-[#0F172A] group-hover:underline" : "text-neutral-300 light:text-neutral-700 group-hover:text-white light:group-hover:text-black"
+              <span className={`text-xs font-bold mt-2 transition-colors text-center truncate w-full ${
+                isConn ? "text-slate-900 dark:text-white group-hover:underline" : "text-slate-700 dark:text-neutral-300 group-hover:text-slate-900 dark:group-hover:text-white"
               }`}>
                 {isConn ? app.name : "Connect"}
               </span>
 
               {/* Sub-label */}
               {isConn ? (
-                <span className="text-[10px] text-neutral-300 light:text-neutral-700 font-bold flex items-center justify-center gap-1 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white light:bg-black animate-pulse" />
+                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center justify-center gap-1 mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Synced
                 </span>
               ) : (
-                <span className="text-[10px] text-neutral-500 font-medium mt-0.5 text-center truncate w-full">
+                <span className="text-[10px] text-slate-500 dark:text-neutral-500 font-medium mt-0.5 text-center truncate w-full">
                   {app.name}
                 </span>
               )}
@@ -338,27 +337,27 @@ export function IntegrationsPanel({
       <AnimatePresence>
         {isModalOpen && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 px-4 py-8 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 dark:bg-black/85 px-4 py-8 backdrop-blur-xs"
             onClick={(e) => {
               if (e.target === e.currentTarget) setIsModalOpen(false);
             }}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              exit={{ opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.15 }}
-              className="w-full max-w-[620px] rounded-2xl border border-white/20 light:border-black/15 bg-[#0A0A0A] light:bg-white shadow-2xl overflow-hidden text-left flex flex-col max-h-[85vh]"
+              className="w-full max-w-[620px] rounded-2xl border border-slate-200 dark:border-white/20 bg-white dark:bg-[#0A0A0A] shadow-2xl overflow-hidden text-left flex flex-col max-h-[85vh]"
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between border-b border-white/10 light:border-black/10 px-6 py-5 bg-white/[0.02] light:bg-slate-50">
+              <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 px-6 py-5 bg-slate-50/70 dark:bg-white/[0.02]">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 light:border-black/20 bg-white/5 light:bg-slate-100 shadow-inner">
-                    <Plug className="h-5 w-5 text-white/80 light:text-black" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-white/20 bg-white dark:bg-white/5 shadow-xs">
+                    <Plug className="h-5 w-5 text-slate-800 dark:text-white" />
                   </div>
                   <div>
-                    <h2 className="text-[17px] font-bold text-white light:text-black tracking-tight">Connect Accounting & CRM Tools</h2>
-                    <p className="text-[12px] text-neutral-400 light:text-neutral-500 mt-0.5">
+                    <h2 className="text-base sm:text-[17px] font-bold text-slate-900 dark:text-white tracking-tight">Connect Accounting & CRM Tools</h2>
+                    <p className="text-xs text-slate-500 dark:text-neutral-400 mt-0.5">
                       Select software to sync invoice ledgers automatically into AgncyPay treasury.
                     </p>
                   </div>
@@ -366,7 +365,7 @@ export function IntegrationsPanel({
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-white/[0.08] light:hover:bg-slate-200 hover:text-white light:hover:text-black transition-colors cursor-pointer"
+                  className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-slate-200 dark:hover:bg-white/[0.08] hover:text-slate-800 dark:hover:text-white transition-colors cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -381,30 +380,30 @@ export function IntegrationsPanel({
                   return (
                     <div
                       key={app.id}
-                      className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border p-4 sm:p-5 transition-all ${
+                      className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border p-4 sm:p-5 transition-all ${
                         isConn
-                          ? "border-white/25 light:border-black/20 bg-white/[0.05] light:bg-slate-50 shadow-sm"
-                          : "border-white/10 light:border-black/10 bg-white/[0.015] light:bg-white hover:border-white/25 light:hover:border-black/25 hover:bg-white/[0.03] light:hover:bg-slate-50"
+                          ? "border-slate-300 dark:border-white/25 bg-slate-50/70 dark:bg-white/[0.05] shadow-xs"
+                          : "border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.015] hover:border-slate-300 dark:hover:border-white/25 hover:bg-slate-50/50 dark:hover:bg-white/[0.03]"
                       }`}
                     >
                       <div className="flex items-start sm:items-center gap-3.5 min-w-0 flex-1">
-                        <div className="w-12 h-12 shrink-0 rounded-xl bg-black border border-white/15 p-0 overflow-hidden flex items-center justify-center shadow-inner">
+                        <div className="w-12 h-12 shrink-0 rounded-xl bg-slate-50 border border-slate-200 dark:border-white/15 p-0 overflow-hidden flex items-center justify-center shadow-xs">
                           <img src={app.logo} alt={app.name} className="w-full h-full object-cover" />
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <p className="text-sm font-bold text-white light:text-black tracking-tight">{app.fullName}</p>
+                            <p className="text-sm font-bold text-slate-900 dark:text-white tracking-tight">{app.fullName}</p>
                             {isConn && (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-white/[0.08] light:bg-slate-200 border border-white/20 light:border-black/20 px-2 py-0.5 text-[10px] font-bold text-white light:text-black">
-                                <span className="h-1.5 w-1.5 rounded-full bg-white light:bg-black animate-pulse" />
+                              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                 Connected
                               </span>
                             )}
-                            <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-md bg-white/[0.06] light:bg-slate-100 text-neutral-400 light:text-neutral-600 border border-white/10 light:border-black/10">
+                            <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.06] text-slate-600 dark:text-neutral-400 border border-slate-200 dark:border-white/10">
                               {app.category}
                             </span>
                           </div>
-                          <p className="text-xs text-neutral-400 light:text-neutral-500 mt-1 leading-relaxed">
+                          <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1 leading-relaxed">
                             {app.desc}
                           </p>
                         </div>
@@ -416,16 +415,16 @@ export function IntegrationsPanel({
                           <button
                             type="button"
                             disabled
-                            className="flex items-center gap-2 h-9 rounded-full border border-white/15 light:border-black/15 bg-white/10 light:bg-slate-100 px-4 text-xs font-bold text-neutral-300 light:text-neutral-600 cursor-not-allowed"
+                            className="flex items-center gap-2 h-9 rounded-xl border border-slate-200 dark:border-white/15 bg-slate-100 dark:bg-white/10 px-4 text-xs font-bold text-slate-400 dark:text-neutral-500 cursor-not-allowed"
                           >
-                            <RefreshCw className="h-3.5 w-3.5 animate-spin text-white light:text-black" />
+                            <RefreshCw className="h-3.5 w-3.5 animate-spin text-slate-600 dark:text-white" />
                             Connecting...
                           </button>
                         ) : isConn ? (
                           <button
                             type="button"
                             onClick={() => handleDisconnectApp(app)}
-                            className="flex items-center gap-2 h-9 rounded-full border border-white/20 light:border-black/20 bg-white/[0.04] light:bg-slate-100 hover:bg-white/10 light:hover:bg-slate-200 hover:border-white light:hover:border-black px-4 text-xs font-bold text-neutral-300 light:text-neutral-700 hover:text-white light:hover:text-black transition-all cursor-pointer shadow-sm group"
+                            className="flex items-center gap-2 h-9 rounded-xl border border-slate-200 dark:border-white/20 bg-white dark:bg-white/[0.04] hover:bg-slate-100 dark:hover:bg-white/10 hover:border-slate-300 dark:hover:border-white px-4 text-xs font-bold text-slate-700 dark:text-neutral-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer shadow-xs group"
                           >
                             <Link2Off className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
                             Disconnect
@@ -434,7 +433,7 @@ export function IntegrationsPanel({
                           <button
                             type="button"
                             onClick={() => handleConnect(app)}
-                            className="flex items-center gap-2 h-9 rounded-full border border-white light:border-black bg-white light:bg-black hover:bg-neutral-200 light:hover:bg-neutral-800 px-4.5 text-xs font-bold text-black light:text-white transition-all cursor-pointer shadow-md active:scale-95 group"
+                            className="flex items-center gap-2 h-9 rounded-xl border border-slate-900 dark:border-white bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-neutral-200 px-4.5 text-xs font-bold text-white dark:text-slate-900 transition-all cursor-pointer shadow-xs active:scale-95 group"
                           >
                             <Link2 className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
                             Connect
@@ -447,14 +446,14 @@ export function IntegrationsPanel({
               </div>
 
               {/* Modal Footer */}
-              <div className="border-t border-white/10 light:border-black/10 px-6 py-4 bg-white/[0.01] light:bg-slate-50 flex items-center justify-between gap-4">
-                <p className="text-[11px] text-neutral-500 leading-snug">
+              <div className="border-t border-slate-200 dark:border-white/10 px-6 py-4 bg-slate-50/70 dark:bg-white/[0.01] flex items-center justify-between gap-4">
+                <p className="text-[11px] text-slate-500 dark:text-neutral-500 leading-snug">
                   Connecting an accounting tool imports your invoices into AgncyPay for instant automated settlements.
                 </p>
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-5 py-2 rounded-xl bg-white light:bg-black text-black light:text-white font-bold text-xs hover:bg-neutral-200 light:hover:bg-neutral-800 transition-colors cursor-pointer shrink-0"
+                  className="px-5 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs hover:bg-slate-800 dark:hover:bg-neutral-200 transition-colors cursor-pointer shrink-0"
                 >
                   Done
                 </button>

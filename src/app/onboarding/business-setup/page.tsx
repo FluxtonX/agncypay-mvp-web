@@ -170,37 +170,30 @@ export default function BusinessSetupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] text-[#F8FAFC] font-sans flex flex-col items-center justify-start pt-10 sm:pt-14 pb-16 px-4 relative overflow-hidden selection:bg-white selection:text-black">
-      
-      {/* Abstract monochrome ambient lighting */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-15%] left-[30%] w-[45%] h-[45%] rounded-full bg-white/[0.02] blur-[140px]" />
-        <div className="absolute bottom-[-10%] right-[15%] w-[35%] h-[35%] rounded-full bg-white/[0.015] blur-[120px]" />
-      </div>
-
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col items-center justify-start pt-8 sm:pt-12 pb-16 px-4 relative overflow-hidden">
       {/* Top Header */}
-      <header className="w-full max-w-4xl flex items-center justify-between z-10 mb-8 pb-4 border-b border-[#1F1F1F]">
+      <header className="w-full max-w-4xl flex items-center justify-between z-10 mb-8 pb-4 border-b border-slate-200">
         <div className="flex items-center gap-3">
           <Link href="/" className="transition-opacity hover:opacity-80">
             <img
               src="/agncypayLogo.png"
               alt="AgncyPay"
-              className="h-9 w-auto object-contain"
+              className="h-9 w-auto object-contain [filter:invert(1)_brightness(0.15)]"
             />
           </Link>
-          <span className="h-4 w-[1px] bg-white/20 hidden sm:block" />
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#0D0D0D] border border-white/10 text-[11px] font-bold uppercase tracking-wider text-[#A1A1AA]">
-            <ShieldCheck className="h-3.5 w-3.5 text-white" />
+          <span className="h-4 w-[1px] bg-slate-200 hidden sm:block" />
+          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+            <ShieldCheck className="h-3.5 w-3.5 text-slate-700" />
             <span>Corporate KYB</span>
           </div>
         </div>
 
         <button
           onClick={handleSkip}
-          className="px-4 py-2 rounded-xl border border-white/20 bg-[#111111] hover:bg-[#1A1A1A] hover:border-white/40 active:scale-[0.98] text-white text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
+          className="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-700 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
         >
           <span>Skip for now</span>
-          <ChevronRight className="w-3.5 h-3.5 text-[#8E8E93]" />
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
         </button>
       </header>
 
@@ -208,7 +201,7 @@ export default function BusinessSetupPage() {
       <div className="w-full max-w-4xl z-10 space-y-6">
         
         {/* Progress Stepper */}
-        <div className="bg-[#0A0A0A] border border-[#262626] rounded-2xl p-4 sm:p-5 shadow-2xl">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-sm">
           <div className="flex items-center justify-between gap-2">
             {[
               { step: 1, title: "Business Registry", desc: "Legal entity & tax details", icon: Building2 },
@@ -230,27 +223,27 @@ export default function BusinessSetupPage() {
                     <div
                       className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs transition-all duration-300 shrink-0 ${
                         isActive
-                          ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                          ? "bg-slate-900 text-white shadow-sm"
                           : isPast
-                          ? "bg-white/10 text-white border border-white/20"
-                          : "bg-[#121212] text-[#5A5A62] border border-[#1F1F1F]"
+                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                          : "bg-slate-100 text-slate-400 border border-slate-200"
                       }`}
                     >
-                      {isPast ? <CheckCircle2 className="w-4 h-4 text-white" /> : <Icon className="w-4 h-4" />}
+                      {isPast ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <Icon className="w-4 h-4" />}
                     </div>
 
                     <div className="hidden md:block text-left">
-                      <p className={`text-xs font-bold ${isActive ? "text-white" : isPast ? "text-[#E5E5EA]" : "text-[#5A5A62]"}`}>
+                      <p className={`text-xs font-bold ${isActive ? "text-slate-900" : isPast ? "text-slate-800" : "text-slate-400"}`}>
                         {item.title}
                       </p>
-                      <p className="text-[10px] text-[#8E8E93]">
+                      <p className="text-[10px] text-slate-500">
                         {item.desc}
                       </p>
                     </div>
                   </div>
 
                   {idx < 2 && (
-                    <div className="w-6 sm:w-12 h-[1px] bg-[#1F1F1F] shrink-0" />
+                    <div className="w-6 sm:w-12 h-[1px] bg-slate-200 shrink-0" />
                   )}
                 </React.Fragment>
               );
@@ -259,29 +252,25 @@ export default function BusinessSetupPage() {
         </div>
 
         {/* Content Card */}
-        <div className="bg-[#0A0A0A] border border-[#262626] rounded-3xl p-6 sm:p-10 shadow-[0_0_80px_rgba(255,255,255,0.02)] relative overflow-hidden">
-          
-          {/* Subtle top edge shine */}
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-
+        <div className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 shadow-sm relative overflow-hidden">
           {errorMessage && (
-            <div className="mb-6 p-4 rounded-xl border border-red-900/40 bg-red-950/20 text-xs text-red-300 flex items-center gap-2">
-              <Lock className="w-4 h-4 shrink-0 text-red-400" />
+            <div className="mb-6 p-4 rounded-xl border border-rose-200 bg-rose-50 text-xs text-rose-700 flex items-center gap-2">
+              <Lock className="w-4 h-4 shrink-0 text-rose-500" />
               <span>{errorMessage}</span>
             </div>
           )}
 
           {isSuccess ? (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-4 animate-in fade-in zoom-in duration-300">
-              <div className="w-16 h-16 rounded-full bg-white/10 border border-white/30 flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-                <CheckCircle2 className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shadow-sm">
+                <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-extrabold text-white tracking-tight">Business Verification Submitted</h3>
-              <p className="text-xs text-[#8E8E93] max-w-md">
+              <h3 className="text-xl font-black text-slate-900 tracking-tight">Business Verification Submitted</h3>
+              <p className="text-xs text-slate-500 max-w-md">
                 Your legal entity has been submitted to Cybrid. Dedicated USD Fiat and Deposit Bank accounts are being initialized for live invoicing and payouts.
               </p>
-              <div className="flex items-center gap-2 text-xs text-[#A1A1AA] pt-2">
-                <Loader2 className="w-4 h-4 animate-spin text-white" />
+              <div className="flex items-center gap-2 text-xs text-slate-600 pt-2">
+                <Loader2 className="w-4 h-4 animate-spin text-slate-900" />
                 <span>Redirecting to your workspace...</span>
               </div>
             </div>
@@ -291,53 +280,53 @@ export default function BusinessSetupPage() {
               {currentStep === 1 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">Legal Entity Information</h2>
-                    <p className="text-xs text-[#8E8E93] mt-1">
+                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Legal Entity Information</h2>
+                    <p className="text-xs text-slate-500 mt-1">
                       Provide official registry details matching your corporate tax registration or articles of incorporation.
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Legal Entity Name</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Legal Entity Name</label>
                       <input
                         name="legalName"
                         value={entityData.legalName}
                         onChange={handleEntityChange}
                         placeholder="e.g. Apex Media Group LLC"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Trade / Display Name</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Trade / Display Name</label>
                       <input
                         name="brandName"
                         value={entityData.brandName}
                         onChange={handleEntityChange}
                         placeholder="e.g. Apex Media"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Tax ID / EIN / VAT</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Tax ID / EIN / VAT</label>
                       <input
                         name="taxId"
                         value={entityData.taxId}
                         onChange={handleEntityChange}
                         placeholder="e.g. 12-3456789"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Business Structure</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Business Structure</label>
                       <select
                         name="businessType"
                         value={entityData.businessType}
                         onChange={handleEntityChange}
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 outline-none transition-all"
                       >
                         <option value="LLC">Limited Liability Company (LLC)</option>
                         <option value="Corporation">Corporation (C-Corp / S-Corp)</option>
@@ -347,46 +336,46 @@ export default function BusinessSetupPage() {
                     </div>
 
                     <div className="space-y-1.5 sm:col-span-2">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Registered Business Street Address</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Registered Business Street Address</label>
                       <input
                         name="address"
                         value={entityData.address}
                         onChange={handleEntityChange}
                         placeholder="e.g. 100 Pine Street, Suite 2400"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">City</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">City</label>
                       <input
                         name="city"
                         value={entityData.city}
                         onChange={handleEntityChange}
                         placeholder="San Francisco"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">State / Region</label>
+                        <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">State / Region</label>
                         <input
                           name="state"
                           value={entityData.state}
                           onChange={handleEntityChange}
                           placeholder="CA"
-                          className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Postal Code</label>
+                        <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Postal Code</label>
                         <input
                           name="postalCode"
                           value={entityData.postalCode}
                           onChange={handleEntityChange}
                           placeholder="94111"
-                          className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                         />
                       </div>
                     </div>
@@ -398,77 +387,77 @@ export default function BusinessSetupPage() {
               {currentStep === 2 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">Authorized Signatory & Ownership</h2>
-                    <p className="text-xs text-[#8E8E93] mt-1">
+                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Authorized Signatory & Ownership</h2>
+                    <p className="text-xs text-slate-500 mt-1">
                       Financial compliance requires an authorized representative with executive authority or 25%+ equity ownership.
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Full Legal Name</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Full Legal Name</label>
                       <input
                         name="fullName"
                         value={repData.fullName}
                         onChange={handleRepChange}
                         placeholder="e.g. Alexander Vance"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Corporate Title</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Corporate Title</label>
                       <input
                         name="jobTitle"
                         value={repData.jobTitle}
                         onChange={handleRepChange}
                         placeholder="e.g. Managing Partner / CEO"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Date of Birth</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Date of Birth</label>
                       <input
                         name="dob"
                         type="date"
                         value={repData.dob}
                         onChange={handleRepChange}
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">SSN (Last 4 Digits) / National ID</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">SSN (Last 4 Digits) / National ID</label>
                       <input
                         name="ssnLast4"
                         value={repData.ssnLast4}
                         onChange={handleRepChange}
                         maxLength={4}
                         placeholder="8842"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Business Email</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Business Email</label>
                       <input
                         name="email"
                         value={repData.email}
                         onChange={handleRepChange}
                         placeholder="alex@apexmedia.io"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-[#A1A1AA] uppercase tracking-wider">Phone Number</label>
+                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Phone Number</label>
                       <input
                         name="phone"
                         value={repData.phone}
                         onChange={handleRepChange}
                         placeholder="+1 (555) 234-8900"
-                        className="w-full bg-[#050505] border border-[#262626] focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-900 focus:ring-1 focus:ring-slate-900 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -479,66 +468,61 @@ export default function BusinessSetupPage() {
               {currentStep === 3 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">Banking & Legal Attestation</h2>
-                    <p className="text-xs text-[#8E8E93] mt-1">
+                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Banking & Legal Attestation</h2>
+                    <p className="text-xs text-slate-500 mt-1">
                       Review the dedicated banking channels that will be provisioned by Cybrid for your agency.
                     </p>
                   </div>
 
                   {/* Provisioning Preview */}
-                  <div className="rounded-2xl border border-white/10 bg-[#050505] p-5 space-y-4">
+                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-5 space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                        <Landmark className="w-5 h-5 text-white" />
+                      <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                        <Landmark className="w-5 h-5 text-slate-900" />
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-white uppercase tracking-wider">Dedicated Cybrid Deposit Bank Account</h4>
-                        <p className="text-[11px] text-[#8E8E93]">Evolve Bank & Trust / Cybrid Sandbox Infrastructure</p>
+                        <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Dedicated Cybrid Deposit Bank Account</h4>
+                        <p className="text-[11px] text-slate-500">Evolve Bank & Trust / Cybrid Sandbox Infrastructure</p>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                      <div className="rounded-xl border border-white/5 bg-[#0A0A0A] p-3">
-                        <p className="text-[10px] font-semibold text-[#8E8E93] uppercase">Routing (ABA)</p>
-                        <p className="text-xs font-mono font-bold text-white mt-1">111000025</p>
+                      <div className="rounded-xl border border-slate-200/80 bg-white p-3.5 shadow-sm">
+                        <p className="text-[10px] font-semibold text-slate-500 uppercase">Routing (ABA)</p>
+                        <p className="text-xs font-mono font-bold text-slate-900 mt-1">111000025</p>
                       </div>
-                      <div className="rounded-xl border border-white/5 bg-[#0A0A0A] p-3">
-                        <p className="text-[10px] font-semibold text-[#8E8E93] uppercase">Account Number</p>
-                        <p className="text-xs font-mono font-bold text-white mt-1">8800 •••• ••••</p>
+                      <div className="rounded-xl border border-slate-200/80 bg-white p-3.5 shadow-sm">
+                        <p className="text-[10px] font-semibold text-slate-500 uppercase">Account Number</p>
+                        <p className="text-xs font-mono font-bold text-slate-900 mt-1">8800 •••• ••••</p>
                       </div>
-                      <div className="rounded-xl border border-white/5 bg-[#0A0A0A] p-3">
-                        <p className="text-[10px] font-semibold text-[#8E8E93] uppercase">Accepted Inbound Rails</p>
-                        <p className="text-xs font-bold text-white mt-1">ACH • Wire • RTP</p>
+                      <div className="rounded-xl border border-slate-200/80 bg-white p-3.5 shadow-sm">
+                        <p className="text-[10px] font-semibold text-slate-500 uppercase">Accepted Inbound Rails</p>
+                        <p className="text-xs font-bold text-slate-900 mt-1">ACH • Wire • RTP</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Attestation Checkbox */}
                   <div className="flex items-start gap-3 pt-2">
-                    <div className="relative flex items-center mt-0.5">
-                      <input
-                        type="checkbox"
-                        id="attestation"
-                        checked={attestationAgreed}
-                        onChange={() => setAttestationAgreed(!attestationAgreed)}
-                        className="w-4 h-4 rounded border border-white/30 bg-[#0B0B0B] checked:bg-white checked:border-white appearance-none cursor-pointer transition-colors peer hover:border-white/60 focus:outline-none"
-                      />
-                      <svg className="absolute w-3 h-3 text-black pointer-events-none left-0.5 top-0.5 opacity-0 peer-checked:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
+                    <input
+                      type="checkbox"
+                      id="attestation"
+                      checked={attestationAgreed}
+                      onChange={() => setAttestationAgreed(!attestationAgreed)}
+                      className="w-4 h-4 mt-0.5 rounded border-slate-300 text-slate-900 accent-slate-900 cursor-pointer"
+                    />
                     <label
                       htmlFor="attestation"
-                      className="cursor-pointer select-none text-xs leading-snug text-[#8E8E93] hover:text-[#E5E5EA] transition-colors"
+                      className="cursor-pointer select-none text-xs leading-snug text-slate-600 hover:text-slate-900 transition-colors"
                     >
-                      I certify under penalty of perjury that I am authorized to represent <span className="font-bold text-white">{entityData.legalName}</span> and that all provided registration, tax ID, and signatory details are accurate and current.
+                      I certify under penalty of perjury that I am authorized to represent <span className="font-bold text-slate-900">{entityData.legalName}</span> and that all provided registration, tax ID, and signatory details are accurate and current.
                     </label>
                   </div>
                 </div>
               )}
 
               {/* Navigation Actions */}
-              <div className="flex items-center justify-between border-t border-[#1F1F1F] pt-6 mt-8">
+              <div className="flex items-center justify-between border-t border-slate-100 pt-6 mt-8">
                 <div>
                   {currentStep > 1 ? (
                     <button
@@ -547,19 +531,19 @@ export default function BusinessSetupPage() {
                         setErrorMessage(null);
                         setCurrentStep((prev) => (prev - 1) as KybStep);
                       }}
-                      className="px-5 py-3 rounded-xl border border-white/20 bg-[#111111] hover:bg-[#1A1A1A] hover:border-white/40 active:scale-[0.98] text-white text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-lg"
+                      className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-700 text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-sm"
                     >
-                      <ArrowLeft className="w-4 h-4 text-[#8E8E93]" />
+                      <ArrowLeft className="w-4 h-4 text-slate-500" />
                       <span>Back</span>
                     </button>
                   ) : (
                     <button
                       type="button"
                       onClick={handleSkip}
-                      className="px-6 py-3 rounded-xl border border-white/20 bg-[#111111] hover:bg-[#1A1A1A] hover:border-white/40 active:scale-[0.98] text-white text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-lg"
+                      className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-700 text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-sm"
                     >
                       <span>Skip for now</span>
-                      <ArrowRight className="w-4 h-4 text-[#8E8E93]" />
+                      <ArrowRight className="w-4 h-4 text-slate-500" />
                     </button>
                   )}
                 </div>
@@ -570,11 +554,11 @@ export default function BusinessSetupPage() {
                       type="button"
                       disabled={isLoading}
                       onClick={handleNext}
-                      className="px-6 py-3 rounded-xl bg-white hover:bg-neutral-200 active:scale-[0.98] text-black text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-lg disabled:opacity-50"
+                      className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-sm disabled:opacity-50"
                     >
                       {isLoading ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin text-black" />
+                          <Loader2 className="w-4 h-4 animate-spin text-white" />
                           <span>Saving...</span>
                         </>
                       ) : (
@@ -589,11 +573,11 @@ export default function BusinessSetupPage() {
                       type="button"
                       disabled={isLoading || !attestationAgreed}
                       onClick={handleSubmitFinal}
-                      className="px-8 py-3 rounded-xl bg-white hover:bg-neutral-200 active:scale-[0.98] text-black text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="px-7 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       {isLoading ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin text-black" />
+                          <Loader2 className="w-4 h-4 animate-spin text-white" />
                           <span>Submitting to Cybrid...</span>
                         </>
                       ) : (

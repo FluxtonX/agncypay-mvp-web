@@ -23,13 +23,13 @@ export function Input({
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <label htmlFor={id} className="text-xs font-semibold text-[#94A3B8] tracking-wider uppercase">
+        <label htmlFor={id} className="text-xs font-semibold text-slate-700 tracking-wide uppercase">
           {label}
         </label>
       )}
       <div className="relative flex items-center">
         {leftIcon && (
-          <div className="absolute left-3.5 text-[#94A3B8] pointer-events-none">
+          <div className="absolute left-3.5 text-slate-400 pointer-events-none flex items-center justify-center">
             {leftIcon}
           </div>
         )}
@@ -37,24 +37,24 @@ export function Input({
           id={id}
           type={type}
           className={cn(
-            "w-full bg-white/[0.02] border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-[#F8FAFC] placeholder-[#94A3B8]/40 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 focus:bg-white/[0.04] transition-all disabled:opacity-50 disabled:pointer-events-none",
+            "w-full bg-white border border-slate-200/90 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 transition-all disabled:bg-slate-50 disabled:text-slate-400 shadow-2xs",
             leftIcon ? "pl-10" : "",
             rightIcon ? "pr-10" : "",
-            error ? "border-[#ff453a]/50 focus:border-[#ff453a] focus:ring-[#ff453a]/25" : "",
+            error ? "border-rose-400 focus:border-rose-500 focus:ring-rose-500/10" : "",
             className
           )}
           {...props}
         />
         {rightIcon && (
-          <div className="absolute right-3.5 text-[#94A3B8]">
+          <div className="absolute right-3.5 text-slate-400 flex items-center justify-center">
             {rightIcon}
           </div>
         )}
       </div>
       {error ? (
-        <span className="text-xs text-[#ff453a] mt-0.5">{error}</span>
+        <span className="text-xs text-rose-600 font-medium mt-0.5">{error}</span>
       ) : helperText ? (
-        <span className="text-xs text-[#94A3B8]/60 mt-0.5">{helperText}</span>
+        <span className="text-xs text-slate-500 mt-0.5">{helperText}</span>
       ) : null}
     </div>
   );

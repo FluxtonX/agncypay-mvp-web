@@ -423,15 +423,15 @@ export function RoleFeaturePage({ kind }: { kind: FeatureKind }) {
 
   if (!hasAccess) {
     return (
-      <div className="w-full max-w-[1048px]">
-        <section className="rounded-[13px] border border-[#676767] bg-black px-6 py-12 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#555] bg-[#111] text-white">
-            <ShieldCheck className="h-7 w-7" />
+      <div className="w-full max-w-5xl">
+        <section className="rounded-2xl border border-slate-200/90 bg-white p-12 text-center shadow-xs">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-700">
+            <ShieldCheck className="h-7 w-7 text-slate-900" />
           </div>
-          <h1 className="mt-5 text-[28px] font-semibold leading-tight text-white">
+          <h1 className="mt-5 text-2xl font-black text-slate-900 tracking-tight">
             Permission Required
           </h1>
-          <p className="mx-auto mt-3 max-w-[520px] text-[16px] leading-6 text-[#9b9b9b]">
+          <p className="mx-auto mt-2 max-w-md text-sm text-slate-500 leading-relaxed">
             Your current workspace role does not include access to this area. Ask an admin to update your membership permissions.
           </p>
         </section>
@@ -440,34 +440,35 @@ export function RoleFeaturePage({ kind }: { kind: FeatureKind }) {
   }
 
   return (
-    <div className="w-full max-w-[1048px]">
-      <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+    <div className="w-full max-w-6xl space-y-6">
+      {/* Page Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-[8px] border border-[#444] bg-[#101010] text-white">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-slate-800">
               {iconByKind[kind]}
             </span>
-            <h1 className="text-[34px] font-semibold leading-none text-white">
+            <h1 className="text-2xl font-black tracking-tight text-slate-900">
               {config.title}
             </h1>
           </div>
-          <p className="mt-[18px] max-w-[760px] text-[20px] leading-6 text-[#9b9b9b]">
+          <p className="mt-1.5 text-sm text-slate-500 max-w-2xl">
             {config.subtitle}
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row md:mt-[10px]">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
-            className="inline-flex h-[41px] items-center justify-center gap-[10px] rounded-[7px] border border-[#686868] bg-[#0c0c0c] px-[18px] text-[15px] font-semibold text-white transition-colors hover:border-[#8a8a8a]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50 hover:border-slate-300 cursor-pointer shadow-xs"
           >
-            <Download className="h-4 w-4" />
+            <Download className="h-4 w-4 text-slate-500" />
             Export
           </button>
           <button
             type="button"
             onClick={() => setIsDialogOpen(true)}
-            className="inline-flex h-[41px] items-center justify-center gap-[10px] rounded-[7px] border border-white bg-white px-[22px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white transition-all hover:bg-slate-800 active:scale-[0.99] cursor-pointer shadow-sm"
           >
             <Plus className="h-4 w-4" />
             {config.cta}
@@ -475,99 +476,118 @@ export function RoleFeaturePage({ kind }: { kind: FeatureKind }) {
         </div>
       </div>
 
-      <div className="mt-[31px] grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-[29px]">
+      {/* Metrics Row */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {metrics.map((metric) => (
-          <section key={metric.label} className="rounded-[13px] border border-[#676767] bg-black px-5 py-[24px]">
-            <p className="text-[17px] leading-5 text-[#777]">{metric.label}</p>
-            <p className="mt-[18px] break-words text-[31px] font-semibold leading-tight text-white">
+          <section key={metric.label} className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">{metric.label}</p>
+            <p className="mt-2 text-2xl font-black text-slate-900 tracking-tight">
               {metric.value}
             </p>
-            <p className="mt-[12px] text-[15px] leading-5 text-[#949494]">
+            <p className="mt-1 text-xs text-slate-500 font-medium">
               {metric.detail}
             </p>
           </section>
         ))}
       </div>
 
-      <section className="mt-[29px] rounded-[13px] border border-[#676767] bg-black px-[20px] py-[24px] sm:px-[29px] sm:py-[31px]">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <h2 className="text-[27px] font-semibold leading-none text-white">
-            Current Records
-          </h2>
-          <label className="relative block w-full md:w-[320px]">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#777]" />
+      {/* Records Section */}
+      <section className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 border-b border-slate-100">
+          <div>
+            <h2 className="text-lg font-bold text-slate-900">
+              Current Records
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">Live state across all active accounts</p>
+          </div>
+          <label className="relative block w-full sm:w-72">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search records"
-              className="h-[40px] w-full rounded-[7px] border border-[#333] bg-[#050505] pl-10 pr-3 text-[14px] text-white outline-none placeholder:text-[#666] focus:border-[#777]"
+              placeholder="Search records..."
+              className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/60 pl-10 pr-3 text-xs text-slate-900 outline-none placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 transition-all"
             />
           </label>
         </div>
-        <div className="mt-[26px] space-y-3">
-          {filteredRecords.map((record, index) => (
-            <div
-              key={`${record.title}-${index}`}
-              className="grid grid-cols-1 gap-4 rounded-[8px] border border-[#303030] bg-[#050505] px-5 py-4 md:grid-cols-[minmax(0,1fr)_120px_120px_96px] md:items-center"
-            >
-              <div className="min-w-0">
-                <p className="truncate text-[18px] font-semibold leading-6 text-white">
-                  {record.title}
-                </p>
-                <p className="mt-1 text-[14px] leading-5 text-[#858585]">
-                  {record.detail}
-                </p>
-              </div>
-              <p className="break-words text-[17px] font-semibold leading-tight text-white md:text-right">
-                {record.value}
-              </p>
-              <span className="inline-flex h-8 w-fit items-center rounded-[7px] border border-[#444] bg-[#111] px-3 text-[13px] font-semibold text-[#d7d7d7] md:ml-auto">
-                {record.status}
-              </span>
-              <button
-                type="button"
-                onClick={() => setSelectedRecord(record)}
-                className="inline-flex h-9 w-fit items-center justify-center gap-2 rounded-[7px] border border-[#444] bg-[#101010] px-3 text-[13px] font-semibold text-white transition-colors hover:border-[#777] md:ml-auto"
+
+        <div className="mt-5 space-y-2.5">
+          {filteredRecords.map((record, index) => {
+            const isSettled = ["active", "settled", "ready", "connected", "verified"].includes(record.status.toLowerCase());
+            const isPending = ["processing", "kyc pending", "review", "approval", "scheduled"].includes(record.status.toLowerCase());
+            
+            return (
+              <div
+                key={`${record.title}-${index}`}
+                className="grid grid-cols-1 gap-3 rounded-xl border border-slate-200/80 bg-slate-50/40 hover:bg-slate-50/80 p-4 transition-all md:grid-cols-[minmax(0,1fr)_120px_130px_90px] md:items-center"
               >
-                <Eye className="h-4 w-4" />
-                View
-              </button>
-            </div>
-          ))}
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-bold text-slate-900">
+                    {record.title}
+                  </p>
+                  <p className="mt-0.5 text-xs text-slate-500 truncate">
+                    {record.detail}
+                  </p>
+                </div>
+                <p className="text-sm font-bold text-slate-900 md:text-right">
+                  {record.value}
+                </p>
+                <div className="md:text-center">
+                  <span className={cn(
+                    "inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold border",
+                    isSettled ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                    isPending ? "bg-amber-50 text-amber-700 border-amber-200" :
+                    "bg-slate-100 text-slate-700 border-slate-200"
+                  )}>
+                    {record.status}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedRecord(record)}
+                  className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100 md:ml-auto cursor-pointer shadow-xs"
+                >
+                  <Eye className="h-3.5 w-3.5 text-slate-500" />
+                  View
+                </button>
+              </div>
+            );
+          })}
           {filteredRecords.length === 0 && (
-            <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-5 py-8 text-center text-[15px] text-[#8d8d8d]">
-              No records match your search.
+            <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 p-8 text-center text-xs text-slate-500 font-medium">
+              No records match your query.
             </div>
           )}
         </div>
       </section>
 
+      {/* Create Dialog */}
       {isDialogOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/75 px-4 py-6 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4 py-6 backdrop-blur-sm">
           <form
             onSubmit={submitDialog}
-            className="flex max-h-[calc(100vh-40px)] w-full max-w-[520px] flex-col overflow-hidden rounded-[13px] border border-[#676767] bg-black shadow-2xl"
+            className="flex max-h-[calc(100vh-40px)] w-full max-w-[500px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl animate-in zoom-in-95 duration-150"
           >
-            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-[#222] p-[24px] sm:p-[29px]">
-              <h2 className="text-[27px] font-semibold leading-none text-white">
+            <div className="flex shrink-0 items-center justify-between border-b border-slate-100 p-6">
+              <h2 className="text-lg font-bold text-slate-900">
                 {config.dialogTitle}
               </h2>
               <button
                 type="button"
                 onClick={() => setIsDialogOpen(false)}
                 aria-label="Close dialog"
-                className="flex h-9 w-9 items-center justify-center rounded-[7px] border border-[#444] text-[#b8b8b8] hover:border-[#777] hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-[24px] py-[25px] sm:px-[29px]">
+            <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-6">
               {config.dialogFields.map((field) => (
-                <label key={field.label} className="flex flex-col gap-2">
-                  <span className="text-[14px] font-semibold text-[#8d8d8d]">
+                <div key={field.label} className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                     {field.label}
-                  </span>
+                  </label>
                   <input
                     required
                     value={form[field.label] || ""}
@@ -578,40 +598,41 @@ export function RoleFeaturePage({ kind }: { kind: FeatureKind }) {
                       }))
                     }
                     placeholder={field.placeholder}
-                    className="h-[42px] rounded-[7px] border border-[#555] bg-[#0c0c0c] px-3 text-[15px] text-white outline-none placeholder:text-[#666] focus:border-[#8a8a8a]"
+                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 text-xs text-slate-900 outline-none placeholder:text-slate-400 focus:bg-white focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 transition-all"
                   />
-                </label>
+                </div>
               ))}
             </div>
 
-            <div className="flex shrink-0 flex-col gap-3 border-t border-[#222] p-[24px] sm:flex-row sm:justify-end sm:p-[29px]">
+            <div className="flex shrink-0 items-center justify-end gap-2.5 border-t border-slate-100 p-5 bg-slate-50/50">
               <button
                 type="button"
                 onClick={() => setIsDialogOpen(false)}
-                className="h-[42px] rounded-[7px] border border-[#555] bg-[#151515] px-[20px] text-[15px] font-semibold text-white transition-colors hover:border-[#777]"
+                className="h-10 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="h-[42px] rounded-[7px] border border-white bg-white px-[20px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+                className="h-10 rounded-xl bg-slate-900 px-5 text-xs font-bold text-white transition-all hover:bg-slate-800 cursor-pointer shadow-sm"
               >
-                Save
+                Save Record
               </button>
             </div>
           </form>
         </div>
       )}
 
+      {/* Record Detail Modal */}
       {selectedRecord && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/75 px-4 py-6 backdrop-blur-sm">
-          <section className="flex max-h-[calc(100vh-40px)] w-full max-w-[560px] flex-col overflow-hidden rounded-[13px] border border-[#676767] bg-black shadow-2xl">
-            <div className="flex shrink-0 items-start justify-between gap-4 border-b border-[#222] px-5 py-5 sm:px-[29px]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4 py-6 backdrop-blur-sm">
+          <section className="flex max-h-[calc(100vh-40px)] w-full max-w-[520px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl animate-in zoom-in-95 duration-150">
+            <div className="flex shrink-0 items-start justify-between border-b border-slate-100 p-6">
               <div className="min-w-0">
-                <p className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#777]">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   {config.title}
-                </p>
-                <h2 className="mt-2 break-words text-[25px] font-semibold leading-tight text-white">
+                </span>
+                <h2 className="mt-1 text-xl font-bold text-slate-900">
                   {selectedRecord.title}
                 </h2>
               </div>
@@ -619,52 +640,52 @@ export function RoleFeaturePage({ kind }: { kind: FeatureKind }) {
                 type="button"
                 onClick={() => setSelectedRecord(null)}
                 aria-label="Close record detail"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[7px] border border-[#444] text-[#b8b8b8] hover:border-[#777] hover:text-white"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-[29px]">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                  <p className="text-[12px] text-[#777]">Status</p>
-                  <p className="mt-2 text-[15px] font-semibold text-white">
+            <div className="min-h-0 flex-1 overflow-y-auto p-6 space-y-4">
+              <div className="grid grid-cols-3 gap-3">
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/60 p-3.5">
+                  <p className="text-[10px] font-bold text-slate-500 uppercase">Status</p>
+                  <p className="mt-1 text-xs font-bold text-slate-900">
                     {selectedRecord.status}
                   </p>
                 </div>
-                <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                  <p className="text-[12px] text-[#777]">Value</p>
-                  <p className="mt-2 break-words text-[15px] font-semibold text-white">
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/60 p-3.5">
+                  <p className="text-[10px] font-bold text-slate-500 uppercase">Value</p>
+                  <p className="mt-1 text-xs font-bold text-slate-900">
                     {selectedRecord.value}
                   </p>
                 </div>
-                <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                  <p className="text-[12px] text-[#777]">Workspace</p>
-                  <p className="mt-2 truncate text-[15px] font-semibold text-white">
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/60 p-3.5">
+                  <p className="text-[10px] font-bold text-slate-500 uppercase">Workspace</p>
+                  <p className="mt-1 text-xs font-bold text-slate-900 truncate capitalize">
                     {workspaceType.replace("_", " ")}
                   </p>
                 </div>
               </div>
 
-              <div className="mt-4 rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-4">
-                <p className="text-[13px] text-[#777]">Details</p>
-                <p className="mt-2 text-[15px] leading-6 text-[#d7d7d7]">
+              <div className="rounded-xl border border-slate-200/80 bg-slate-50/60 p-4">
+                <p className="text-[10px] font-bold text-slate-500 uppercase">Details</p>
+                <p className="mt-1.5 text-xs leading-relaxed text-slate-700 font-medium">
                   {selectedRecord.detail}
                 </p>
               </div>
 
-              <div className="mt-4 flex items-start gap-3 rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-4 text-[14px] leading-5 text-[#9b9b9b]">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-white" />
-                Actions here update the frontend state for this workspace and keep the role permission boundary intact.
+              <div className="flex items-start gap-2.5 rounded-xl border border-emerald-200 bg-emerald-50/60 p-3.5 text-xs text-emerald-800">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                Actions here update the state for this workspace while keeping role permission boundaries active.
               </div>
             </div>
 
-            <div className="flex shrink-0 flex-col gap-3 border-t border-[#222] px-5 py-5 sm:flex-row sm:justify-end sm:px-[29px]">
+            <div className="flex shrink-0 items-center justify-end gap-2.5 border-t border-slate-100 p-5 bg-slate-50/50">
               <button
                 type="button"
                 onClick={() => setSelectedRecord(null)}
-                className="h-[42px] rounded-[7px] border border-[#555] bg-[#151515] px-[20px] text-[15px] font-semibold text-white transition-colors hover:border-[#777]"
+                className="h-10 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50 cursor-pointer"
               >
                 Close
               </button>
@@ -672,9 +693,9 @@ export function RoleFeaturePage({ kind }: { kind: FeatureKind }) {
                 type="button"
                 onClick={runRecordAction}
                 disabled={isActionRunning}
-                className="inline-flex h-[42px] items-center justify-center gap-2 rounded-[7px] border border-white bg-white px-[20px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8] disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 text-xs font-bold text-white transition-all hover:bg-slate-800 cursor-pointer shadow-sm disabled:opacity-60"
               >
-                {isActionRunning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
+                {isActionRunning ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
                 {actionLabel}
               </button>
             </div>

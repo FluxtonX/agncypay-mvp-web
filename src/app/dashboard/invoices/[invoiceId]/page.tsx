@@ -377,12 +377,18 @@ function StatusBadge({ status }: { status: string }) {
   return (
     <span
       className={cn(
-        "inline-flex h-[30px] items-center rounded-[6px] border px-[17px] text-[14px] font-medium leading-none",
-        status === "Paid" && "border-[#e4e4e4] bg-[#8b8b8b] text-black",
-        status === "Approved" && "border-[#5b5b5b] bg-[#101010] text-white",
+        "inline-flex h-[28px] items-center rounded-full border px-3 text-[13px] font-medium leading-none",
+        status === "Paid" && "border-emerald-200 bg-emerald-50 text-emerald-700",
+        status === "Approved" && "border-blue-200 bg-blue-50 text-blue-700",
+        (status === "Processing" || status === "Pending") && "border-amber-200 bg-amber-50 text-amber-700",
+        (status === "Changes Requested" || status === "Failed") && "border-rose-200 bg-rose-50 text-rose-700",
         status !== "Paid" &&
           status !== "Approved" &&
-          "border-[#383838] bg-[#1f1f1f] text-[#c7c7c7]"
+          status !== "Processing" &&
+          status !== "Pending" &&
+          status !== "Changes Requested" &&
+          status !== "Failed" &&
+          "border-slate-200 bg-slate-100 text-slate-700"
       )}
     >
       {status}
@@ -445,14 +451,14 @@ export default function InvoiceDetailPage({ params }: PageProps) {
   if (!invoice) {
     return (
       <div className="flex min-h-[420px] flex-col items-center justify-center gap-4 text-center">
-        <AlertCircle className="h-10 w-10 text-[#9b9b9b]" />
-        <h1 className="text-[28px] font-semibold text-white">Invoice Not Found</h1>
-        <p className="max-w-md text-[16px] text-[#9b9b9b]">
+        <AlertCircle className="h-10 w-10 text-slate-400" />
+        <h1 className="text-[28px] font-semibold text-slate-900">Invoice Not Found</h1>
+        <p className="max-w-md text-[16px] text-slate-500">
           This invoice is not available in the current frontend dataset.
         </p>
         <Link
           href="/dashboard"
-          className="rounded-[7px] border border-[#555] px-5 py-2 text-[15px] font-semibold text-white hover:border-[#777]"
+          className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-[15px] font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-900"
         >
           Back to Dashboard
         </Link>
@@ -543,18 +549,18 @@ export default function InvoiceDetailPage({ params }: PageProps) {
           <Link
             href="/dashboard"
             aria-label="Back to dashboard"
-            className="mt-[27px] text-[24px] leading-none text-[#b7b7b7] transition-colors hover:text-white"
+            className="mt-[27px] text-[24px] leading-none text-slate-400 transition-colors hover:text-slate-900"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
             <div className="flex flex-wrap items-center gap-[16px]">
-              <h1 className="text-[30px] font-semibold leading-tight text-white sm:text-[35px]">
+              <h1 className="text-[30px] font-semibold leading-tight text-slate-900 sm:text-[35px]">
                 Invoice {invoice.id}
               </h1>
               <StatusBadge status={status} />
             </div>
-            <p className="mt-[14px] text-[18px] leading-6 text-[#9b9b9b] sm:mt-[18px] sm:text-[20px]">
+            <p className="mt-[14px] text-[18px] leading-6 text-slate-500 sm:mt-[18px] sm:text-[20px]">
               {invoice.campaign}
             </p>
           </div>
@@ -564,7 +570,7 @@ export default function InvoiceDetailPage({ params }: PageProps) {
           <button
             type="button"
             onClick={() => downloadPdf(invoice, source)}
-            className="inline-flex h-[36px] items-center justify-center gap-[11px] rounded-[6px] border border-[#5a5a5a] bg-[#0c0c0c] px-[18px] text-[14px] font-semibold text-white transition-colors hover:border-[#777]"
+            className="inline-flex h-[38px] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-900"
           >
             <Download className="h-4 w-4" />
             View PDF
@@ -573,7 +579,7 @@ export default function InvoiceDetailPage({ params }: PageProps) {
             <button
               type="button"
               onClick={openPaymentFlow}
-              className="h-[36px] rounded-[6px] border border-white bg-white px-[18px] text-[14px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+              className="h-[38px] rounded-xl border border-slate-900 bg-slate-900 px-5 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
             >
               {source.actionLabel}
             </button>
@@ -581,32 +587,32 @@ export default function InvoiceDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      <section className="mt-[28px] rounded-[13px] border border-[#676767] bg-black px-5 py-5 sm:px-[29px]">
+      <section className="mt-[28px] rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-sm">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#777]">
+            <p className="text-[12px] font-semibold uppercase tracking-wider text-slate-500">
               {source.label}
             </p>
-            <p className="mt-2 max-w-[700px] text-[16px] leading-6 text-[#a5a5a5]">
+            <p className="mt-1.5 max-w-[700px] text-[15px] leading-6 text-slate-600">
               {source.detail}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            <div className="rounded-[8px] border border-[#333] bg-[#050505] px-4 py-3">
-              <p className="text-[12px] text-[#777]">Workspace</p>
-              <p className="mt-2 truncate text-[14px] font-semibold text-white">
+            <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
+              <p className="text-[12px] font-medium text-slate-500">Workspace</p>
+              <p className="mt-1 truncate text-[14px] font-semibold text-slate-900">
                 {activeWorkspace?.name || "Current Workspace"}
               </p>
             </div>
-            <div className="rounded-[8px] border border-[#333] bg-[#050505] px-4 py-3">
-              <p className="text-[12px] text-[#777]">Agncy ID</p>
-              <p className="mt-2 truncate text-[14px] font-semibold text-white">
+            <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
+              <p className="text-[12px] font-medium text-slate-500">Agncy ID</p>
+              <p className="mt-1 truncate text-[14px] font-semibold text-slate-900">
                 {activeWorkspace?.agncyId || "ORG-100245"}
               </p>
             </div>
-            <div className="col-span-2 rounded-[8px] border border-[#333] bg-[#050505] px-4 py-3 sm:col-span-1">
-              <p className="text-[12px] text-[#777]">Permission</p>
-              <p className="mt-2 truncate text-[14px] font-semibold text-white">
+            <div className="col-span-2 rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3 sm:col-span-1">
+              <p className="text-[12px] font-medium text-slate-500">Permission</p>
+              <p className="mt-1 truncate text-[14px] font-semibold text-slate-900">
                 {canInitiatePayment ? source.permissionView : canApproveInvoice ? "Approval Only" : "View / Track"}
               </p>
             </div>
@@ -616,36 +622,36 @@ export default function InvoiceDetailPage({ params }: PageProps) {
 
       <div className="mt-[29px] grid grid-cols-1 gap-[29px] xl:grid-cols-[minmax(0,690px)_330px]">
         <div className="space-y-[29px]">
-          <section className="rounded-[13px] border border-[#676767] bg-black px-5 py-[30px] sm:px-[29px] sm:py-[37px]">
-            <h2 className="text-[25px] font-semibold leading-none text-white sm:text-[29px]">
+          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm">
+            <h2 className="text-[22px] font-semibold leading-none text-slate-900 sm:text-[24px]">
               Invoice Details
             </h2>
-            <div className="mt-[30px] grid grid-cols-1 gap-[30px] md:grid-cols-2">
+            <div className="mt-[26px] grid grid-cols-1 gap-[26px] md:grid-cols-2">
               <div className="flex items-start gap-[15px]">
-                <div className="flex h-[43px] w-[43px] shrink-0 items-center justify-center rounded-[8px] bg-[#292929] text-[#d8d8d8]">
-                  <Building2 className="h-[23px] w-[23px]" />
+                <div className="flex h-[43px] w-[43px] shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                  <Building2 className="h-[22px] w-[22px]" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[16px] leading-5 text-[#777]">{source.primaryLabel}</p>
-                  <p className="mt-[9px] break-words text-[20px] font-semibold leading-6 text-white">
+                  <p className="text-[14px] leading-5 text-slate-500">{source.primaryLabel}</p>
+                  <p className="mt-1 break-words text-[18px] font-semibold leading-6 text-slate-900">
                     {invoice.agency}
                   </p>
-                  <p className="mt-[5px] break-all text-[16px] leading-5 text-[#8b8b8b]">
+                  <p className="mt-1 break-all text-[14px] leading-5 text-slate-500">
                     {invoice.email}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-[15px]">
-                <div className="flex h-[43px] w-[43px] shrink-0 items-center justify-center rounded-[8px] bg-[#292929] text-[#d8d8d8]">
-                  <CalendarDays className="h-[23px] w-[23px]" />
+                <div className="flex h-[43px] w-[43px] shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                  <CalendarDays className="h-[22px] w-[22px]" />
                 </div>
                 <div>
-                  <p className="text-[16px] leading-5 text-[#777]">Due Date</p>
-                  <p className="mt-[9px] text-[20px] font-semibold leading-6 text-white">
+                  <p className="text-[14px] leading-5 text-slate-500">Due Date</p>
+                  <p className="mt-1 text-[18px] font-semibold leading-6 text-slate-900">
                     {formatLongDate(invoice.due)}
                   </p>
-                  <p className="mt-[5px] text-[16px] leading-5 text-[#8b8b8b]">
+                  <p className="mt-1 text-[14px] leading-5 text-slate-500">
                     Created {invoice.created}
                   </p>
                 </div>
@@ -653,11 +659,11 @@ export default function InvoiceDetailPage({ params }: PageProps) {
             </div>
           </section>
 
-          <section className="rounded-[13px] border border-[#676767] bg-black px-5 py-[30px] sm:px-[29px] sm:py-[37px]">
-            <h2 className="text-[25px] font-semibold leading-none text-white sm:text-[29px]">
+          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm">
+            <h2 className="text-[22px] font-semibold leading-none text-slate-900 sm:text-[24px]">
               Line Items
             </h2>
-            <div className="mt-[32px] overflow-x-auto">
+            <div className="mt-6 overflow-x-auto">
               <table className="w-full min-w-[610px] table-fixed text-left">
                 <colgroup>
                   <col className="w-[56%]" />
@@ -666,23 +672,23 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                   <col className="w-[14%]" />
                 </colgroup>
                 <thead>
-                  <tr className="h-[43px] border-b border-[#444] text-[17px] leading-none text-[#777]">
-                    <th className="font-normal">Description</th>
-                    <th className="text-right font-normal">Qty</th>
-                    <th className="text-right font-normal">Rate</th>
-                    <th className="text-right font-normal">Amount</th>
+                  <tr className="h-[40px] border-b border-slate-200 text-[14px] font-medium leading-none text-slate-500">
+                    <th className="font-medium">Description</th>
+                    <th className="text-right font-medium">Qty</th>
+                    <th className="text-right font-medium">Rate</th>
+                    <th className="text-right font-medium">Amount</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-slate-100">
                   {invoice.lineItems.map((item) => (
                     <tr
                       key={item.description}
-                      className="h-[74px] border-b border-[#343434] text-[17px] leading-6 text-[#c8c8c8]"
+                      className="h-[64px] text-[15px] leading-6 text-slate-700"
                     >
-                      <td className="pr-5">{item.description}</td>
-                      <td className="text-right">{item.quantity}</td>
-                      <td className="text-right text-[#9b9b9b]">{formatMoney(item.rate)}</td>
-                      <td className="text-right font-semibold text-white">
+                      <td className="pr-5 font-medium text-slate-900">{item.description}</td>
+                      <td className="text-right text-slate-600">{item.quantity}</td>
+                      <td className="text-right text-slate-500">{formatMoney(item.rate)}</td>
+                      <td className="text-right font-semibold text-slate-900">
                         {formatMoney(item.quantity * item.rate)}
                       </td>
                     </tr>
@@ -691,46 +697,46 @@ export default function InvoiceDetailPage({ params }: PageProps) {
               </table>
             </div>
 
-            <div className="mt-[29px] border-t border-[#7a7a7a] pt-[28px]">
-              <div className="flex justify-between gap-4 text-[16px] leading-5">
-                <span className="text-[#8d8d8d]">{source.amountLabel}</span>
-                <span className="font-semibold text-white">{formatMoney(invoice.amount)}</span>
+            <div className="mt-6 border-t border-slate-200 pt-6">
+              <div className="flex justify-between gap-4 text-[15px] leading-5">
+                <span className="text-slate-500">{source.amountLabel}</span>
+                <span className="font-semibold text-slate-900">{formatMoney(invoice.amount)}</span>
               </div>
-              <div className="mt-[20px] flex justify-between gap-4 text-[16px] leading-5">
-                <span className="text-[#8d8d8d]">{source.feeLabel}</span>
-                <span className="font-semibold text-white">{formatMoney(invoice.fee)}</span>
+              <div className="mt-4 flex justify-between gap-4 text-[15px] leading-5">
+                <span className="text-slate-500">{source.feeLabel}</span>
+                <span className="font-semibold text-slate-900">{formatMoney(invoice.fee)}</span>
               </div>
-              <div className="mt-[19px] flex items-center justify-between gap-4 border-t border-[#343434] pt-[23px]">
-                <span className="text-[19px] font-semibold leading-6 text-white">
+              <div className="mt-4 flex items-center justify-between gap-4 border-t border-slate-200 pt-5">
+                <span className="text-[17px] font-semibold leading-6 text-slate-900">
                   Total Amount
                 </span>
-                <span className="break-words text-right text-[26px] font-semibold leading-none text-white sm:text-[32px]">
+                <span className="break-words text-right text-[26px] font-bold leading-none text-slate-900 sm:text-[30px]">
                   {formatMoney(total)}
                 </span>
               </div>
             </div>
           </section>
 
-          <section className="rounded-[13px] border border-[#676767] bg-black px-5 py-[30px] sm:px-[29px] sm:py-[31px]">
-            <h2 className="text-[25px] font-semibold leading-none text-white sm:text-[29px]">
+          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm">
+            <h2 className="text-[22px] font-semibold leading-none text-slate-900 sm:text-[24px]">
               Activity Timeline
             </h2>
-            <div className="mt-[32px] space-y-[34px]">
+            <div className="mt-6 space-y-6">
               {[
                 ["Invoice created", `${invoice.agency} - 2026-05-15 10:23 AM`],
                 [source.label, `System - 2026-05-15 10:25 AM`],
                 [status === "Changes Requested" ? "Changes requested" : "Awaiting approval", `AgncyPay - 2026-05-15 02:14 PM`],
               ].map(([title, detail], index, items) => (
-                <div key={title} className="relative flex gap-[20px]">
+                <div key={title} className="relative flex gap-4">
                   <div className="relative flex w-[10px] justify-center">
-                    <span className="mt-[4px] h-[10px] w-[10px] rounded-full bg-[#777]" />
+                    <span className="mt-[6px] h-2.5 w-2.5 rounded-full bg-slate-400" />
                     {index < items.length - 1 && (
-                      <span className="absolute top-[18px] h-[52px] w-px bg-[#343434]" />
+                      <span className="absolute top-[18px] h-[calc(100%+10px)] w-px bg-slate-200" />
                     )}
                   </div>
                   <div>
-                    <p className="text-[17px] font-semibold leading-5 text-white">{title}</p>
-                    <p className="mt-[8px] text-[17px] leading-5 text-[#8b8b8b]">{detail}</p>
+                    <p className="text-[15px] font-semibold leading-5 text-slate-900">{title}</p>
+                    <p className="mt-1 text-[14px] leading-5 text-slate-500">{detail}</p>
                   </div>
                 </div>
               ))}
@@ -738,37 +744,37 @@ export default function InvoiceDetailPage({ params }: PageProps) {
           </section>
         </div>
 
-        <aside className="space-y-[29px]">
-          <section className="rounded-[13px] border border-[#676767] bg-black px-5 py-[30px] sm:px-[29px] sm:py-[37px]">
-            <h2 className="text-[22px] font-semibold leading-none text-white">
+        <aside className="space-y-[24px]">
+          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
+            <h2 className="text-[20px] font-semibold leading-none text-slate-900">
               Payment Summary
             </h2>
-            <div className="mt-[36px] space-y-[24px]">
-              <div className="flex justify-between gap-6 text-[16px] leading-5">
-                <span className="text-[#8d8d8d]">{source.amountLabel}</span>
-                <span className="font-semibold text-white">{formatMoney(invoice.amount)}</span>
+            <div className="mt-6 space-y-4">
+              <div className="flex justify-between gap-6 text-[15px] leading-5">
+                <span className="text-slate-500">{source.amountLabel}</span>
+                <span className="font-semibold text-slate-900">{formatMoney(invoice.amount)}</span>
               </div>
-              <div className="flex justify-between gap-6 text-[16px] leading-5">
-                <span className="text-[#8d8d8d]">{source.feeLabel}</span>
-                <span className="font-semibold text-white">{formatMoney(invoice.fee)}</span>
+              <div className="flex justify-between gap-6 text-[15px] leading-5">
+                <span className="text-slate-500">{source.feeLabel}</span>
+                <span className="font-semibold text-slate-900">{formatMoney(invoice.fee)}</span>
               </div>
-              <div className="flex items-center justify-between gap-4 border-t border-[#343434] pt-[24px]">
-                <span className="text-[18px] font-semibold leading-6 text-white">Total Due</span>
-                <span className="break-words text-right text-[22px] font-semibold leading-none text-white">
+              <div className="flex items-center justify-between gap-4 border-t border-slate-200 pt-4">
+                <span className="text-[16px] font-semibold leading-6 text-slate-900">Total Due</span>
+                <span className="break-words text-right text-[22px] font-bold leading-none text-slate-900">
                   {formatMoney(total)}
                 </span>
               </div>
             </div>
           </section>
 
-          <section className="rounded-[13px] border border-[#676767] bg-black px-5 py-[28px] sm:px-[29px] sm:py-[31px]">
-            <div className="flex items-start gap-[14px]">
-              <Clock3 className="mt-[1px] h-[22px] w-[22px] text-[#bdbdbd]" />
+          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
+            <div className="flex items-start gap-3.5">
+              <Clock3 className="mt-0.5 h-5 w-5 shrink-0 text-slate-400" />
               <div>
-                <h2 className="text-[18px] font-semibold leading-6 text-white">
+                <h2 className="text-[16px] font-semibold leading-6 text-slate-900">
                   {status === "Paid" ? "Payment Settled" : status}
                 </h2>
-                <p className="mt-[8px] text-[16px] leading-7 text-[#9b9b9b]">
+                <p className="mt-2 text-[14px] leading-6 text-slate-600">
                   {canApproveInvoice || canInitiatePayment
                     ? workflowSummary
                     : "You can view this invoice and track payout/payment status. Approval and treasury controls stay with authorized workspace users."}
@@ -777,12 +783,12 @@ export default function InvoiceDetailPage({ params }: PageProps) {
             </div>
           </section>
 
-          <section className="rounded-[13px] border border-[#676767] bg-black px-5 py-[24px] sm:px-[31px]">
+          <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
             {(canApproveInvoice || canInitiatePayment) && (
               <button
                 type="button"
                 onClick={openPaymentFlow}
-                className="h-[44px] w-full rounded-[7px] border border-white bg-white text-[16px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+                className="h-[44px] w-full rounded-xl border border-slate-900 bg-slate-900 text-[15px] font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
               >
                 {source.actionLabel}
               </button>
@@ -792,16 +798,16 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                 type="button"
                 onClick={() => setChangeFlow({ reason: "", submitted: false })}
                 className={cn(
-                  "h-[44px] w-full rounded-[7px] border border-[#555] bg-black text-[16px] font-semibold text-white transition-colors hover:border-[#777]",
-                  (canApproveInvoice || canInitiatePayment) && "mt-[18px]"
+                  "h-[44px] w-full rounded-xl border border-slate-200 bg-white text-[15px] font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-900",
+                  (canApproveInvoice || canInitiatePayment) && "mt-3"
                 )}
               >
                 Request Changes
               </button>
             )}
             {!canRequestChanges && !canApproveInvoice && !canInitiatePayment && (
-              <div className="flex items-start gap-3 rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3 text-[14px] leading-5 text-[#9b9b9b]">
-                <Lock className="mt-0.5 h-4 w-4 shrink-0 text-[#d7d7d7]" />
+              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-[13px] leading-5 text-slate-600">
+                <Lock className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
                 Invoice controls are limited by your current workspace role.
               </div>
             )}
@@ -810,25 +816,25 @@ export default function InvoiceDetailPage({ params }: PageProps) {
       </div>
 
       {paymentFlow && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/75 px-3 py-5 backdrop-blur-sm sm:px-4">
-          <section className="flex max-h-[calc(100vh-40px)] w-full max-w-[620px] flex-col overflow-hidden rounded-[13px] border border-[#676767] bg-black shadow-2xl">
-            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-[#222] px-4 py-[16px] sm:px-[25px] sm:py-[18px]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-900/40 px-3 py-5 backdrop-blur-sm sm:px-4">
+          <section className="flex max-h-[calc(100vh-40px)] w-full max-w-[620px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-100 bg-slate-50/60 px-5 py-4 sm:px-6">
               <div className="flex min-w-0 items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] border border-[#3d3d3d] bg-[#101010] text-white">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-900 shadow-sm">
                   {paymentFlow.stage === "success" ? (
-                    <CheckCircle2 className="h-5 w-5" />
+                    <CheckCircle2 className="h-5 w-5 text-emerald-600" />
                   ) : (
-                    <ShieldCheck className="h-5 w-5" />
+                    <ShieldCheck className="h-5 w-5 text-slate-700" />
                   )}
                 </div>
                 <div className="min-w-0">
-                  <h2 className="truncate text-[20px] font-semibold leading-tight text-white sm:text-[24px]">
+                  <h2 className="truncate text-[18px] font-semibold leading-tight text-slate-900 sm:text-[20px]">
                     {paymentFlow.stage === "review" && "Review Invoice Payment"}
                     {paymentFlow.stage === "processing" && "Processing Payment"}
                     {paymentFlow.stage === "success" && (canInitiatePayment ? "Payment Successful" : "Approval Recorded")}
                   </h2>
-                  <p className="mt-2 text-[14px] leading-4 text-[#888]">
-                    {invoice.id} - {source.label}
+                  <p className="mt-1 text-[13px] leading-4 text-slate-500">
+                    {invoice.id} · {source.label}
                   </p>
                 </div>
               </div>
@@ -838,48 +844,48 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                   type="button"
                   onClick={closePaymentFlow}
                   aria-label="Close payment flow"
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[7px] border border-[#444] text-[#b8b8b8] transition-colors hover:border-[#777] hover:text-white"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                 </button>
               )}
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-[25px] sm:py-[24px]">
+            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6 sm:px-6">
               {paymentFlow.stage === "review" && (
-                <div className="space-y-[22px]">
-                  <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-4">
+                <div className="space-y-5">
+                  <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                       <div className="min-w-0">
-                        <p className="font-mono text-[15px] font-semibold leading-5 text-white">
+                        <p className="font-mono text-[14px] font-semibold leading-5 text-slate-900">
                           {invoice.id}
                         </p>
-                        <p className="mt-1 break-words text-[14px] leading-5 text-[#858585]">
-                          {invoice.agency} - {invoice.campaign}
+                        <p className="mt-1 break-words text-[13px] leading-5 text-slate-500">
+                          {invoice.agency} · {invoice.campaign}
                         </p>
                       </div>
-                      <p className="shrink-0 text-[19px] font-semibold leading-none text-white">
+                      <p className="shrink-0 text-[18px] font-bold leading-none text-slate-900">
                         {formatMoney(total)}
                       </p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                    <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                      <p className="text-[13px] leading-4 text-[#777]">{source.amountLabel}</p>
-                      <p className="mt-2 break-words text-[17px] font-semibold leading-tight text-white">
+                    <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
+                      <p className="text-[12px] leading-4 text-slate-500">{source.amountLabel}</p>
+                      <p className="mt-1.5 break-words text-[16px] font-semibold leading-tight text-slate-900">
                         {formatMoney(invoice.amount)}
                       </p>
                     </div>
-                    <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                      <p className="text-[13px] leading-4 text-[#777]">{source.feeLabel}</p>
-                      <p className="mt-2 break-words text-[17px] font-semibold leading-tight text-white">
+                    <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
+                      <p className="text-[12px] leading-4 text-slate-500">{source.feeLabel}</p>
+                      <p className="mt-1.5 break-words text-[16px] font-semibold leading-tight text-slate-900">
                         {formatMoney(invoice.fee)}
                       </p>
                     </div>
-                    <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-3">
-                      <p className="text-[13px] leading-4 text-[#777]">Total</p>
-                      <p className="mt-2 break-words text-[17px] font-semibold leading-tight text-white">
+                    <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3">
+                      <p className="text-[12px] leading-4 text-slate-500">Total</p>
+                      <p className="mt-1.5 break-words text-[16px] font-semibold leading-tight text-slate-900">
                         {formatMoney(total)}
                       </p>
                     </div>
@@ -887,10 +893,10 @@ export default function InvoiceDetailPage({ params }: PageProps) {
 
                   {canInitiatePayment && (
                     <div>
-                      <p className="text-[14px] font-semibold leading-4 text-[#8d8d8d]">
+                      <p className="text-[13px] font-semibold leading-4 text-slate-700">
                         Funding Source
                       </p>
-                      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      <div className="mt-2.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                         {[
                           ["ach", "Primary ACH", "Chase Business Checking ...1234"],
                           ["card", "Corporate Card", "Visa Signature ...8930"],
@@ -907,17 +913,17 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                                 )
                               }
                               className={cn(
-                                "rounded-[8px] border px-4 py-4 text-left transition-colors",
+                                "rounded-xl border p-4 text-left transition-all",
                                 isSelected
-                                  ? "border-white bg-white text-black"
-                                  : "border-[#444] bg-[#050505] text-white hover:border-[#777]"
+                                  ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+                                  : "border-slate-200 bg-white text-slate-900 hover:border-slate-300 hover:bg-slate-50"
                               )}
                             >
-                              <span className="flex items-center gap-2 text-[15px] font-semibold">
+                              <span className="flex items-center gap-2 text-[14px] font-semibold">
                                 <CreditCard className="h-4 w-4" />
                                 {title}
                               </span>
-                              <span className={cn("mt-2 block text-[13px]", isSelected ? "text-[#333]" : "text-[#777]")}>
+                              <span className={cn("mt-1.5 block text-[12px]", isSelected ? "text-slate-300" : "text-slate-500")}>
                                 {detail}
                               </span>
                             </button>
@@ -927,23 +933,23 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                     </div>
                   )}
 
-                  <div className="flex items-start gap-3 rounded-[8px] border border-[#333] bg-[#050505] px-4 py-3 text-[13px] leading-5 text-[#9b9b9b]">
-                    <Lock className="mt-0.5 h-4 w-4 shrink-0 text-[#d7d7d7]" />
+                  <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 text-[13px] leading-5 text-slate-600">
+                    <Lock className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
                     {workflowSummary}
                   </div>
 
-                  <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:justify-end">
+                  <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-end">
                     <button
                       type="button"
                       onClick={closePaymentFlow}
-                      className="h-[42px] rounded-[7px] border border-[#555] bg-[#151515] px-[22px] text-[15px] font-semibold text-white transition-colors hover:border-[#777]"
+                      className="h-[40px] rounded-xl border border-slate-200 bg-white px-5 text-[14px] font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-900"
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
                       onClick={confirmPayment}
-                      className="h-[42px] rounded-[7px] border border-white bg-white px-[22px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+                      className="h-[40px] rounded-xl border border-slate-900 bg-slate-900 px-5 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
                     >
                       {canInitiatePayment ? "Confirm Payment" : "Record Approval"}
                     </button>
@@ -953,19 +959,19 @@ export default function InvoiceDetailPage({ params }: PageProps) {
 
               {paymentFlow.stage === "processing" && (
                 <div className="flex min-h-full flex-col items-center justify-center py-6 text-center">
-                  <div className="relative flex h-[78px] w-[78px] items-center justify-center rounded-full border border-[#4d4d4d] bg-[#070707]">
-                    <RefreshCw className="h-9 w-9 animate-spin text-white" />
-                    <Lock className="absolute h-4 w-4 text-[#9b9b9b]" />
+                  <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-slate-200 bg-slate-50">
+                    <RefreshCw className="h-7 w-7 animate-spin text-slate-700" />
+                    <Lock className="absolute h-3.5 w-3.5 text-slate-400" />
                   </div>
 
-                  <h3 className="mt-5 text-[24px] font-semibold leading-none text-white">
+                  <h3 className="mt-5 text-[22px] font-semibold leading-none text-slate-900">
                     {canInitiatePayment ? `Settling ${formatMoney(total)}` : "Recording Approval"}
                   </h3>
-                  <p className="mt-3 text-[15px] leading-5 text-[#8f8f8f]">
+                  <p className="mt-2 text-[14px] leading-5 text-slate-500">
                     Keep this window open while the workflow is reconciled.
                   </p>
 
-                  <div className="mt-7 w-full space-y-3 rounded-[8px] border border-[#303030] bg-[#050505] p-4 text-left">
+                  <div className="mt-6 w-full space-y-3 rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-left">
                     {paymentSteps.map((step, index) => {
                       const isDone = index < paymentFlow.activeStep;
                       const isActive = index === paymentFlow.activeStep;
@@ -975,15 +981,15 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                           key={step}
                           className={cn(
                             "flex items-center gap-3 text-[14px] transition-colors",
-                            isDone || isActive ? "text-white" : "text-[#595959]"
+                            isDone ? "font-medium text-emerald-600" : isActive ? "font-semibold text-slate-900" : "text-slate-400"
                           )}
                         >
                           {isDone ? (
-                            <CheckCircle2 className="h-4 w-4 shrink-0" />
+                            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
                           ) : isActive ? (
-                            <RefreshCw className="h-4 w-4 shrink-0 animate-spin" />
+                            <RefreshCw className="h-4 w-4 shrink-0 animate-spin text-slate-700" />
                           ) : (
-                            <span className="h-4 w-4 shrink-0 rounded-full border border-[#444]" />
+                            <span className="h-4 w-4 shrink-0 rounded-full border border-slate-300" />
                           )}
                           <span>{step}</span>
                         </div>
@@ -995,33 +1001,33 @@ export default function InvoiceDetailPage({ params }: PageProps) {
 
               {paymentFlow.stage === "success" && (
                 <div className="flex flex-col items-center py-6 text-center">
-                  <div className="flex h-[78px] w-[78px] items-center justify-center rounded-full border border-white bg-white text-black">
-                    <CheckCircle2 className="h-10 w-10" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-600">
+                    <CheckCircle2 className="h-8 w-8" />
                   </div>
 
-                  <h3 className="mt-5 text-[25px] font-semibold leading-none text-white">
+                  <h3 className="mt-5 text-[22px] font-semibold leading-none text-slate-900">
                     {canInitiatePayment ? "Payment Settled Successfully" : "Invoice Approved"}
                   </h3>
-                  <p className="mt-3 max-w-[420px] text-[15px] leading-5 text-[#8f8f8f]">
+                  <p className="mt-2 max-w-[420px] text-[14px] leading-5 text-slate-500">
                     {canInitiatePayment
                       ? "The invoice is now marked Paid and the transaction reference is ready for records."
                       : "Approval has been recorded. A finance user can release payment from the authorized workspace."}
                   </p>
 
-                  <div className="mt-7 w-full rounded-[8px] border border-[#303030] bg-[#050505] p-4 text-left">
-                    <div className="flex flex-col gap-2 border-b border-[#222] pb-3 sm:flex-row sm:justify-between">
-                      <span className="text-[14px] text-[#777]">Transaction ID</span>
-                      <span className="break-all font-mono text-[14px] font-semibold text-white sm:text-right">
+                  <div className="mt-6 w-full rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-left">
+                    <div className="flex flex-col gap-2 border-b border-slate-200 pb-3 sm:flex-row sm:justify-between">
+                      <span className="text-[13px] text-slate-500">Transaction ID</span>
+                      <span className="break-all font-mono text-[13px] font-semibold text-slate-900 sm:text-right">
                         {paymentFlow.transactionId}
                       </span>
                     </div>
-                    <div className="flex justify-between gap-4 border-b border-[#222] py-3">
-                      <span className="text-[14px] text-[#777]">Invoice</span>
-                      <span className="text-[14px] font-semibold text-white">{invoice.id}</span>
+                    <div className="flex justify-between gap-4 border-b border-slate-200 py-3">
+                      <span className="text-[13px] text-slate-500">Invoice</span>
+                      <span className="text-[13px] font-semibold text-slate-900">{invoice.id}</span>
                     </div>
                     <div className="flex flex-col gap-2 pt-3 sm:flex-row sm:justify-between">
-                      <span className="text-[14px] text-[#777]">Final Amount</span>
-                      <span className="break-words text-[14px] font-semibold text-white sm:text-right">
+                      <span className="text-[13px] text-slate-500">Final Amount</span>
+                      <span className="break-words text-[14px] font-bold text-slate-900 sm:text-right">
                         {formatMoney(total)}
                       </span>
                     </div>
@@ -1030,7 +1036,7 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                   <button
                     type="button"
                     onClick={closePaymentFlow}
-                    className="mt-7 h-[42px] rounded-[7px] border border-white bg-white px-[26px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+                    className="mt-6 h-[40px] rounded-xl border border-slate-900 bg-slate-900 px-6 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
                   >
                     Back to Invoice
                   </button>
@@ -1042,44 +1048,44 @@ export default function InvoiceDetailPage({ params }: PageProps) {
       )}
 
       {changeFlow && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/75 px-3 py-5 backdrop-blur-sm sm:px-4">
-          <section className="flex max-h-[calc(100vh-40px)] w-full max-w-[560px] flex-col overflow-hidden rounded-[13px] border border-[#676767] bg-black shadow-2xl">
-            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-[#222] px-4 py-[16px] sm:px-[25px] sm:py-[18px]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-900/40 px-3 py-5 backdrop-blur-sm sm:px-4">
+          <section className="flex max-h-[calc(100vh-40px)] w-full max-w-[560px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-100 bg-slate-50/60 px-5 py-4 sm:px-6">
               <div>
-                <h2 className="text-[20px] font-semibold leading-tight text-white sm:text-[24px]">
+                <h2 className="text-[18px] font-semibold leading-tight text-slate-900 sm:text-[20px]">
                   {changeFlow.submitted ? "Changes Requested" : "Request Invoice Changes"}
                 </h2>
-                <p className="mt-2 text-[14px] leading-4 text-[#888]">
-                  {invoice.id} - {invoice.agency}
+                <p className="mt-1 text-[13px] leading-4 text-slate-500">
+                  {invoice.id} · {invoice.agency}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setChangeFlow(null)}
                 aria-label="Close change request"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[7px] border border-[#444] text-[#b8b8b8] transition-colors hover:border-[#777] hover:text-white"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-[25px] sm:py-[24px]">
+            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6 sm:px-6">
               {changeFlow.submitted ? (
                 <div className="space-y-5">
-                  <div className="flex items-start gap-3 rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-4">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-white" />
+                  <div className="flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50/60 p-4">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
                     <div>
-                      <p className="text-[16px] font-semibold text-white">
+                      <p className="text-[15px] font-semibold text-slate-900">
                         Request sent to invoice owner
                       </p>
-                      <p className="mt-2 text-[14px] leading-5 text-[#8f8f8f]">
+                      <p className="mt-1 text-[13px] leading-5 text-slate-600">
                         The invoice has been moved to Changes Requested until the owner updates it.
                       </p>
                     </div>
                   </div>
-                  <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-4">
-                    <p className="text-[13px] text-[#777]">Reason</p>
-                    <p className="mt-2 whitespace-pre-wrap text-[15px] leading-6 text-white">
+                  <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4">
+                    <p className="text-[12px] font-medium text-slate-500">Reason</p>
+                    <p className="mt-2 whitespace-pre-wrap text-[14px] leading-6 text-slate-900">
                       {changeFlow.reason}
                     </p>
                   </div>
@@ -1087,7 +1093,7 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                     <button
                       type="button"
                       onClick={() => setChangeFlow(null)}
-                      className="h-[42px] rounded-[7px] border border-white bg-white px-[22px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+                      className="h-[40px] rounded-xl border border-slate-900 bg-slate-900 px-6 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
                     >
                       Done
                     </button>
@@ -1095,14 +1101,14 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                 </div>
               ) : (
                 <form onSubmit={submitChangeRequest} className="space-y-5">
-                  <div className="rounded-[8px] border border-[#303030] bg-[#050505] px-4 py-4">
-                    <p className="font-mono text-[15px] font-semibold text-white">{invoice.id}</p>
-                    <p className="mt-1 text-[14px] leading-5 text-[#858585]">
-                      {invoice.campaign} - {formatMoney(total)}
+                  <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-4">
+                    <p className="font-mono text-[14px] font-semibold text-slate-900">{invoice.id}</p>
+                    <p className="mt-1 text-[13px] leading-5 text-slate-500">
+                      {invoice.campaign} · {formatMoney(total)}
                     </p>
                   </div>
                   <label className="block">
-                    <span className="text-[14px] font-semibold text-[#8d8d8d]">
+                    <span className="text-[13px] font-semibold text-slate-700">
                       Change request note
                     </span>
                     <textarea
@@ -1114,20 +1120,20 @@ export default function InvoiceDetailPage({ params }: PageProps) {
                         )
                       }
                       placeholder="Explain what needs to be corrected before approval."
-                      className="mt-3 min-h-[140px] w-full resize-none rounded-[8px] border border-[#555] bg-[#0c0c0c] px-4 py-3 text-[15px] leading-6 text-white outline-none placeholder:text-[#666] focus:border-[#8a8a8a]"
+                      className="mt-2 min-h-[140px] w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-[14px] leading-6 text-slate-900 outline-none placeholder:text-slate-400 focus:border-slate-900"
                     />
                   </label>
                   <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                     <button
                       type="button"
                       onClick={() => setChangeFlow(null)}
-                      className="h-[42px] rounded-[7px] border border-[#555] bg-[#151515] px-[22px] text-[15px] font-semibold text-white transition-colors hover:border-[#777]"
+                      className="h-[40px] rounded-xl border border-slate-200 bg-white px-5 text-[14px] font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-900"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="h-[42px] rounded-[7px] border border-white bg-white px-[22px] text-[15px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+                      className="h-[40px] rounded-xl border border-slate-900 bg-slate-900 px-5 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
                     >
                       Send Request
                     </button>

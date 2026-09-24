@@ -27,15 +27,13 @@ function RequestPageContent() {
 
   if (!invoice) {
     return (
-      <div className="min-h-screen bg-black text-white">
-        <div className="mx-auto flex min-h-screen max-w-[760px] items-center justify-center px-4">
-          <section className="w-full rounded-[8px] border border-[#252525] bg-[#050505] p-6 text-center">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#777]">Invoice not found</p>
-            <h1 className="mt-3 text-[28px] font-semibold text-white">Invoice unavailable</h1>
-            <Link href="/mainboard" className="mt-6 inline-flex h-11 items-center justify-center rounded-[7px] border border-white bg-white px-4 text-[13px] font-semibold text-black">
-              Back to Mainboard
-            </Link>
-          </section>
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center font-sans">
+        <div className="max-w-md w-full mx-4 rounded-2xl border border-slate-200/80 bg-white p-8 text-center shadow-sm">
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Invoice not found</p>
+          <h1 className="mt-2 text-2xl font-black text-slate-900">Invoice unavailable</h1>
+          <Link href="/dashboard" className="mt-6 inline-flex h-10 items-center justify-center rounded-xl bg-slate-900 px-5 text-xs font-bold text-white hover:bg-slate-800 shadow-sm transition-all">
+            Back to Dashboard
+          </Link>
         </div>
       </div>
     );
@@ -76,10 +74,10 @@ function RequestPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#4d4d4d] text-black">
-      <header className="sticky top-0 z-20 border-b border-black/10 bg-black/90 text-white backdrop-blur">
-        <div className="mx-auto flex h-[68px] max-w-[1120px] items-center justify-between gap-4 px-4">
-          <Link href={returnHref} className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-white/15 bg-white/[0.04] px-3 text-[13px] font-semibold hover:border-white/35">
+    <div className="min-h-screen bg-slate-100 text-slate-900 font-sans">
+      <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex h-[70px] max-w-[1120px] items-center justify-between gap-4 px-4">
+          <Link href={returnHref} className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors">
             <ArrowLeft className="h-4 w-4" />
             {returnLabel}
           </Link>
@@ -87,17 +85,17 @@ function RequestPageContent() {
             <button
               type="button"
               onClick={copyLink}
-              className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-white/15 bg-white/[0.04] px-3 text-[13px] font-semibold hover:border-white/35"
+              className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
             >
-              <Copy className="h-4 w-4" />
+              <Copy className="h-4 w-4 text-slate-500" />
               {copyState === "done" ? "Copied" : "Copy Link"}
             </button>
             <button
               type="button"
               onClick={downloadPdf}
-              className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-white/15 bg-white/[0.04] px-3 text-[13px] font-semibold hover:border-white/35"
+              className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
             >
-              <Download className="h-4 w-4" />
+              <Download className="h-4 w-4 text-slate-500" />
               PDF
             </button>
           </div>
@@ -209,9 +207,9 @@ function RequestPageContent() {
           <div className="mt-8 flex justify-end">
             <Link
               href={payLink}
-              className="inline-flex h-[54px] items-center justify-center gap-2 overflow-hidden rounded-[16px] bg-black px-8 text-[19px] font-black text-white hover:bg-[#1a1a1a]"
+              className="inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-xl bg-slate-900 px-7 text-base font-bold text-white hover:bg-slate-800 shadow-sm active:scale-[0.99] transition-all"
             >
-              <Image src="/agncypayLogo.png" alt="AgncyPay" width={180} height={82} className="w-[62px] max-h-[22px] object-contain" />
+              <Image src="/agncypayLogo.png" alt="AgncyPay" width={180} height={82} className="w-[58px] max-h-[20px] object-contain [filter:invert(1)_brightness(1.5)]" />
               <span>Now</span>
             </Link>
           </div>
@@ -224,10 +222,10 @@ function RequestPageContent() {
 export default function RequestPage() {
   return (
     <React.Suspense fallback={
-      <div className="min-h-screen bg-[#4d4d4d] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center font-sans">
         <div className="text-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#333] border-t-white mx-auto mb-4"></div>
-          <p className="text-[14px] text-[#bdbdbd]">Loading invoice...</p>
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900 mx-auto mb-4" />
+          <p className="text-xs font-semibold text-slate-500">Loading invoice...</p>
         </div>
       </div>
     }>

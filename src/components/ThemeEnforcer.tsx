@@ -9,11 +9,14 @@ export default function ThemeEnforcer() {
   useEffect(() => {
     if (typeof document === "undefined") return;
 
-    const isAuthOrLanding = pathname === "/" || pathname.startsWith("/auth") || pathname.startsWith("/onboarding");
+    const isLanding = pathname === "/";
 
-    if (isAuthOrLanding) {
+    if (isLanding) {
       document.documentElement.classList.remove("light");
       document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
     }
   }, [pathname]);
 

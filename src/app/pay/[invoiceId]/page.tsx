@@ -101,9 +101,9 @@ function CardRailLogo({ rail }: { rail: CardRail }) {
 }
 
 function cardRailClasses(rail: CardRail, selected: boolean) {
-  const base = "relative flex h-11 min-w-[88px] items-center justify-center overflow-hidden rounded-[4px] border px-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80";
+  const base = "relative flex h-11 min-w-[88px] items-center justify-center overflow-hidden rounded-xl border px-3 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900";
   const palette: Record<CardRail, string> = {
-    agncypay: "bg-black text-white",
+    agncypay: "bg-slate-900 text-white",
     visa: "bg-white",
     mastercard: "bg-white",
     discover: "bg-white",
@@ -114,7 +114,9 @@ function cardRailClasses(rail: CardRail, selected: boolean) {
   return cn(
     base,
     palette[rail],
-    selected ? "border-white shadow-[0_0_0_2px_rgba(255,255,255,0.22)]" : "border-[#333] opacity-80 hover:opacity-100"
+    selected
+      ? "border-slate-900 ring-2 ring-slate-900/10 shadow-sm"
+      : "border-slate-200 opacity-75 hover:opacity-100 hover:border-slate-300"
   );
 }
 
@@ -135,60 +137,60 @@ function SummaryCard({
 
   return (
     <aside className="space-y-5">
-      <section className="rounded-[10px] border border-[#303030] bg-[#161616] p-6">
-        <div className="space-y-5 text-[13px]">
+      <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
+        <div className="space-y-4 text-xs">
           <div className="flex items-center justify-between gap-4">
-            <span className="font-semibold text-[#d7d7d7]">Due Date</span>
-            <span className="font-semibold text-white">{invoice.due}</span>
+            <span className="font-semibold text-slate-500">Due Date</span>
+            <span className="font-bold text-slate-900">{invoice.due}</span>
           </div>
           <div className="flex items-center justify-between gap-4">
-            <span className="font-semibold text-[#d7d7d7]">Invoice Amount</span>
-            <span className="text-[26px] font-semibold text-white">{formatMainboardMoney(invoice.amount)}</span>
+            <span className="font-semibold text-slate-500">Invoice Amount</span>
+            <span className="text-2xl font-black text-slate-900">{formatMainboardMoney(invoice.amount)}</span>
           </div>
-          <div className="flex items-center justify-between gap-4">
-            <span className="font-semibold text-[#d7d7d7]">Amount Due</span>
-            <span className="text-[26px] font-semibold text-white">{formatMainboardMoney(total)}</span>
+          <div className="flex items-center justify-between gap-4 border-t border-slate-100 pt-3">
+            <span className="font-semibold text-slate-500">Amount Due</span>
+            <span className="text-2xl font-black text-slate-900">{formatMainboardMoney(total)}</span>
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-3 items-end gap-4 text-center">
+        <div className="mt-6 grid grid-cols-3 items-center gap-3 text-center border-t border-slate-100 pt-5">
           <Link
             href={`/request/${invoice.id}?mode=guest${returnParam}`}
-            className="inline-flex h-9 items-center justify-center rounded-none border border-[#333] bg-black px-3 text-[12px] font-semibold text-white hover:border-[#666]"
+            className="inline-flex h-9 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-2.5 text-[11px] font-bold text-slate-700 hover:bg-slate-100 shadow-sm transition-colors"
           >
-            View Invoice PDF
+            Invoice PDF
           </Link>
-          <button type="button" onClick={onCopy} className="flex flex-col items-center gap-2 text-[12px] font-semibold text-[#d7d7d7] hover:text-white">
-            <Copy className="h-6 w-6" />
+          <button type="button" onClick={onCopy} className="flex flex-col items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors">
+            <Copy className="h-4 w-4 text-slate-500" />
             Copy Link
           </button>
-          <button type="button" onClick={onDownload} className="flex flex-col items-center gap-2 text-[12px] font-semibold text-[#d7d7d7] hover:text-white">
-            <FileText className="h-6 w-6" />
+          <button type="button" onClick={onDownload} className="flex flex-col items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors">
+            <FileText className="h-4 w-4 text-slate-500" />
             View PDF
           </button>
         </div>
       </section>
 
-      <p className="text-center text-[12px] font-semibold text-[#8f8f8f]">
+      <p className="text-center text-xs font-medium text-slate-500">
         Have an AgncyPay account?{" "}
-        <Link href={`/auth/login?next=${encodeURIComponent(`/pay/${invoice.id}?mode=logged_in${returnParam}`)}`} className="text-white hover:underline">
+        <Link href={`/auth/login?next=${encodeURIComponent(`/pay/${invoice.id}?mode=logged_in${returnParam}`)}`} className="font-semibold text-slate-900 hover:underline">
           Sign in
         </Link>
       </p>
 
-      <section className="rounded-[10px] border border-[#303030] bg-[#161616] p-5">
-        <h3 className="text-[18px] font-semibold text-white">Business details</h3>
-        <div className="mt-4 space-y-3 text-[13px]">
-          <p className="font-semibold text-white">Email: {invoice.payerEmail}</p>
-          <div className="border-t border-[#2b2b2b] pt-3 text-[#a7a7a7]">
-            <p>{invoice.payer}</p>
+      <section className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+        <h3 className="text-sm font-bold text-slate-900">Business details</h3>
+        <div className="mt-3.5 space-y-2.5 text-xs">
+          <p className="font-semibold text-slate-900">Email: {invoice.payerEmail}</p>
+          <div className="border-t border-slate-100 pt-2.5 text-slate-600 space-y-0.5">
+            <p className="font-medium text-slate-800">{invoice.payer}</p>
             <p>{invoice.payerAddress[0]}</p>
           </div>
         </div>
       </section>
 
-      <div className="flex items-center justify-center gap-2 pt-10 text-[12px] font-semibold text-[#777]">
-        <ShieldCheck className="h-4 w-4" />
+      <div className="flex items-center justify-center gap-2 pt-4 text-xs font-medium text-slate-500">
+        <ShieldCheck className="h-4 w-4 text-emerald-600" />
         Protected by bank-level security and encryption
       </div>
     </aside>
@@ -331,10 +333,10 @@ function PayRequestPageContent() {
 
   if (loadingDb) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center font-sans">
         <div className="text-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#333] border-t-white mx-auto mb-4"></div>
-          <p className="text-[14px] text-[#bdbdbd]">Loading checkout details...</p>
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900 mx-auto mb-4" />
+          <p className="text-xs font-semibold text-slate-500">Loading checkout details...</p>
         </div>
       </div>
     );
@@ -342,16 +344,20 @@ function PayRequestPageContent() {
 
   if (!invoice) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-[28px] font-black text-white">Invoice not found</h1>
-          <p className="mt-2 text-[#9a9a9a]">This checkout link does not match an active invoice.</p>
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center font-sans">
+        <div className="max-w-md w-full mx-4 rounded-2xl border border-slate-200/80 bg-white p-8 text-center shadow-sm">
+          <h1 className="text-2xl font-black text-slate-900">Invoice not found</h1>
+          <p className="mt-2 text-xs font-medium text-slate-500">This checkout link does not match an active invoice.</p>
+          <Link
+            href="/dashboard"
+            className="mt-5 inline-flex h-10 items-center justify-center rounded-xl bg-slate-900 px-5 text-xs font-bold text-white hover:bg-slate-800 shadow-sm transition-all"
+          >
+            Go to Dashboard
+          </Link>
         </div>
       </div>
     );
   }
-
-
 
   const submitPayment = () => {
     setTransactionId(`TX-AP-${Math.floor(100000 + Math.random() * 900000)}`);
@@ -384,57 +390,50 @@ function PayRequestPageContent() {
     await navigator.clipboard.writeText(`${window.location.origin}/pay/${invoice.id}?mode=guest&returnTo=${returnTo}`);
   };
 
-  if (loadingDb) {
-    return (
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center font-sans transition-colors duration-200">
-        <div className="animate-spin h-6 w-6 border-2 border-white border-t-transparent rounded-full" />
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-200">
-      <header className="sticky top-0 z-30 border-b border-border-custom bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-[76px] max-w-[1480px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <Link href={returnHref} className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-[#252525] bg-[#050505] px-3 text-[13px] font-semibold text-white hover:border-[#555]">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+      <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex h-[70px] max-w-[1480px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          <Link href={returnHref} className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors">
             <ArrowLeft className="h-4 w-4" />
             {returnLabel}
           </Link>
-          <span className="text-[14px] font-semibold text-white">AgncyPay checkout</span>
-          <span className="hidden rounded-[7px] border border-[#252525] bg-[#050505] px-3 py-2 text-[12px] font-semibold text-[#d7d7d7] sm:inline-flex">
+          <span className="text-sm font-bold text-slate-900">AgncyPay checkout</span>
+          <span className="hidden rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm sm:inline-flex items-center gap-1.5">
+            <Lock className="h-3.5 w-3.5 text-emerald-600" />
             Secure checkout session
           </span>
         </div>
       </header>
 
       <main className="mx-auto grid max-w-[1480px] grid-cols-1 gap-7 px-4 py-8 sm:px-6 lg:px-8 xl:grid-cols-[minmax(0,1.35fr)_minmax(390px,0.65fr)]">
-        <section className="rounded-[10px] border border-[#151515] bg-black p-5 sm:p-7">
-          <p className="text-[13px] font-semibold text-white">Full Invoice Amount</p>
-          <div className="mt-6 flex flex-wrap items-end gap-3">
-            <h1 className="text-[34px] font-bold tracking-[-0.02em] text-white">{formatMainboardMoney(invoice.amount)}</h1>
-            <span className="pb-2 text-[13px] font-semibold text-[#d7d7d7]">Due Date</span>
+        <section className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-8 shadow-sm">
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Full Invoice Amount</p>
+          <div className="mt-4 flex flex-wrap items-end gap-3">
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900">{formatMainboardMoney(invoice.amount)}</h1>
+            <span className="pb-1.5 text-xs font-semibold text-slate-500">Due {invoice.due}</span>
           </div>
 
           {isLoggedInMode ? (
             <div className="mt-8 space-y-6">
-              <div className="p-6 bg-white/[0.02] border border-white/20 rounded-xl space-y-4">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-neutral-400">Payer corporate workspace</span>
-                  <span className="text-white font-bold">
+              <div className="p-5 bg-slate-50/80 border border-slate-200/80 rounded-2xl space-y-3.5">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-medium text-slate-500">Payer corporate workspace</span>
+                  <span className="text-slate-900 font-bold">
                     {state?.workspaces?.find(w => w.id === state.activeWorkspaceId)?.name || state?.user?.fullName || "Adidas Corporate"}
                   </span>
                 </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-neutral-400">Recipient agency</span>
-                  <span className="text-white font-bold">{invoice.recipient}</span>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-medium text-slate-500">Recipient agency</span>
+                  <span className="text-slate-900 font-bold">{invoice.recipient}</span>
                 </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-neutral-400">AgncyPay client identifier</span>
-                  <span className="text-white font-mono font-bold">{state?.user?.agncyId || "USR-ADIDAS-9021"}</span>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-medium text-slate-500">AgncyPay client identifier</span>
+                  <span className="text-slate-900 font-mono font-bold">{state?.user?.agncyId || "USR-ADIDAS-9021"}</span>
                 </div>
-                <div className="flex justify-between items-center text-sm border-t border-white/10 pt-4">
-                  <span className="text-neutral-400">Direct settlement routing</span>
-                  <span className="text-[#10b95f] font-semibold flex items-center gap-1">
+                <div className="flex justify-between items-center text-xs border-t border-slate-200 pt-3.5">
+                  <span className="font-medium text-slate-500">Direct settlement routing</span>
+                  <span className="text-emerald-600 font-semibold flex items-center gap-1">
                     <ShieldCheck className="h-4 w-4" />
                     Treasury ACH Instant
                   </span>
@@ -445,19 +444,19 @@ function PayRequestPageContent() {
                 <button
                   type="button"
                   onClick={submitPayment}
-                  className="w-full h-12 rounded-xl bg-white hover:bg-neutral-200 text-black text-sm font-black transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                  className="w-full h-12 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-[0.99]"
                 >
                   <Lock className="h-4 w-4" />
                   Confirm & Pay {formatMainboardMoney(total)}
                 </button>
-                <span className="text-[12px] font-semibold text-center text-[#8f8f8f]">
+                <span className="text-xs font-medium text-center text-slate-500">
                   Direct settlement via secure AgncyPay network clearance
                 </span>
               </div>
             </div>
           ) : (
             <>
-              <div className="mt-16 flex flex-wrap gap-2">
+              <div className="mt-8 flex flex-wrap gap-2">
                 {cardRails.map((rail) => (
                   <button
                     key={rail}
@@ -471,79 +470,79 @@ function PayRequestPageContent() {
                 ))}
               </div>
 
-              <div className="mt-5">
-                <h2 className="text-[16px] font-semibold text-white">Your information</h2>
-                <div className="mt-5 space-y-4">
+              <div className="mt-6 border-t border-slate-100 pt-6">
+                <h2 className="text-sm font-bold text-slate-900">Your information</h2>
+                <div className="mt-4 space-y-4">
                   <label className="block">
-                    <span className="text-[14px] font-semibold text-white">Email</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Email</span>
                     <input
                       value={invoice.payerEmail}
                       readOnly
-                      className="mt-2 h-12 w-full border border-[#1c1c1c] bg-[#1a1a1a] px-4 text-[14px] font-semibold text-[#d7d7d7] outline-none"
+                      className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-xs font-medium text-slate-700 outline-none"
                     />
                   </label>
 
                   <div>
-                    <span className="text-[14px] font-semibold text-white">Phone Number</span>
-                    <div className="mt-2 grid grid-cols-[174px_1fr] gap-1">
-                      <div className="flex h-12 items-center gap-3 border border-[#1c1c1c] bg-[#1a1a1a] px-4 text-[16px] font-semibold text-white">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Phone Number</span>
+                    <div className="mt-1.5 grid grid-cols-[140px_1fr] gap-2">
+                      <div className="flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-bold text-slate-700">
                         <span>US</span>
                         <span>+1</span>
                       </div>
                       <input
                         value={invoice.mobile.replace("+1 ", "")}
                         readOnly
-                        className="h-12 border border-[#1c1c1c] bg-[#1a1a1a] px-4 text-[14px] font-semibold text-[#d7d7d7] outline-none"
+                        className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-xs font-medium text-slate-700 outline-none"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_174px_130px]">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_150px_120px]">
                     <label className="block">
-                      <span className="text-[14px] font-semibold text-white">Card Number</span>
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Card Number</span>
                       <input
                         value={cardNumber}
                         onChange={(event) => setCardNumber(event.target.value)}
-                        className="mt-2 h-12 w-full border border-[#1c1c1c] bg-[#1a1a1a] px-4 text-[14px] font-semibold text-[#d7d7d7] outline-none focus:border-[#555]"
+                        className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-medium text-slate-900 outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all"
                       />
                     </label>
                     <label className="block">
-                      <span className="text-[14px] font-semibold text-white">Exp date</span>
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Exp date</span>
                       <input
                         value={expiry}
                         onChange={(event) => setExpiry(event.target.value)}
-                        className="mt-2 h-12 w-full border border-[#1c1c1c] bg-[#1a1a1a] px-4 text-[14px] font-semibold text-[#d7d7d7] outline-none focus:border-[#555]"
+                        className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-medium text-slate-900 outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all"
                       />
                     </label>
                     <label className="block">
-                      <span className="text-[14px] font-semibold text-white">CVV code</span>
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-600">CVV code</span>
                       <input
                         value={cvc}
                         onChange={(event) => setCvc(event.target.value)}
-                        className="mt-2 h-12 w-full border border-[#1c1c1c] bg-[#1a1a1a] px-4 text-[14px] font-semibold text-[#d7d7d7] outline-none focus:border-[#555]"
+                        className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-medium text-slate-900 outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all"
                       />
                     </label>
                   </div>
 
                   <label className="block">
-                    <span className="text-[14px] font-semibold text-white">Name on card</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-600">Name on card</span>
                     <input
                       value={nameOnCard}
                       onChange={(event) => setNameOnCard(event.target.value)}
-                      className="mt-2 h-12 w-full border border-[#1c1c1c] bg-[#1a1a1a] px-4 text-[14px] font-semibold text-[#d7d7d7] outline-none focus:border-[#555]"
+                      className="mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-medium text-slate-900 outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all"
                     />
                   </label>
 
-                  <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
+                  <div className="flex flex-col gap-3 pt-3 sm:flex-row sm:items-center">
                     <button
                       type="button"
                       onClick={submitPayment}
-                      className="inline-flex h-12 flex-1 items-center justify-center gap-2 overflow-hidden rounded-[7px] border border-[#333] bg-black px-5 text-[14px] font-bold text-white hover:border-[#666] hover:bg-[#111]"
+                      className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 text-sm font-bold text-white hover:bg-slate-800 transition-all shadow-sm active:scale-[0.99]"
                     >
-                      <AgncyPayLogo className="h-[18px] w-[50px]" imageClassName="h-full w-full" />
+                      <AgncyPayLogo className="h-[18px] w-[50px] [filter:invert(1)_brightness(1.5)]" imageClassName="h-full w-full" />
                       <span>Now</span>
                     </button>
-                    <span className="text-[12px] font-semibold text-[#8f8f8f]">{paymentLabel}</span>
+                    <span className="text-xs font-medium text-slate-500">{paymentLabel}</span>
                   </div>
                 </div>
               </div>
@@ -555,28 +554,28 @@ function PayRequestPageContent() {
       </main>
 
       {(stage === "processing" || stage === "success") && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 px-4 backdrop-blur-[2px]">
-          <section className="w-full max-w-[300px] rounded-[10px] border border-[#2f2f2f] bg-[#202020] p-6 text-center shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 backdrop-blur-sm">
+          <section className="w-full max-w-[340px] rounded-2xl border border-slate-200 bg-white p-7 text-center shadow-2xl">
             {stage === "processing" ? (
               <>
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[#555] bg-[#151515]">
-                  <Lock className="h-7 w-7 animate-pulse text-white" />
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50">
+                  <Lock className="h-6 w-6 animate-pulse text-slate-900" />
                 </div>
-                <h2 className="mt-5 text-[23px] font-bold tracking-[-0.03em] text-white">processing payment</h2>
-                <p className="mt-2 text-[11px] leading-5 text-[#bdbdbd]">AgncyPay is securing the payment session.</p>
+                <h2 className="mt-4 text-xl font-black text-slate-900">Processing payment</h2>
+                <p className="mt-1.5 text-xs text-slate-500">AgncyPay is securing the payment session.</p>
               </>
             ) : (
               <>
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#16c95f] text-white shadow-[0_0_28px_rgba(22,201,95,0.32)]">
-                  <CheckCircle2 className="h-9 w-9" />
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200">
+                  <CheckCircle2 className="h-7 w-7" />
                 </div>
-                <h2 className="mt-5 text-[25px] font-bold tracking-[-0.04em] text-[#69f39b]">payment successful</h2>
-                <p className="mt-2 text-[11px] leading-5 text-[#c8f5d5]">
+                <h2 className="mt-4 text-xl font-black text-emerald-600">Payment Successful</h2>
+                <p className="mt-1.5 text-xs text-slate-500">
                   Transaction {transactionId} was submitted successfully.
                 </p>
                 <Link
                   href={`/receipt/${invoice.id}?tx=${transactionId}&mode=${isLoggedInMode ? "logged_in" : "guest"}&returnTo=${returnTo}`}
-                  className="mt-5 inline-flex h-10 items-center justify-center rounded-[5px] border border-[#16c95f] bg-[#16c95f] px-4 text-[12px] font-bold text-white hover:bg-[#28df73]"
+                  className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 shadow-sm transition-all"
                 >
                   View receipt
                 </Link>
@@ -592,10 +591,10 @@ function PayRequestPageContent() {
 export default function PayRequestPage() {
   return (
     <React.Suspense fallback={
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center font-sans">
         <div className="text-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#333] border-t-white mx-auto mb-4"></div>
-          <p className="text-[14px] text-[#bdbdbd]">Loading checkout details...</p>
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900 mx-auto mb-4" />
+          <p className="text-xs font-semibold text-slate-500">Loading checkout details...</p>
         </div>
       </div>
     }>

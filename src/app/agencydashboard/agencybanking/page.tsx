@@ -104,7 +104,7 @@ export default function AgencyBankingDashboardPage() {
   const userEmail = state.user?.email || "agency@elite.com";
   const agencyName = state.workspaces.find((w) => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Agency Treasury";
 
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isLightTheme, setIsLightTheme] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -312,12 +312,12 @@ export default function AgencyBankingDashboardPage() {
     : WALLET_CONTACTS;
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col font-sans antialiased relative transition-colors duration-200">
-      {/* Background Emerald Radial Glow */}
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-emerald-500/[0.04] rounded-full blur-[140px] pointer-events-none" />
+    <main className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased relative transition-colors duration-200">
+      {/* Background Soft Glow */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-emerald-500/[0.03] rounded-full blur-[140px] pointer-events-none" />
 
       {/* Header Navigation */}
-      <header className="border-b border-white/25 light:border-black/15 bg-background/90 sticky top-0 z-50 shadow-sm backdrop-blur">
+      <header className="border-b border-slate-200/80 bg-white/95 sticky top-0 z-50 shadow-sm backdrop-blur">
         <div className="max-w-[1520px] mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="relative flex items-center mr-12">
@@ -325,34 +325,34 @@ export default function AgencyBankingDashboardPage() {
                 <img
                   src="/agncypaybrand.png"
                   alt="AgncyPay"
-                  className="h-12 w-auto object-contain scale-[1.56] origin-left transition-transform"
+                  className="h-12 w-auto object-contain scale-[1.56] origin-left transition-transform [filter:invert(1)_brightness(0.15)]"
                 />
               </Link>
             </div>
-            <span className="h-4 w-[1px] bg-white/20 hidden md:block" />
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 light:bg-black/5 border border-white/20 light:border-black/10 text-[11px] font-bold uppercase tracking-wider text-white light:text-[#0F172A]">
-              <Landmark className="h-3 w-3 text-white light:text-[#0F172A]" />
+            <span className="h-4 w-[1px] bg-slate-200 hidden md:block" />
+            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-800">
+              <Landmark className="h-3 w-3 text-slate-700" />
               {workspaceType === "brand" ? "Brand Banking" : "Agency Banking"}
             </div>
           </div>
 
           {/* Navigation Tabs */}
-          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.03] p-1 rounded-full border border-white/20">
+          <nav className="hidden lg:flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
             <button 
               onClick={() => router.push("/agencydashboard/agencybanking")}
-              className="px-4 py-1.5 rounded-full text-xs font-bold bg-white light:bg-[#0F172A] text-black light:text-white shadow-sm border border-white/20 light:border-black/10 transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-white shadow-sm transition-all cursor-pointer"
             >
               Agency Banking
             </button>
             <button 
               onClick={() => router.push("/agencydashboard/nodes")}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold text-[#8f8f8f] light:text-[#475569] hover:text-white light:hover:text-[#0F172A] transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer"
             >
               {workspaceType === "brand" ? "Settlement Nodes" : "Payout Split Nodes"}
             </button>
             <button 
               onClick={() => router.push("/agencydashboard/analytics")}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold text-[#8f8f8f] light:text-[#475569] hover:text-white light:hover:text-[#0F172A] transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer"
             >
               {workspaceType === "brand" ? "Analytics" : "Agency Earnings"}
             </button>
@@ -364,28 +364,28 @@ export default function AgencyBankingDashboardPage() {
                 <div className="flex items-center gap-1.5">
                   <button
                     disabled
-                    className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white/40 light:bg-[#0F172A]/40 text-black/40 light:text-white/40 border border-white/10 light:border-black/5 shadow-sm transition-all flex items-center gap-1.5 cursor-not-allowed blur-[0.6px]"
+                    className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-200 text-slate-400 border border-slate-300 shadow-sm transition-all flex items-center gap-1.5 cursor-not-allowed"
                   >
                     <Lock className="h-3.5 w-3.5" />
                     Switch to Agency Portal
                   </button>
                   <button 
                     onClick={() => alert("Agency Portal is currently locked. Complete your compliance verification to unlock this feature.")}
-                    className="p-1 text-neutral-400 hover:text-white transition-colors"
+                    className="p-1 text-slate-400 hover:text-slate-700 transition-colors"
                     title="Why is this locked?"
                   >
                     <HelpCircle className="h-4 w-4" />
                   </button>
                 </div>
-                <div className="h-4 w-[1px] bg-white/20" />
+                <div className="h-4 w-[1px] bg-slate-200" />
               </>
             )}
 
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-[#082315] border border-[#10b95f]/30 flex items-center justify-center font-bold text-xs text-[#70ff9e]">
+              <div className="h-8 w-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center font-bold text-xs text-white">
                 {state.user?.fullName ? state.user.fullName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2) : "AB"}
               </div>
-              <span className="text-xs font-bold text-[#E5E5EA] light:text-[#0F172A] hidden sm:inline">
+              <span className="text-xs font-bold text-slate-900 hidden sm:inline">
                 {agencyName}
               </span>
             </div>
@@ -397,17 +397,16 @@ export default function AgencyBankingDashboardPage() {
       <div className="max-w-[1520px] mx-auto px-6 py-8 w-full space-y-8">
         
         {/* Executive Page Title & Header Actions */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0D0D0D] light:bg-[#F8FAFC] border border-white/10 light:border-black/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm relative overflow-hidden">
           <div className="space-y-1 z-10">
             <div className="flex items-center gap-2">
-              <Landmark className="h-6 w-6 text-white light:text-[#0F172A]" />
-              <h1 className="text-2xl font-extrabold text-white light:text-[#0F172A] tracking-tight">Agency Banking Dashboard</h1>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#082315] text-[#70ff9e] border border-[#10b95f]/30">
+              <Landmark className="h-6 w-6 text-slate-900" />
+              <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Agency Banking Dashboard</h1>
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                 Live Liquidity Active
               </span>
             </div>
-            <p className="text-xs text-[#8f8f8f] light:text-[#475569]">
+            <p className="text-xs text-slate-500">
               Executive financial ledger, liquidity reserves, corporate bank accounts, and talent disbursement control for {agencyName}
             </p>
           </div>
@@ -416,18 +415,18 @@ export default function AgencyBankingDashboardPage() {
             <button
               onClick={() => sync()}
               disabled={syncing}
-              className="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 light:bg-black/5 hover:bg-white/10 text-white light:text-[#0F172A] border border-white/15 light:border-black/15 transition-all flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+              className="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all flex items-center gap-2 disabled:opacity-50 cursor-pointer"
             >
-              <RefreshCw className={`h-3.5 w-3.5 text-white light:text-[#0F172A] ${syncing ? "animate-spin" : ""}`} />
+              <RefreshCw className={`h-3.5 w-3.5 text-slate-700 ${syncing ? "animate-spin" : ""}`} />
               <span>{syncing ? "Syncing ERP..." : "Sync Accounting"}</span>
             </button>
 
             {/* Brand-Exact "+ Deposit Funds" Button */}
             <button
               onClick={() => setIsDepositModalOpen(true)}
-              className="px-5 py-2 rounded-xl text-xs font-bold bg-white light:bg-[#0F172A] text-black light:text-white hover:bg-neutral-200 light:hover:bg-[#1E293B] shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+              className="px-5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition-all flex items-center gap-2 cursor-pointer"
             >
-              <Plus className="h-4 w-4 text-black light:text-white" />
+              <Plus className="h-4 w-4 text-white" />
               <span>+ Deposit Funds</span>
             </button>
           </div>
@@ -436,7 +435,7 @@ export default function AgencyBankingDashboardPage() {
         {/* HERO TWO-COLUMN SECTION */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Banner Card ("For Those Who Create") (7 cols) */}
-          <div className="lg:col-span-7 bg-[#050505] light:bg-white border border-white/20 light:border-black/10 rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center h-full max-h-[400px]">
+          <div className="lg:col-span-7 bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center h-full max-h-[400px]">
             <img
               src="/dashboard-app-promo.png"
               alt="For Those Who Create — AgncyPay"
@@ -446,7 +445,7 @@ export default function AgencyBankingDashboardPage() {
           </div>
 
           {/* Right Column: Talent Side Action Bar & Operations (5 cols) */}
-          <div className="lg:col-span-5 bg-[#050505] light:bg-white border border-white/20 light:border-black/10 rounded-2xl p-5 shadow-2xl flex flex-col justify-between">
+          <div className="lg:col-span-5 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
             <div className="space-y-4">
               {/* 4 Square Action Buttons */}
               <div className="grid grid-cols-4 gap-2.5">
@@ -454,36 +453,36 @@ export default function AgencyBankingDashboardPage() {
                 <button
                   type="button"
                   onClick={() => router.push("/dashboard/send-request")}
-                  className="flex flex-col items-center gap-2.5 rounded-[10px] border border-[#3a3a3a] light:border-black/15 bg-[#090909] light:bg-[#F8FAFC] px-2 py-3.5 text-center transition-colors hover:border-white/60 light:hover:border-black/40 group cursor-pointer"
+                  className="flex flex-col items-center gap-2.5 rounded-[10px] border border-slate-200 bg-slate-50 px-2 py-3.5 text-center transition-colors hover:border-slate-300 hover:bg-slate-100 group cursor-pointer"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-[#4a4a4a] light:border-black/10 bg-black light:bg-[#0F172A] text-white group-hover:scale-105 transition-transform">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-slate-200 bg-slate-900 text-white group-hover:scale-105 transition-transform">
                     <Send className="h-5 w-5 text-white" />
                   </span>
-                  <span className="text-[10px] font-semibold leading-4 text-white light:text-[#0F172A]">Send / Request</span>
+                  <span className="text-[10px] font-semibold leading-4 text-slate-800">Send / Request</span>
                 </button>
 
                 {/* 2. Analytics */}
                 <button
                   type="button"
                   onClick={() => router.push("/agencydashboard/analytics")}
-                  className="flex flex-col items-center gap-2.5 rounded-[10px] border border-[#3a3a3a] light:border-black/15 bg-[#090909] light:bg-[#F8FAFC] px-2 py-3.5 text-center transition-colors hover:border-white/60 light:hover:border-black/40 group cursor-pointer"
+                  className="flex flex-col items-center gap-2.5 rounded-[10px] border border-slate-200 bg-slate-50 px-2 py-3.5 text-center transition-colors hover:border-slate-300 hover:bg-slate-100 group cursor-pointer"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-[#4a4a4a] light:border-black/10 bg-black light:bg-[#0F172A] text-white group-hover:scale-105 transition-transform">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-slate-200 bg-slate-900 text-white group-hover:scale-105 transition-transform">
                     <BarChart3 className="h-5 w-5 text-white" />
                   </span>
-                  <span className="text-[10px] font-semibold leading-4 text-white light:text-[#0F172A]">Analytics</span>
+                  <span className="text-[10px] font-semibold leading-4 text-slate-800">Analytics</span>
                 </button>
 
                 {/* 3. Wallet ID Contacts */}
                 <button
                   type="button"
                   onClick={() => setIsWalletContactsOpen(true)}
-                  className="flex flex-col items-center gap-2.5 rounded-[10px] border border-[#3a3a3a] light:border-black/15 bg-[#090909] light:bg-[#F8FAFC] px-2 py-3.5 text-center transition-colors hover:border-white/60 light:hover:border-black/40 group cursor-pointer"
+                  className="flex flex-col items-center gap-2.5 rounded-[10px] border border-slate-200 bg-slate-50 px-2 py-3.5 text-center transition-colors hover:border-slate-300 hover:bg-slate-100 group cursor-pointer"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-[#4a4a4a] light:border-black/10 bg-black light:bg-[#0F172A] text-white group-hover:scale-105 transition-transform">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-slate-200 bg-slate-900 text-white group-hover:scale-105 transition-transform">
                     <Users className="h-5 w-5 text-white" />
                   </span>
-                  <span className="text-[10px] font-semibold leading-4 text-white light:text-[#0F172A]">Wallet ID contacts</span>
+                  <span className="text-[10px] font-semibold leading-4 text-slate-800">Wallet ID contacts</span>
                 </button>
 
                 {/* 4. More */}
@@ -491,50 +490,50 @@ export default function AgencyBankingDashboardPage() {
                   type="button"
                   onClick={() => sync()}
                   disabled={syncing}
-                  className="flex flex-col items-center gap-2.5 rounded-[10px] border border-[#3a3a3a] light:border-black/15 bg-[#090909] light:bg-[#F8FAFC] px-2 py-3.5 text-center transition-colors hover:border-white/60 light:hover:border-black/40 group cursor-pointer disabled:opacity-50"
+                  className="flex flex-col items-center gap-2.5 rounded-[10px] border border-slate-200 bg-slate-50 px-2 py-3.5 text-center transition-colors hover:border-slate-300 hover:bg-slate-100 group cursor-pointer disabled:opacity-50"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-[#4a4a4a] light:border-black/10 bg-black light:bg-[#0F172A] text-white group-hover:scale-105 transition-transform">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-slate-200 bg-slate-900 text-white group-hover:scale-105 transition-transform">
                     <MoreVertical className={`h-5 w-5 text-white ${syncing ? "animate-spin" : ""}`} />
                   </span>
-                  <span className="text-[10px] font-semibold leading-4 text-white light:text-[#0F172A]">More</span>
+                  <span className="text-[10px] font-semibold leading-4 text-slate-800">More</span>
                 </button>
               </div>
 
               {/* Recent Agency Income Summary Tile */}
-              <div className="p-4 rounded-[10px] border border-[#3a3a3a] light:border-black/15 bg-[#090909] light:bg-[#F8FAFC] space-y-2">
+              <div className="p-4 rounded-[10px] border border-slate-200 bg-slate-50 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white light:text-[#0F172A]">Recent Income</span>
+                  <span className="text-xs font-bold text-slate-900">Recent Income</span>
                   <button
                     onClick={() => router.push("/agencydashboard/invoices")}
-                    className="text-[11px] font-semibold text-[#8f8f8f] light:text-[#475569] hover:text-white light:hover:text-[#0F172A] flex items-center gap-1 cursor-pointer"
+                    className="text-[11px] font-semibold text-slate-500 hover:text-slate-900 flex items-center gap-1 cursor-pointer"
                   >
                     View All <ChevronRight className="w-3 h-3" />
                   </button>
                 </div>
-                <p className="text-[11px] text-[#8f8f8f] light:text-[#475569]">Money received from Brands and other agencies.</p>
-                <div className="p-3 rounded-lg bg-black light:bg-white border border-white/10 light:border-black/10 flex items-center justify-between">
+                <p className="text-[11px] text-slate-500">Money received from Brands and other agencies.</p>
+                <div className="p-3 rounded-lg bg-white border border-slate-200 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-white/10 light:bg-black/5 flex items-center justify-center font-bold text-xs text-white light:text-[#0F172A]">
+                    <div className="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-900">
                       AD
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-white light:text-[#0F172A]">Adidas Corporate HQ</div>
-                      <div className="text-[10px] text-[#8f8f8f] light:text-[#475569]">Winter Editorial 2026</div>
+                      <div className="text-xs font-bold text-slate-900">Adidas Corporate HQ</div>
+                      <div className="text-[10px] text-slate-500">Winter Editorial 2026</div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs font-extrabold text-white light:text-[#0F172A]">$15,000.00</div>
-                    <span className="text-[10px] text-emerald-400 light:text-[#0F172A] font-bold">Recent ✓</span>
+                    <div className="text-xs font-extrabold text-slate-900">$15,000.00</div>
+                    <span className="text-[10px] text-emerald-700 font-bold">Recent ✓</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-white/10 light:border-black/10 flex items-center justify-between text-[11px] text-[#8f8f8f] light:text-[#475569]">
+            <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
               <span>Role: Agency Director</span>
               <button
                 onClick={() => router.push("/dashboard/send-request")}
-                className="text-white light:text-[#0F172A] font-bold hover:underline flex items-center gap-1"
+                className="text-slate-900 font-bold hover:underline flex items-center gap-1 cursor-pointer"
               >
                 Open Full Send / Request Workspace →
               </button>
@@ -549,18 +548,18 @@ export default function AgencyBankingDashboardPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="p-6 bg-[#0D0D0D] border border-white/20 rounded-2xl shadow-xl relative overflow-hidden group hover:border-emerald-500/50 transition-all"
+            className="p-6 bg-white border border-slate-200/80 rounded-2xl shadow-sm relative overflow-hidden group hover:border-slate-300 transition-all"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold text-[#8f8f8f] tracking-wide uppercase">Total Agency Liquidity</span>
-              <div className="p-2.5 bg-emerald-500/10 rounded-xl text-emerald-400 border border-emerald-500/20">
+              <span className="text-xs font-semibold text-slate-500 tracking-wide uppercase">Total Agency Liquidity</span>
+              <div className="p-2.5 bg-emerald-50 rounded-xl text-emerald-700 border border-emerald-200">
                 <Wallet className="w-5 h-5" />
               </div>
             </div>
-            <div className="text-2xl font-extrabold text-white tracking-tight">
+            <div className="text-2xl font-extrabold text-slate-900 tracking-tight">
               ${totalAgencyLiquidity.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
-            <div className="mt-3 flex items-center gap-1.5 text-[11px] text-emerald-400">
+            <div className="mt-3 flex items-center gap-1.5 text-[11px] text-emerald-700">
               <TrendingUp className="w-3.5 h-3.5" />
               <span>${depositBalance.toLocaleString()} Deposit Pool + 15% Net Commission</span>
             </div>
@@ -571,18 +570,18 @@ export default function AgencyBankingDashboardPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.05 }}
-            className="p-6 bg-[#0D0D0D] border border-white/20 rounded-2xl shadow-xl relative overflow-hidden group hover:border-amber-500/50 transition-all"
+            className="p-6 bg-white border border-slate-200/80 rounded-2xl shadow-sm relative overflow-hidden group hover:border-slate-300 transition-all"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold text-[#8f8f8f] tracking-wide uppercase">Talent Payable Balance</span>
-              <div className="p-2.5 bg-amber-500/10 rounded-xl text-amber-400 border border-amber-500/20">
+              <span className="text-xs font-semibold text-slate-500 tracking-wide uppercase">Talent Payable Balance</span>
+              <div className="p-2.5 bg-amber-50 rounded-xl text-amber-700 border border-amber-200">
                 <Users className="w-5 h-5" />
               </div>
             </div>
-            <div className="text-2xl font-extrabold text-white tracking-tight">
+            <div className="text-2xl font-extrabold text-slate-900 tracking-tight">
               ${totalTalentPayable.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
-            <div className="mt-3 flex items-center gap-1.5 text-[11px] text-amber-400/90">
+            <div className="mt-3 flex items-center gap-1.5 text-[11px] text-amber-700">
               <Clock className="w-3.5 h-3.5" />
               <span>Total Owed Across Active Campaigns</span>
             </div>
@@ -593,19 +592,19 @@ export default function AgencyBankingDashboardPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="p-6 bg-[#0D0D0D] border border-white/20 rounded-2xl shadow-xl relative overflow-hidden group hover:border-amber-500/50 transition-all"
+            className="p-6 bg-white border border-slate-200/80 rounded-2xl shadow-sm relative overflow-hidden group hover:border-slate-300 transition-all"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold text-[#8f8f8f] tracking-wide uppercase">Pending Payouts</span>
-              <div className="p-2.5 bg-amber-500/10 rounded-xl text-amber-400 border border-amber-500/20">
+              <span className="text-xs font-semibold text-slate-500 tracking-wide uppercase">Pending Payouts</span>
+              <div className="p-2.5 bg-amber-50 rounded-xl text-amber-700 border border-amber-200">
                 <Layers className="w-5 h-5" />
               </div>
             </div>
-            <div className="text-2xl font-extrabold text-white tracking-tight">
-              {pendingPayoutsCount > 0 ? pendingPayoutsCount : 3} <span className="text-sm font-normal text-[#8f8f8f]">Disbursements</span>
+            <div className="text-2xl font-extrabold text-slate-900 tracking-tight">
+              {pendingPayoutsCount > 0 ? pendingPayoutsCount : 3} <span className="text-sm font-normal text-slate-500">Disbursements</span>
             </div>
-            <div className="mt-3 flex items-center gap-1.5 text-[11px] text-amber-400/90">
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
+            <div className="mt-3 flex items-center gap-1.5 text-[11px] text-amber-700">
+              <Clock className="w-3.5 h-3.5 text-amber-600" />
               <span>Scheduled Auto-Split Queue</span>
             </div>
           </motion.div>
@@ -615,18 +614,18 @@ export default function AgencyBankingDashboardPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.15 }}
-            className="p-6 bg-[#0D0D0D] border border-white/20 rounded-2xl shadow-xl relative overflow-hidden group hover:border-emerald-500/50 transition-all"
+            className="p-6 bg-white border border-slate-200/80 rounded-2xl shadow-sm relative overflow-hidden group hover:border-slate-300 transition-all"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold text-[#8f8f8f] tracking-wide uppercase">Monthly Payment Volume</span>
-              <div className="p-2.5 bg-emerald-500/10 rounded-xl text-emerald-400 border border-emerald-500/20">
+              <span className="text-xs font-semibold text-slate-500 tracking-wide uppercase">Monthly Payment Volume</span>
+              <div className="p-2.5 bg-emerald-50 rounded-xl text-emerald-700 border border-emerald-200">
                 <DollarSign className="w-5 h-5" />
               </div>
             </div>
-            <div className="text-2xl font-extrabold text-white tracking-tight">
+            <div className="text-2xl font-extrabold text-slate-900 tracking-tight">
               ${(totalSettledVolume > 0 ? totalSettledVolume : 124500).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
-            <div className="mt-3 flex items-center gap-1.5 text-[11px] text-emerald-400">
+            <div className="mt-3 flex items-center gap-1.5 text-[11px] text-emerald-700">
               <ArrowUpRight className="w-3.5 h-3.5" />
               <span>+18.4% vs Previous Month</span>
             </div>
@@ -637,28 +636,28 @@ export default function AgencyBankingDashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Recent Payouts Table (2 cols) */}
-          <div className="lg:col-span-2 bg-[#0D0D0D] border border-white/20 rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="lg:col-span-2 bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Users className="w-4 h-4 text-emerald-400" />
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <Users className="w-4 h-4 text-slate-800" />
                   Recent Talent Payout Disbursements
                 </h3>
-                <p className="text-xs text-[#8f8f8f]">Read-only executive ledger of completed talent payouts</p>
+                <p className="text-xs text-slate-500">Read-only executive ledger of completed talent payouts</p>
               </div>
               <button
                 onClick={() => router.push("/agencydashboard/agencybanking/payouts")}
-                className="text-xs font-bold text-white bg-white/10 hover:bg-white/20 px-3.5 py-1.5 rounded-xl border border-white/20 transition-all flex items-center gap-1 cursor-pointer shadow-sm"
+                className="text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 px-3.5 py-1.5 rounded-xl border border-slate-200 transition-all flex items-center gap-1 cursor-pointer shadow-sm"
               >
                 <span>View All</span>
-                <ChevronRight className="w-3.5 h-3.5 text-emerald-400" />
+                <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
               </button>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="text-[#8f8f8f] border-b border-white/10 uppercase tracking-wider text-[10px]">
+                  <tr className="text-slate-400 border-b border-slate-100 uppercase tracking-wider text-[10px]">
                     <th className="py-3 px-3">Talent Name</th>
                     <th className="py-3 px-3">Campaign / Invoice</th>
                     <th className="py-3 px-3">Disbursed Amount</th>
@@ -667,32 +666,32 @@ export default function AgencyBankingDashboardPage() {
                     <th className="py-3 px-3 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-slate-100">
                   {displayRecentPayouts.map((item) => (
-                    <tr key={item.id} className="hover:bg-white/[0.02] transition-colors">
-                      <td className="py-3.5 px-3 font-semibold text-white flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-white">
+                    <tr key={item.id} className="hover:bg-slate-50/70 transition-colors">
+                      <td className="py-3.5 px-3 font-semibold text-slate-900 flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-700">
                           {item.talentName.split(" ").map((n) => n[0]).join("")}
                         </div>
                         {item.talentName}
                       </td>
-                      <td className="py-3.5 px-3 text-[#8f8f8f]">{item.campaign}</td>
-                      <td className="py-3.5 px-3 font-bold text-white">
+                      <td className="py-3.5 px-3 text-slate-500">{item.campaign}</td>
+                      <td className="py-3.5 px-3 font-bold text-slate-900">
                         ${item.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                       </td>
                       <td className="py-3.5 px-3">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-950/60 text-emerald-400 border border-emerald-800/30 flex items-center gap-1 w-fit">
-                          <CheckCircle2 className="w-3 h-3" />
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1 w-fit">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                           Completed
                         </span>
                       </td>
-                      <td className="py-3.5 px-3 text-[#8f8f8f]">{item.date}</td>
+                      <td className="py-3.5 px-3 text-slate-500">{item.date}</td>
                       <td className="py-3.5 px-3 text-right">
                         <button
                           onClick={() => setSelectedPayout(item)}
-                          className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-white text-[11px] font-medium transition-colors border border-white/10 inline-flex items-center gap-1 cursor-pointer"
+                          className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-medium transition-colors border border-slate-200 inline-flex items-center gap-1 cursor-pointer"
                         >
-                          <Eye className="w-3.5 h-3.5 text-emerald-400" />
+                          <Eye className="w-3.5 h-3.5 text-slate-600" />
                           <span>View</span>
                         </button>
                       </td>
@@ -703,27 +702,27 @@ export default function AgencyBankingDashboardPage() {
             </div>
           </div>
 
-          {/* Upcoming Payout Schedule (1 col) - Professional Yellow Status */}
-          <div className="bg-[#0D0D0D] border border-white/20 rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="border-b border-white/10 pb-4">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-amber-400" />
+          {/* Upcoming Payout Schedule (1 col) */}
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-4">
+            <div className="border-b border-slate-100 pb-4">
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-amber-600" />
                 Upcoming Payout Schedule
               </h3>
-              <p className="text-xs text-[#8f8f8f]">Manage liquidity for scheduled talent split releases</p>
+              <p className="text-xs text-slate-500">Manage liquidity for scheduled talent split releases</p>
             </div>
 
             <div className="space-y-3">
               {displayUpcomingPayouts.map((item) => (
-                <div key={item.id} className="p-3.5 rounded-xl border border-white/10 bg-white/5 space-y-2">
+                <div key={item.id} className="p-3.5 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-white">{item.talentName}</span>
-                    <span className="font-bold text-amber-400">${item.amount.toLocaleString()}</span>
+                    <span className="font-semibold text-slate-900">{item.talentName}</span>
+                    <span className="font-bold text-amber-700">${item.amount.toLocaleString()}</span>
                   </div>
-                  <div className="flex items-center justify-between text-[11px] text-[#8f8f8f]">
+                  <div className="flex items-center justify-between text-[11px] text-slate-500">
                     <span>{item.campaign}</span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-amber-950/60 text-amber-400 border border-amber-800/40 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-amber-400" />
+                    <span className="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-amber-600" />
                       {item.status === "processing" ? "Processing" : "Scheduled"} ({item.dueDate || "Net-30"})
                     </span>
                   </div>
@@ -737,27 +736,27 @@ export default function AgencyBankingDashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Cash Flow Analytics Chart (2 cols) */}
-          <div className="lg:col-span-2 bg-[#0D0D0D] border border-white/20 rounded-2xl p-6 shadow-xl space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
+          <div className="lg:col-span-2 bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-emerald-400" />
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-slate-800" />
                   Cash Flow Analytics & Revenue Margins
                 </h3>
-                <p className="text-xs text-[#8f8f8f]">Monthly incoming brand payments vs outgoing talent payouts & net margin</p>
+                <p className="text-xs text-slate-500">Monthly incoming brand payments vs outgoing talent payouts & net margin</p>
               </div>
               <div className="flex items-center gap-3 text-xs">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                  <span className="text-[#8f8f8f]">Brand Receipts</span>
+                  <span className="text-slate-600">Brand Receipts</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-white/80" />
-                  <span className="text-[#8f8f8f]">Talent Payouts</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-slate-400" />
+                  <span className="text-slate-600">Talent Payouts</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                  <span className="text-[#8f8f8f]">Agency Margin</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
+                  <span className="text-slate-600">Agency Margin</span>
                 </div>
               </div>
             </div>
@@ -778,59 +777,59 @@ export default function AgencyBankingDashboardPage() {
                 return (
                   <div key={bar.month} className="space-y-1.5">
                     <div className="flex justify-between text-xs">
-                      <span className="font-semibold text-white">{bar.month}</span>
-                      <span className="text-[#8f8f8f]">
-                        Gross: <strong className="text-white">${bar.incoming.toLocaleString()}</strong> | Net Margin: <strong className="text-emerald-400">${bar.margin.toLocaleString()}</strong>
+                      <span className="font-semibold text-slate-900">{bar.month}</span>
+                      <span className="text-slate-500">
+                        Gross: <strong className="text-slate-900">${bar.incoming.toLocaleString()}</strong> | Net Margin: <strong className="text-emerald-700">${bar.margin.toLocaleString()}</strong>
                       </span>
                     </div>
-                    <div className="h-3.5 w-full bg-white/5 rounded-full overflow-hidden flex gap-0.5 p-0.5 border border-white/10">
+                    <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden flex gap-0.5 p-0.5 border border-slate-200">
                       <div style={{ width: `${incPct * 0.7}%` }} className="bg-emerald-500 h-full rounded-l-full" title="Brand Receipts" />
-                      <div style={{ width: `${outPct * 0.25}%` }} className="bg-white/70 h-full" title="Talent Payouts" />
-                      <div style={{ width: `${marPct * 0.8}%` }} className="bg-emerald-400 h-full rounded-r-full" title="Agency Commission" />
+                      <div style={{ width: `${outPct * 0.25}%` }} className="bg-slate-400 h-full" title="Talent Payouts" />
+                      <div style={{ width: `${marPct * 0.8}%` }} className="bg-emerald-600 h-full rounded-r-full" title="Agency Commission" />
                     </div>
                   </div>
                 );
               })}
             </div>
 
-            <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#8f8f8f]">
+            <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 Auto-Split Rules Active (85% Talent / 15% Agency Gross Margin)
               </span>
-              <span className="font-semibold text-white">Reconciled via Plaid & QuickBooks API</span>
+              <span className="font-semibold text-slate-800">Reconciled via Plaid & QuickBooks API</span>
             </div>
           </div>
 
           {/* Financial Activity Timeline (1 col) */}
-          <div className="bg-[#0D0D0D] border border-white/20 rounded-2xl p-6 shadow-xl space-y-5">
-            <div className="border-b border-white/10 pb-4">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Clock className="w-4 h-4 text-emerald-400" />
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-5">
+            <div className="border-b border-slate-100 pb-4">
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <Clock className="w-4 h-4 text-slate-800" />
                 Financial Activity Timeline
               </h3>
-              <p className="text-xs text-[#8f8f8f]">Real-time agency treasury events</p>
+              <p className="text-xs text-slate-500">Real-time agency treasury events</p>
             </div>
 
             <div className="space-y-4">
               {activityTimeline.map((item) => (
                 <div key={item.id} className="flex items-start gap-3 text-xs">
-                  <div className="mt-0.5 p-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-                    {item.type === "deposit" && <Plus className="w-3.5 h-3.5 text-emerald-400" />}
-                    {item.type === "brand_payment" && <ArrowDownLeft className="w-3.5 h-3.5 text-white" />}
-                    {item.type === "commission" && <Sparkles className="w-3.5 h-3.5 text-emerald-300" />}
-                    {item.type === "payout" && <ArrowUpRight className="w-3.5 h-3.5 text-[#8f8f8f]" />}
-                    {item.type === "sync" && <RefreshCw className="w-3.5 h-3.5 text-emerald-400" />}
+                  <div className="mt-0.5 p-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700">
+                    {item.type === "deposit" && <Plus className="w-3.5 h-3.5 text-emerald-700" />}
+                    {item.type === "brand_payment" && <ArrowDownLeft className="w-3.5 h-3.5 text-slate-800" />}
+                    {item.type === "commission" && <Sparkles className="w-3.5 h-3.5 text-emerald-700" />}
+                    {item.type === "payout" && <ArrowUpRight className="w-3.5 h-3.5 text-slate-500" />}
+                    {item.type === "sync" && <RefreshCw className="w-3.5 h-3.5 text-emerald-700" />}
                   </div>
                   <div className="flex-1 space-y-0.5">
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-white">{item.title}</span>
+                      <span className="font-semibold text-slate-900">{item.title}</span>
                       {item.amount && (
-                        <span className="font-bold text-emerald-400">+${item.amount.toLocaleString()}</span>
+                        <span className="font-bold text-emerald-700">+${item.amount.toLocaleString()}</span>
                       )}
                     </div>
-                    <p className="text-[11px] text-[#8f8f8f]">{item.subtitle}</p>
-                    <div className="text-[10px] text-neutral-500">{item.timestamp}</div>
+                    <p className="text-[11px] text-slate-500">{item.subtitle}</p>
+                    <div className="text-[10px] text-slate-400">{item.timestamp}</div>
                   </div>
                 </div>
               ))}
@@ -848,21 +847,21 @@ export default function AgencyBankingDashboardPage() {
       {/* WALLET CONTACTS OVERLAY MODAL */}
       <AnimatePresence>
         {isWalletContactsOpen && (
-          <div className="fixed inset-0 z-50 bg-black/80 px-4 py-16 backdrop-blur-sm flex items-center justify-center">
+          <div className="fixed inset-0 z-50 bg-slate-900/60 px-4 py-16 backdrop-blur-sm flex items-center justify-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-2xl bg-[#0D0D0D] light:bg-white border border-white/20 light:border-black/10 rounded-2xl p-6 shadow-2xl space-y-5"
+              className="w-full max-w-2xl bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl space-y-5 text-slate-900"
             >
-              <div className="flex items-center justify-between border-b border-white/10 light:border-black/10 pb-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-emerald-500 light:text-emerald-600" />
-                  <h3 className="text-base font-bold text-white light:text-[#0F172A]">Wallet ID Contacts & Split Network</h3>
+                  <Users className="w-5 h-5 text-emerald-600" />
+                  <h3 className="text-base font-bold text-slate-900">Wallet ID Contacts & Split Network</h3>
                 </div>
                 <button
                   onClick={() => setIsWalletContactsOpen(false)}
-                  className="p-1 rounded-lg text-[#8f8f8f] light:text-[#475569] hover:text-white light:hover:text-[#0F172A] hover:bg-white/10 light:hover:bg-black/5"
+                  className="p-1 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -870,13 +869,13 @@ export default function AgencyBankingDashboardPage() {
 
               {/* Search Bar */}
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8f8f8f] light:text-[#64748B]" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="text"
                   value={contactQuery}
                   onChange={(e) => setContactQuery(e.target.value)}
                   placeholder="Search by name (e.g. John Adams), Agncy ID (@agncy11174), role..."
-                  className="w-full pl-11 pr-4 py-3 bg-black light:bg-white border border-white/20 light:border-black/20 rounded-xl text-xs font-semibold text-white light:text-[#0F172A] focus:outline-none focus:border-emerald-500"
+                  className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-900 focus:bg-white transition-all"
                 />
               </div>
 
@@ -885,14 +884,14 @@ export default function AgencyBankingDashboardPage() {
                 {filteredContacts.map((contact) => {
                   const isAutosplit = autosplitContactIds.includes(contact.id);
                   return (
-                    <div key={contact.id} className="p-3.5 rounded-xl border border-white/10 light:border-black/10 bg-white/5 light:bg-slate-50 flex items-center justify-between gap-4">
+                    <div key={contact.id} className="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-emerald-500/10 light:bg-emerald-50 border border-emerald-500/20 light:border-emerald-200 flex items-center justify-center font-bold text-xs text-emerald-400 light:text-emerald-700">
+                        <div className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center font-bold text-xs text-emerald-700">
                           {contact.name.split(" ").map((n) => n[0]).join("")}
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-white light:text-[#0F172A]">{contact.name}</div>
-                          <div className="text-[11px] text-[#8f8f8f] light:text-[#475569]">{contact.handle} • {contact.role}</div>
+                          <div className="text-xs font-bold text-slate-900">{contact.name}</div>
+                          <div className="text-[11px] text-slate-500">{contact.handle} • {contact.role}</div>
                         </div>
                       </div>
 
@@ -903,18 +902,18 @@ export default function AgencyBankingDashboardPage() {
                             setIsWalletContactsOpen(false);
                             router.push("/dashboard/send-request");
                           }}
-                          className="px-3 py-1.5 rounded-lg bg-white light:bg-[#0F172A] hover:bg-neutral-200 light:hover:bg-black text-black light:text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1 cursor-pointer"
+                          className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1 cursor-pointer"
                         >
-                          <Send className="w-3.5 h-3.5 text-black light:text-white" />
-                          <span className="light:text-white">Send / Request</span>
+                          <Send className="w-3.5 h-3.5 text-white" />
+                          <span>Send / Request</span>
                         </button>
                         <button
                           type="button"
                           onClick={() => toggleAutosplitContact(contact.id)}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${
                             isAutosplit
-                              ? "bg-emerald-950/60 light:bg-emerald-100 text-emerald-400 light:text-emerald-800 border-emerald-800/40 light:border-emerald-300 font-bold"
-                              : "bg-white/5 light:bg-white text-[#8f8f8f] light:text-[#475569] border-white/10 light:border-black/15 hover:text-white light:hover:text-[#0F172A]"
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200 font-bold"
+                              : "bg-white text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-100"
                           }`}
                         >
                           {isAutosplit ? "Autosplit On" : "Autosplit Off"}
@@ -925,11 +924,11 @@ export default function AgencyBankingDashboardPage() {
                 })}
               </div>
 
-              <div className="pt-3 border-t border-white/10 light:border-black/10 flex items-center justify-between text-xs">
-                <span className="text-[#8f8f8f] light:text-[#475569]">Direct agency role split configuration</span>
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span className="text-slate-500">Direct agency role split configuration</span>
                 <button
                   onClick={() => setIsWalletContactsOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-white/10 light:bg-slate-200 text-white light:text-[#0F172A] font-semibold hover:bg-white/20 light:hover:bg-slate-300 transition-colors"
+                  className="px-4 py-2 rounded-xl bg-slate-100 text-slate-800 font-semibold hover:bg-slate-200 transition-colors border border-slate-200 cursor-pointer"
                 >
                   Close Network
                 </button>
@@ -942,48 +941,48 @@ export default function AgencyBankingDashboardPage() {
       {/* READ-ONLY PAYOUT DETAILS MODAL */}
       <AnimatePresence>
         {selectedPayout && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-[#0D0D0D] border border-white/20 rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-5"
+              className="bg-white border border-slate-200 rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-5 text-slate-900"
             >
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                  <h3 className="text-base font-bold text-white">Talent Payout Record</h3>
+                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                  <h3 className="text-base font-bold text-slate-900">Talent Payout Record</h3>
                 </div>
                 <button
                   onClick={() => setSelectedPayout(null)}
-                  className="p-1 rounded-lg text-[#8f8f8f] hover:text-white hover:bg-white/10"
+                  className="p-1 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               <div className="space-y-3 text-xs">
-                <div className="flex justify-between py-2 border-b border-white/5">
-                  <span className="text-[#8f8f8f]">Recipient Talent</span>
-                  <span className="font-bold text-white">{selectedPayout.talentName}</span>
+                <div className="flex justify-between py-2 border-b border-slate-100">
+                  <span className="text-slate-500">Recipient Talent</span>
+                  <span className="font-bold text-slate-900">{selectedPayout.talentName}</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-white/5">
-                  <span className="text-[#8f8f8f]">Campaign / Project</span>
-                  <span className="font-semibold text-white">{selectedPayout.campaign}</span>
+                <div className="flex justify-between py-2 border-b border-slate-100">
+                  <span className="text-slate-500">Campaign / Project</span>
+                  <span className="font-semibold text-slate-900">{selectedPayout.campaign}</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-white/5">
-                  <span className="text-[#8f8f8f]">Disbursed Amount</span>
-                  <span className="font-extrabold text-white text-sm">
+                <div className="flex justify-between py-2 border-b border-slate-100">
+                  <span className="text-slate-500">Disbursed Amount</span>
+                  <span className="font-extrabold text-slate-900 text-sm">
                     ${selectedPayout.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-white/5">
-                  <span className="text-[#8f8f8f]">Disbursement Date</span>
-                  <span className="text-white">{selectedPayout.date}</span>
+                <div className="flex justify-between py-2 border-b border-slate-100">
+                  <span className="text-slate-500">Disbursement Date</span>
+                  <span className="text-slate-900">{selectedPayout.date}</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-white/5">
-                  <span className="text-[#8f8f8f]">Audited Status</span>
-                  <span className="text-emerald-400 font-bold uppercase tracking-wider text-[10px]">
+                <div className="flex justify-between py-2 border-b border-slate-100">
+                  <span className="text-slate-500">Audited Status</span>
+                  <span className="text-emerald-700 font-bold uppercase tracking-wider text-[10px] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                     Verified & Settled via ACH
                   </span>
                 </div>
@@ -992,7 +991,7 @@ export default function AgencyBankingDashboardPage() {
               <div className="pt-2">
                 <button
                   onClick={() => setSelectedPayout(null)}
-                  className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition-colors"
+                  className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors cursor-pointer"
                 >
                   Close Receipt
                 </button>

@@ -17,24 +17,26 @@ export function DashboardHeader() {
   };
 
   return (
-    <header className="flex h-[78px] shrink-0 items-center justify-between border-b border-[#111] bg-black px-10">
-      <label className="relative block w-full max-w-[704px]">
-        <Search className="pointer-events-none absolute left-[15px] top-1/2 h-5 w-5 -translate-y-1/2 text-[#8b8b8b]" />
+    <header className="flex h-16 shrink-0 items-center justify-between border-b border-slate-200/90 bg-white px-6 sm:px-8 z-10">
+      <label className="relative block w-full max-w-[540px]">
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
         <input
           aria-label="Search"
           placeholder={placeholderByWorkspace[workspaceType]}
-          className="h-11 w-full rounded-[7px] border border-[#5b5b5b] bg-[#111] pl-12 pr-4 text-[17px] font-normal text-white outline-none placeholder:text-[#787878] focus:border-[#8a8a8a]"
+          className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-10 pr-4 text-sm font-normal text-slate-900 placeholder:text-slate-400 outline-none focus:border-slate-900 focus:bg-white focus:ring-2 focus:ring-slate-900/10 transition-all shadow-2xs"
         />
       </label>
 
-      <button
-        type="button"
-        aria-label="Notifications"
-        className="relative ml-6 flex h-11 w-11 items-center justify-center text-white"
-      >
-        <Bell className="h-[21px] w-[21px] stroke-[1.8]" />
-        <span className="absolute right-[9px] top-[10px] h-[9px] w-[9px] rounded-full bg-white" />
-      </button>
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          aria-label="Notifications"
+          className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-2xs"
+        >
+          <Bell className="h-4.5 w-4.5 stroke-[1.8]" />
+          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-slate-900 ring-2 ring-white" />
+        </button>
+      </div>
     </header>
   );
 }

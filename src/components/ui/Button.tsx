@@ -24,27 +24,27 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "relative inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#050816] disabled:opacity-50 disabled:pointer-events-none cursor-pointer";
+    "relative inline-flex items-center justify-center font-medium rounded-xl transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer select-none";
   
   const variants = {
     primary:
-      "bg-white text-black hover:bg-[#E5E7EB] focus:ring-white border border-transparent font-bold shadow-[0_0_15px_rgba(255,255,255,0.1)]",
+      "bg-slate-900 text-white hover:bg-slate-800 shadow-sm border border-transparent font-semibold active:scale-[0.98]",
     secondary:
-      "bg-white text-black hover:bg-[#E5E7EB] focus:ring-white border border-transparent font-bold shadow-[0_0_15px_rgba(255,255,255,0.1)]",
+      "bg-white text-slate-800 hover:bg-slate-50 border border-slate-200/90 shadow-2xs font-semibold active:scale-[0.98]",
     outline:
-      "bg-white/[0.02] text-[#F8FAFC] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 focus:ring-white/20",
+      "bg-transparent text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98]",
     ghost:
-      "bg-transparent text-[#94A3B8] hover:bg-white/[0.04] hover:text-[#F8FAFC] focus:ring-white/10",
+      "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 active:scale-[0.98]",
     danger:
-      "bg-[#171717] text-white hover:bg-[#222] focus:ring-white/20 border border-[#4a4a4a]",
+      "bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 active:scale-[0.98]",
     success:
-      "bg-white text-black hover:bg-[#E5E7EB] focus:ring-white border border-transparent font-bold",
+      "bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm border border-transparent font-semibold active:scale-[0.98]",
   };
 
   const sizes = {
-    sm: "px-3 py-1.5 text-xs",
-    md: "px-4 py-2.5 text-sm",
-    lg: "px-6 py-3.5 text-base",
+    sm: "px-3 py-1.5 text-xs gap-1.5",
+    md: "px-4 py-2 text-sm gap-2",
+    lg: "px-5 py-2.5 text-base gap-2.5",
   };
 
   return (

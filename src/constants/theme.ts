@@ -1,22 +1,23 @@
 export const THEME = {
   colors: {
     background: {
-      deep: "#0A0A0A",
-      mid: "#0D0D0D",
-      light: "#1A1A1A",
+      deep: "#FFFFFF",
+      mid: "#F8FAFC",
+      light: "#F1F5F9",
     },
-    card: "rgba(255, 255, 255, 0.04)",
-    border: "rgba(255, 255, 255, 0.08)",
-    primary: "#10B981", // Green
-    secondary: "#22C55E", // Secondary Green
-    success: "#22C55E",
-    warning: "#F59E0B",
+    card: "#FFFFFF",
+    border: "#E2E8F0",
+    primary: "#0F172A",
+    secondary: "#64748B",
+    success: "#10B981",
+    warning: "#D97706",
     error: "#EF4444",
     text: {
-      primary: "#F8FAFC",
-      secondary: "#6B7280",
+      primary: "#0F172A",
+      secondary: "#64748B",
     },
   },
-  glassmorphism: "backdrop-blur-md bg-white/[0.04] border border-white/[0.08]",
-  glassmorphismHover: "hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-300",
+  glassmorphism: "bg-white border border-slate-200/80 shadow-xs",
+  glassmorphismHover: "hover:border-slate-300 hover:shadow-sm transition-all duration-200",
 };
+

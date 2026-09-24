@@ -156,12 +156,12 @@ export default function IncomesPage() {
   }).format(totalAmount);
 
   return (
-    <div className="mx-auto w-full max-w-[1048px] px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-[1048px] px-4 py-8 sm:px-6 lg:px-8 font-sans">
       {/* Back Button */}
       <div className="mb-6">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 rounded-[7px] border border-white/20 bg-[#050505] px-3 py-2 text-[13px] font-semibold text-white hover:bg-white/5 transition-colors"
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-sm transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Dashboard
@@ -169,33 +169,34 @@ export default function IncomesPage() {
       </div>
 
       <div>
-        <h1 className="text-[34px] font-semibold leading-none text-white">
+        <h1 className="text-2xl sm:text-3xl font-black leading-none text-slate-900 tracking-tight">
           Recent Incomes
         </h1>
-        <p className="mt-[18px] text-[20px] leading-6 text-[#9b9b9b]">
+        <p className="mt-2 text-xs font-medium text-slate-500">
           Full history of your income and parsed vendor payouts.
         </p>
       </div>
 
-      <section className="mt-[29px] rounded-[13px] border border-white/20 bg-black px-[29px] py-[31px]">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <section className="mt-7 rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-5">
           <div>
-            <h2 className="text-[29px] font-semibold leading-none text-white">
+            <h2 className="text-lg font-bold text-slate-900">
               Income History
             </h2>
+            <p className="text-xs text-slate-500 mt-0.5">Parsed earnings from statement uploads</p>
           </div>
 
           <button
             type="button"
-            className="inline-flex h-[40px] items-center justify-center gap-[12px] rounded-[7px] border border-white/20 bg-[#0c0c0c] px-[16px] text-[16px] font-semibold text-white transition-colors hover:bg-white/5"
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm transition-colors"
           >
-            <Download className="h-4 w-4" />
+            <Download className="h-4 w-4 text-slate-500" />
             Export
           </button>
         </div>
 
-        <div className="mt-[32px] overflow-x-auto">
-          <table className="min-w-[900px] table-fixed text-left w-full">
+        <div className="mt-5 overflow-x-auto">
+          <table className="min-w-[900px] table-fixed text-left w-full text-xs">
             <colgroup>
               <col className="w-[280px]" />
               <col className="w-[220px]" />
@@ -203,8 +204,8 @@ export default function IncomesPage() {
               <col className="w-[180px]" />
             </colgroup>
             <thead>
-              <tr className="h-[48px] border-b border-[#555] text-[17px] font-semibold leading-none text-[#8d8d8d]">
-                <th className="pl-[10px] pr-4">Source / Vendor</th>
+              <tr className="h-11 border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                <th className="pl-3 pr-4">Source / Vendor</th>
                 <th>Detail</th>
                 <th>Date</th>
                 <th className="text-right pr-4">Amount</th>
@@ -213,7 +214,7 @@ export default function IncomesPage() {
             <tbody>
               {allIncomes.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="h-[120px] text-center text-[17px] text-[#8f8f8f]">
+                  <td colSpan={4} className="h-28 text-center text-xs font-medium text-slate-500">
                     No income data found. Upload an Excel file to get started.
                   </td>
                 </tr>
@@ -227,23 +228,23 @@ export default function IncomesPage() {
                       }
                     }}
                     className={cn(
-                      "h-[64px] border-b border-[#303030] last:border-b-0 text-[17px] leading-none transition-colors hover:bg-white/[0.02]",
+                      "h-16 border-b border-slate-100 last:border-b-0 transition-colors hover:bg-slate-50/70",
                       item.slug === "uploaded-preview" && "cursor-pointer"
                     )}
                   >
-                    <td className="pl-[10px] pr-4">
+                    <td className="pl-3 pr-4">
                       <div className="flex items-center gap-3">
-                        <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] border border-[#303030] bg-[#060606] p-[2px]")}>
-                          <div className={cn("h-full w-full overflow-hidden rounded-[6px]", item.className)}>
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-1">
+                          <div className={cn("h-full w-full overflow-hidden rounded-lg", item.className)}>
                             <RemoteBrandImage src={item.src} alt={item.name} fallback={item.fallback} className="h-full w-full" imageClassName={item.imageClassName} />
                           </div>
                         </div>
-                        <span className="font-semibold text-white truncate max-w-[200px]">{item.name}</span>
+                        <span className="font-bold text-slate-900 truncate max-w-[200px]">{item.name}</span>
                       </div>
                     </td>
-                    <td className="text-[#c8c8c8]">{item.detail}</td>
-                    <td className="text-[#b8b8b8]">{item.date}</td>
-                    <td className="text-right pr-4 font-semibold text-[#13d463]">{item.amount}</td>
+                    <td className="text-slate-600 font-medium">{item.detail}</td>
+                    <td className="text-slate-500">{item.date}</td>
+                    <td className="text-right pr-4 font-black text-emerald-600">{item.amount}</td>
                   </tr>
                 ))
               )}
@@ -252,10 +253,10 @@ export default function IncomesPage() {
         </div>
 
         {allIncomes.length > 0 && (
-          <div className="mt-6 flex justify-end">
-            <div className="flex w-full max-w-[320px] items-center justify-between rounded-[9px] border border-[#303030] bg-[#060606] px-5 py-4">
-              <span className="text-[17px] font-semibold text-[#8d8d8d]">Total Income</span>
-              <span className="text-[24px] font-black tracking-tight text-[#13d463]">
+          <div className="mt-6 flex justify-end pt-4 border-t border-slate-100">
+            <div className="flex w-full max-w-[300px] items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50 p-4">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Income</span>
+              <span className="text-xl font-black tracking-tight text-emerald-600">
                 {formattedTotal}
               </span>
             </div>

@@ -44,25 +44,15 @@ export default function RootLayout({
                 let storageKey = 'agncypay_theme';
                 let defaultTheme = 'dark'; // fallback
                 
-                if (path === '/' || path.startsWith('/auth') || path.startsWith('/onboarding')) {
+                if (path === '/') {
                   document.documentElement.classList.add('dark');
                   document.documentElement.classList.remove('light');
                   return;
                 }
 
-                if (path.includes('/branddashboard')) {
-                  storageKey = 'agncypay_theme_brand';
-                  defaultTheme = 'light';
-                } else if (path.includes('/agencydashboard/agencybanking')) {
-                  storageKey = 'agncypay_theme_agencybanking';
-                  defaultTheme = 'dark';
-                } else if (path.includes('/agencydashboard')) {
-                  storageKey = 'agncypay_theme_agency';
-                  defaultTheme = 'light';
-                } else if (path.includes('/dashboard')) {
-                  storageKey = 'agncypay_theme_talent';
-                  defaultTheme = 'dark';
-                }
+                defaultTheme = 'light';
+                document.documentElement.classList.add('light');
+                document.documentElement.classList.remove('dark');
 
                 const savedTheme = localStorage.getItem(storageKey);
                 

@@ -36,8 +36,8 @@ function StatusBadge({ status }: { status: string }) {
   return (
     <span
       className={cn(
-        "inline-flex h-7 items-center rounded-[6px] border px-3 text-[12px] font-semibold",
-        isPaid ? "border-[#333] bg-[#0c0c0c] text-[#bdbdbd]" : "border-[#444] bg-[#111] text-[#d7d7d7]"
+        "inline-flex h-7 items-center rounded-xl border px-3 text-xs font-bold",
+        isPaid ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-slate-200 bg-slate-50 text-slate-700"
       )}
     >
       {isPaid ? "Paid" : status}
@@ -113,27 +113,30 @@ function ReceiptPageContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center font-sans">
-        <div className="animate-spin h-6 w-6 border-2 border-white border-t-transparent rounded-full" />
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center font-sans">
+        <div className="text-center">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900 mx-auto mb-4" />
+          <p className="text-xs font-semibold text-slate-500">Loading receipt...</p>
+        </div>
       </div>
     );
   }
 
   if (!invoice) {
     return (
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
         <div className="mx-auto flex min-h-screen max-w-[980px] items-center justify-center px-4">
-          <div className="w-full rounded-[13px] border border-[#2b2b2b] bg-[#050505] p-6 text-center">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#7a7a7a]">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200/80 bg-white p-8 text-center shadow-sm">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Receipt not found
             </p>
-            <h1 className="mt-3 text-[28px] font-semibold text-white">Receipt unavailable</h1>
-            <p className="mt-2 text-[14px] text-[#8f8f8f]">
+            <h1 className="mt-2 text-2xl font-black text-slate-900">Receipt unavailable</h1>
+            <p className="mt-2 text-xs font-medium text-slate-500">
               The receipt reference does not match the invoice database.
             </p>
             <Link
               href={returnHref}
-              className="mt-6 inline-flex h-11 items-center justify-center rounded-[7px] border border-white bg-white px-4 text-[13px] font-semibold text-black hover:bg-[#e8e8e8]"
+              className="mt-6 inline-flex h-10 items-center justify-center rounded-xl bg-slate-900 px-5 text-xs font-bold text-white hover:bg-slate-800 shadow-sm transition-all"
             >
               Back to {returnLabel}
             </Link>
@@ -167,38 +170,42 @@ function ReceiptPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <header className="sticky top-0 z-20 border-b border-white/20 bg-black/95 backdrop-blur">
-        <div className="mx-auto flex h-[76px] max-w-[1480px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+      <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex h-[70px] max-w-[1480px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <Link
             href={returnHref}
-            className="inline-flex items-center gap-2 rounded-[7px] border border-white/20 bg-[#050505] px-3 py-2 text-[13px] font-semibold text-white hover:bg-white/5"
+            className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             {returnLabel}
           </Link>
-          <img src="/agncypaybrand.png" alt="AgncyPay" className="w-[92px] sm:w-[104px] shrink-0 object-contain scale-[1.5] origin-center" />
-          <span className="inline-flex h-11 items-center rounded-[7px] border border-white bg-white px-4 text-[13px] font-semibold text-black">
+          <img
+            src="/agncypaybrand.png"
+            alt="AgncyPay"
+            className="w-[92px] sm:w-[104px] shrink-0 object-contain scale-[1.5] origin-center [filter:invert(1)_brightness(0.15)]"
+          />
+          <span className="inline-flex h-9 items-center rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-xs font-black text-slate-900 shadow-sm">
             {formatMainboardMoney(total)}
           </span>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1480px] px-4 py-5 sm:px-6 lg:px-8">
-        <section className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.26fr)_minmax(380px,0.74fr)]">
-          <div className="space-y-5">
-            <section className="rounded-[13px] border border-white/20 bg-[#050505] p-5">
+      <main className="mx-auto max-w-[1480px] px-4 py-8 sm:px-6 lg:px-8">
+        <section className="grid grid-cols-1 gap-7 xl:grid-cols-[minmax(0,1.26fr)_minmax(380px,0.74fr)]">
+          <div className="space-y-6">
+            <section className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[10px] border border-white bg-white text-black">
-                    <CheckCircle2 className="h-7 w-7" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 shadow-sm">
+                    <CheckCircle2 className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#7a7a7a]">
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
                       Receipt reference
                     </p>
-                    <h2 className="mt-2 text-[28px] font-semibold text-white">{invoice.recipient}</h2>
-                    <p className="mt-2 max-w-[760px] text-[14px] text-[#8f8f8f]">
+                    <h2 className="mt-1 text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{invoice.recipient}</h2>
+                    <p className="mt-1.5 max-w-[760px] text-xs font-medium text-slate-500">
                       The payment has settled and the receipt is ready for download, copy, or audit.
                     </p>
                   </div>
@@ -206,89 +213,91 @@ function ReceiptPageContent() {
                 <StatusBadge status={invoice.status} />
               </div>
 
-              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                <div className="rounded-[10px] border border-white/20 bg-black p-3">
-                  <p className="text-[12px] text-[#7a7a7a]">Transaction</p>
-                  <p className="mt-2 font-mono text-[14px] font-semibold text-white">{transactionId}</p>
+              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+                  <p className="text-[11px] font-semibold text-slate-500">Transaction</p>
+                  <p className="mt-1 font-mono text-xs font-bold text-slate-900">{transactionId}</p>
                 </div>
-                <div className="rounded-[10px] border border-white/20 bg-black p-3">
-                  <p className="text-[12px] text-[#7a7a7a]">Checkout</p>
-                  <p className="mt-2 text-[14px] font-semibold text-white">{mode}</p>
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+                  <p className="text-[11px] font-semibold text-slate-500">Checkout</p>
+                  <p className="mt-1 text-xs font-bold text-slate-900">{mode}</p>
                 </div>
-                <div className="rounded-[10px] border border-white/20 bg-black p-3">
-                  <p className="text-[12px] text-[#7a7a7a]">Invoice</p>
-                  <p className="mt-2 text-[14px] font-semibold text-white">{invoice.id}</p>
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+                  <p className="text-[11px] font-semibold text-slate-500">Invoice</p>
+                  <p className="mt-1 text-xs font-bold text-slate-900">{invoice.id}</p>
                 </div>
               </div>
 
-              <div className="mt-5 flex flex-wrap items-center gap-2">
+              <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-5">
                 <button
                   type="button"
                   onClick={downloadPdf}
-                  className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-white/20 bg-[#111] px-4 text-[13px] font-semibold text-white hover:bg-white/5"
+                  className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm transition-colors"
                 >
-                  <Download className="h-4 w-4" />
+                  <Download className="h-4 w-4 text-slate-500" />
                   View PDF
                 </button>
                 <button
                   type="button"
                   onClick={copyReceiptLink}
-                  className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-white/20 bg-[#111] px-4 text-[13px] font-semibold text-white hover:bg-white/5"
+                  className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm transition-colors"
                 >
-                  <Copy className="h-4 w-4" />
+                  <Copy className="h-4 w-4 text-slate-500" />
                   Copy Receipt Link
                 </button>
                 <Link
                   href={`/request/${invoice.id}?mode=${searchParams.get("mode") || "guest"}&returnTo=${returnTo}`}
-                  className="inline-flex h-10 items-center gap-2 rounded-[7px] border border-white bg-white px-4 text-[13px] font-semibold text-black hover:bg-[#e8e8e8]"
+                  className="inline-flex h-9 items-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 shadow-sm transition-all"
                 >
                   Back to Request
                 </Link>
               </div>
             </section>
 
-            <section className="rounded-[13px] border border-white/20 bg-[#050505] p-5">
+            <section className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-7 shadow-sm">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#7a7a7a]">
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
                     Settlement summary
                   </p>
-                  <h3 className="mt-2 text-[22px] font-semibold text-white">Completed payment</h3>
+                  <h3 className="mt-1 text-lg font-bold text-slate-900">Completed payment</h3>
                 </div>
-                <Wallet className="h-5 w-5 text-white" />
+                <div className="h-9 w-9 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700">
+                  <Wallet className="h-4 w-4" />
+                </div>
               </div>
 
               <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                <div className="rounded-[10px] border border-white/20 bg-black p-3">
-                  <p className="text-[12px] text-[#7a7a7a]">Subtotal</p>
-                  <p className="mt-2 text-[18px] font-semibold text-white">{formatMainboardMoney(invoice.amount)}</p>
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+                  <p className="text-[11px] font-semibold text-slate-500">Subtotal</p>
+                  <p className="mt-1 text-base font-black text-slate-900">{formatMainboardMoney(invoice.amount)}</p>
                 </div>
-                <div className="rounded-[10px] border border-white/20 bg-black p-3">
-                  <p className="text-[12px] text-[#7a7a7a]">Fee</p>
-                  <p className="mt-2 text-[18px] font-semibold text-white">{formatMainboardMoney(invoice.fee)}</p>
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+                  <p className="text-[11px] font-semibold text-slate-500">Fee (1.5%)</p>
+                  <p className="mt-1 text-base font-black text-slate-900">{formatMainboardMoney(invoice.fee)}</p>
                 </div>
-                <div className="rounded-[10px] border border-white/20 bg-black p-3">
-                  <p className="text-[12px] text-[#7a7a7a]">Total</p>
-                  <p className="mt-2 text-[18px] font-semibold text-white">{formatMainboardMoney(total)}</p>
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+                  <p className="text-[11px] font-semibold text-slate-500">Total Settled</p>
+                  <p className="mt-1 text-base font-black text-slate-900">{formatMainboardMoney(total)}</p>
                 </div>
               </div>
 
-              <div className="mt-5 rounded-[12px] border border-white/20 bg-black p-4">
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-[14px] font-semibold text-white">Invoice items</p>
-                  <span className="text-[12px] text-[#8f8f8f]">{invoice.due}</span>
+              <div className="mt-5 rounded-xl border border-slate-200/80 bg-slate-50/40 p-4">
+                <div className="flex items-center justify-between gap-4 border-b border-slate-100 pb-2.5">
+                  <p className="text-xs font-bold text-slate-900">Invoice items</p>
+                  <span className="text-[11px] font-semibold text-slate-500">{invoice.due}</span>
                 </div>
-                <div className="mt-4 space-y-2 text-[13px]">
+                <div className="mt-3 space-y-2.5 text-xs">
                   {invoice.items.map((item) => (
                     <div
                       key={item.title}
-                      className="flex justify-between gap-4 border-b border-white/10 pb-2"
+                      className="flex justify-between items-center gap-4 border-b border-slate-100 pb-2 last:border-b-0"
                     >
                       <div>
-                        <p className="text-[#d7d7d7]">{item.title}</p>
-                        <p className="mt-1 text-[#8f8f8f]">Qty {item.qty}</p>
+                        <p className="font-semibold text-slate-800">{item.title}</p>
+                        <p className="text-[11px] text-slate-500">Qty {item.qty}</p>
                       </div>
-                      <span className="text-white">{formatMainboardMoney(item.rate)}</span>
+                      <span className="font-bold text-slate-900">{formatMainboardMoney(item.rate)}</span>
                     </div>
                   ))}
                 </div>
@@ -296,21 +305,21 @@ function ReceiptPageContent() {
             </section>
           </div>
 
-          <aside className="space-y-5">
-            <section className="rounded-[13px] border border-white/20 bg-[#050505] p-5">
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="h-4 w-4 text-white" />
-                <h3 className="text-[18px] font-semibold text-white">Receipt activity</h3>
+          <aside className="space-y-6">
+            <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                <h3 className="text-sm font-bold text-slate-900">Receipt activity</h3>
               </div>
-              <div className="mt-4 space-y-3 rounded-[12px] border border-white/20 bg-black p-4">
+              <div className="mt-4 space-y-2.5 rounded-xl border border-slate-200/80 bg-slate-50/60 p-4">
                 {[
                   "Payment confirmed",
                   "Settlement written to log",
                   "Receipt generated",
                   "Archive ready for download",
                 ].map((step, index) => (
-                  <div key={step} className="flex items-center gap-3 py-1 text-[14px] text-white">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full border border-white/20 text-[11px] text-[#d7d7d7]">
+                  <div key={step} className="flex items-center gap-3 py-1 text-xs text-slate-700 font-medium">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 bg-white text-[10px] font-bold text-slate-600">
                       {index + 1}
                     </span>
                     <span>{step}</span>
@@ -319,27 +328,27 @@ function ReceiptPageContent() {
               </div>
             </section>
 
-            <section className="rounded-[13px] border border-white/20 bg-[#050505] p-5">
-              <div className="flex items-center gap-3">
-                <FileText className="h-4 w-4 text-white" />
-                <h3 className="text-[18px] font-semibold text-white">Quick log</h3>
+            <section className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-slate-500" />
+                <h3 className="text-sm font-bold text-slate-900">Quick log</h3>
               </div>
-              <div className="mt-4 space-y-3 rounded-[12px] border border-white/20 bg-black p-4">
-                <div className="flex justify-between gap-4 text-[13px]">
-                  <span className="text-[#8f8f8f]">Recipient</span>
-                  <span className="text-white">{invoice.recipient}</span>
+              <div className="mt-4 space-y-2.5 rounded-xl border border-slate-200/80 bg-slate-50/60 p-4">
+                <div className="flex justify-between gap-4 text-xs">
+                  <span className="text-slate-500 font-medium">Recipient</span>
+                  <span className="text-slate-900 font-bold">{invoice.recipient}</span>
                 </div>
-                <div className="flex justify-between gap-4 text-[13px]">
-                  <span className="text-[#8f8f8f]">Wallet</span>
-                  <span className="text-white">{invoice.walletId}</span>
+                <div className="flex justify-between gap-4 text-xs">
+                  <span className="text-slate-500 font-medium">Wallet</span>
+                  <span className="text-slate-900 font-mono font-bold">{invoice.walletId}</span>
                 </div>
-                <div className="flex justify-between gap-4 text-[13px]">
-                  <span className="text-[#8f8f8f]">Source</span>
-                  <span className="text-white">AgncyPay receipt</span>
+                <div className="flex justify-between gap-4 text-xs">
+                  <span className="text-slate-500 font-medium">Source</span>
+                  <span className="text-slate-900 font-medium">AgncyPay receipt</span>
                 </div>
-                <div className="flex justify-between gap-4 text-[13px]">
-                  <span className="text-[#8f8f8f]">Status</span>
-                  <span className="text-white">Paid</span>
+                <div className="flex justify-between gap-4 text-xs">
+                  <span className="text-slate-500 font-medium">Status</span>
+                  <span className="text-emerald-600 font-bold">Paid</span>
                 </div>
               </div>
             </section>
@@ -347,13 +356,13 @@ function ReceiptPageContent() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-1">
               <Link
                 href={`/pay/${invoice.id}?mode=${searchParams.get("mode") || "guest"}&returnTo=${returnTo}`}
-                className="inline-flex h-11 items-center justify-center rounded-[7px] border border-white bg-white px-4 text-[13px] font-semibold text-black hover:bg-neutral-200"
+                className="inline-flex h-10 items-center justify-center rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 shadow-sm transition-all"
               >
                 Open Payment Page
               </Link>
               <Link
                 href={returnHref}
-                className="inline-flex h-11 items-center justify-center rounded-[7px] border border-white/20 bg-[#111] px-4 text-[13px] font-semibold text-white hover:bg-white/5"
+                className="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm transition-colors"
               >
                 Back to {returnLabel}
               </Link>
@@ -368,10 +377,10 @@ function ReceiptPageContent() {
 export default function ReceiptPage() {
   return (
     <React.Suspense fallback={
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center font-sans">
         <div className="text-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#333] border-t-white mx-auto mb-4"></div>
-          <p className="text-[14px] text-[#bdbdbd]">Loading receipt...</p>
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900 mx-auto mb-4" />
+          <p className="text-xs font-semibold text-slate-500">Loading receipt...</p>
         </div>
       </div>
     }>

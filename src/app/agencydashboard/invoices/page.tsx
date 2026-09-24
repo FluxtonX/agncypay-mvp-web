@@ -70,7 +70,7 @@ export default function InvoicesQueuePage() {
   const { state, resetState, refreshUser } = useApp();
   const workspaceType = state.user ? state.user.accountType : "agency";
 
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isLightTheme, setIsLightTheme] = useState(true);
   const [invoices, setInvoices] = useState<InvoiceMock[]>([]);
   const [activeMainTab, setActiveMainTab] = useState<"receivables" | "payables">("receivables");
   const [activeReceivableFilter, setActiveReceivableFilter] = useState<"all" | "awaiting_approval" | "settled">("awaiting_approval");

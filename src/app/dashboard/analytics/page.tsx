@@ -330,18 +330,18 @@ function TrendValue({
   const isPositive = value >= 0;
 
   return (
-    <div className="mt-2 flex flex-wrap items-center gap-2">
+    <div className="mt-2.5 flex flex-wrap items-center gap-2">
       <span
         className={cn(
-          "inline-flex items-center gap-1 rounded-[5px] px-2 py-1 text-[12px] font-bold",
-          isPositive ? "bg-white text-black" : "bg-[#1c1c1c] text-[#d7d7d7]"
+          "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold border",
+          isPositive ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-rose-50 text-rose-700 border-rose-200"
         )}
       >
-        {isPositive ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
+        {isPositive ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
         {isPositive ? "+" : ""}
         {value.toFixed(1)}%
       </span>
-      <span className="text-[12px] font-medium text-[#777]">{label}</span>
+      <span className="text-xs font-medium text-slate-500">{label}</span>
     </div>
   );
 }
@@ -360,14 +360,14 @@ function MetricCard({
   icon: LucideIcon;
 }) {
   return (
-    <section className="min-h-[152px] rounded-[10px] border border-[#303030] bg-[#060606] p-5">
+    <section className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs transition-all">
       <div className="flex items-start justify-between gap-4">
-        <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-[#777]">{title}</p>
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] border border-[#303030] bg-black text-[#d7d7d7]">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">{title}</p>
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700">
           <Icon className="h-5 w-5" />
         </div>
       </div>
-      <p className="mt-5 text-[28px] font-semibold leading-none text-white">{value}</p>
+      <p className="mt-3 text-3xl font-black text-slate-900 tracking-tight leading-none">{value}</p>
       <TrendValue value={trend} label={trendLabel} />
     </section>
   );
@@ -385,20 +385,20 @@ function InsightRow({
   tone?: "neutral" | "good" | "warning";
 }) {
   return (
-    <div className="flex gap-3 rounded-[8px] border border-[#262626] bg-black px-4 py-3">
+    <div className="flex gap-3 rounded-xl border border-slate-200/80 bg-slate-50/60 p-3.5 transition-colors">
       <div
         className={cn(
-          "mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-[7px] border",
-          tone === "good" && "border-white bg-white text-black",
-          tone === "warning" && "border-[#555] bg-[#171717] text-white",
-          tone === "neutral" && "border-[#333] bg-[#0b0b0b] text-[#d7d7d7]"
+          "mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border",
+          tone === "good" && "border-emerald-200 bg-emerald-50 text-emerald-700",
+          tone === "warning" && "border-amber-200 bg-amber-50 text-amber-700",
+          tone === "neutral" && "border-slate-200 bg-white text-slate-600 shadow-xs"
         )}
       >
         <Icon className="h-4 w-4" />
       </div>
       <div>
-        <p className="text-[14px] font-semibold text-white">{title}</p>
-        <p className="mt-1 text-[13px] leading-5 text-[#8d8d8d]">{detail}</p>
+        <p className="text-xs font-bold text-slate-900">{title}</p>
+        <p className="mt-0.5 text-xs leading-relaxed text-slate-500 font-medium">{detail}</p>
       </div>
     </div>
   );
@@ -464,36 +464,33 @@ export default function AnalyticsPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-[1280px] px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+    <div className="mx-auto w-full max-w-7xl space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Link
             href="/dashboard"
-            className="mb-5 inline-flex h-9 items-center gap-2 rounded-[7px] border border-[#303030] bg-[#060606] px-3 text-[13px] font-semibold text-[#d7d7d7] transition-colors hover:border-[#666] hover:text-white"
+            className="mb-3 inline-flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900 shadow-xs"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-3.5 w-3.5" />
             Back to Dashboard
           </Link>
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#777]">
-            Universal payment intelligence
-          </p>
-          <h1 className="mt-3 text-[34px] font-semibold leading-none text-white">Analytics</h1>
-          <p className="mt-[18px] max-w-[760px] text-[18px] leading-7 text-[#9b9b9b]">
+          <h1 className="text-2xl font-black tracking-tight text-slate-900">Analytics</h1>
+          <p className="mt-1 text-sm text-slate-500 max-w-2xl">
             Range-aware revenue, payout, and reconciliation insights for brand invoices,
             model agencies, creators, and music platforms.
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row lg:pt-2">
-          <div className="flex items-center rounded-[8px] border border-[#303030] bg-[#060606] p-1">
+        <div className="flex items-center gap-2.5">
+          <div className="flex items-center rounded-xl border border-slate-200 bg-slate-100 p-1">
             {ranges.map((range) => (
               <button
                 key={range}
                 type="button"
                 onClick={() => setTimeRange(range)}
                 className={cn(
-                  "rounded-[6px] px-3 py-1.5 text-[13px] font-bold transition-colors",
-                  timeRange === range ? "bg-white text-black" : "text-[#8d8d8d] hover:text-white"
+                  "rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer",
+                  timeRange === range ? "bg-white text-slate-900 shadow-xs" : "text-slate-500 hover:text-slate-900"
                 )}
               >
                 {range}
@@ -503,20 +500,21 @@ export default function AnalyticsPage() {
           <button
             type="button"
             onClick={exportAnalytics}
-            className="inline-flex h-[36px] items-center justify-center gap-2 rounded-[7px] border border-[#5a5a5a] bg-[#0c0c0c] px-4 text-[14px] font-semibold text-white transition-colors hover:border-[#777]"
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50 hover:border-slate-300 shadow-xs cursor-pointer"
           >
-            <Download className="h-4 w-4" />
+            <Download className="h-3.5 w-3.5 text-slate-500" />
             Export
           </button>
         </div>
       </div>
 
-      <section className="mt-7 rounded-[10px] border border-[#303030] bg-[#050505] p-4">
+      {/* Scenario Lens Selector */}
+      <section className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-[16px] font-semibold text-white">{selectedData.label}</p>
-            <p className="mt-1 text-[13px] text-[#8d8d8d]">
-              Select a demo lens to show how the same dashboard behaves for music, model agency, or mixed payment operations.
+            <p className="text-sm font-bold text-slate-900">{selectedData.label} Perspective</p>
+            <p className="mt-0.5 text-xs text-slate-500">
+              Select an operational lens to examine how metrics shift across creative verticals.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
@@ -526,14 +524,14 @@ export default function AnalyticsPage() {
                 type="button"
                 onClick={() => setScenario(item.id)}
                 className={cn(
-                  "rounded-[8px] border px-4 py-3 text-left transition-colors",
+                  "rounded-xl border p-3 text-left transition-all cursor-pointer",
                   scenario === item.id
-                    ? "border-white bg-white text-black"
-                    : "border-[#333] bg-black text-white hover:border-[#666]"
+                    ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+                    : "border-slate-200 bg-slate-50/60 text-slate-700 hover:bg-slate-50 hover:border-slate-300"
                 )}
               >
-                <span className="block text-[13px] font-bold">{item.label}</span>
-                <span className={cn("mt-1 block text-[12px] leading-4", scenario === item.id ? "text-[#333]" : "text-[#8d8d8d]")}>
+                <span className="block text-xs font-bold">{item.label}</span>
+                <span className={cn("mt-0.5 block text-[11px] leading-relaxed", scenario === item.id ? "text-slate-300" : "text-slate-500")}>
                   {item.description}
                 </span>
               </button>
@@ -542,7 +540,8 @@ export default function AnalyticsPage() {
         </div>
       </section>
 
-      <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      {/* Metric Cards Grid */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           title="Total Income"
           value={formatCurrency(totals.income)}
@@ -573,117 +572,121 @@ export default function AnalyticsPage() {
         />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <section className="rounded-[13px] border border-[#303030] bg-[#060606] p-6 lg:col-span-2">
+      {/* Cash Flow and Revenue Mix Charts */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <section className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs lg:col-span-2">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <h2 className="text-[18px] font-semibold text-white">Cash Flow Overview</h2>
-              <p className="mt-1 text-[13px] text-[#8d8d8d]">
-                Income, payouts, and pending review for the selected period.
+              <h2 className="text-base font-bold text-slate-900">Cash Flow Dynamics</h2>
+              <p className="mt-0.5 text-xs text-slate-500">
+                Inflows, scheduled distributions, and pending approvals over the active cycle.
               </p>
             </div>
-            <div className="rounded-[8px] border border-[#303030] bg-black px-4 py-3 text-right">
-              <p className="text-[12px] font-semibold text-[#777]">Net retained</p>
-              <p className="mt-1 text-[20px] font-semibold text-white">{formatCurrency(totals.net)}</p>
+            <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-right">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Net retained</p>
+              <p className="mt-0.5 text-lg font-black text-slate-900">{formatCurrency(totals.net)}</p>
             </div>
           </div>
 
-          <div className="mt-8 min-h-[360px] w-full">
-            <ResponsiveContainer width="100%" height={360}>
+          <div className="mt-6 min-h-[340px] w-full">
+            <ResponsiveContainer width="100%" height={340}>
               <AreaChart data={selectedData.cashFlow} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="analyticsIncome" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#ffffff" stopOpacity={0.24} />
-                    <stop offset="95%" stopColor="#ffffff" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#0f172a" stopOpacity={0.15} />
+                    <stop offset="95%" stopColor="#0f172a" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="analyticsPayouts" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#777777" stopOpacity={0.22} />
-                    <stop offset="95%" stopColor="#777777" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.15} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="analyticsPending" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3f3f46" stopOpacity={0.24} />
-                    <stop offset="95%" stopColor="#3f3f46" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.15} />
+                    <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
-                <XAxis dataKey="label" stroke="#666" tick={{ fill: "#8d8d8d", fontSize: 12 }} tickLine={false} axisLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                <XAxis dataKey="label" stroke="#94a3b8" tick={{ fill: "#64748b", fontSize: 11 }} tickLine={false} axisLine={false} />
                 <YAxis
-                  stroke="#666"
-                  tick={{ fill: "#8d8d8d", fontSize: 12 }}
+                  stroke="#94a3b8"
+                  tick={{ fill: "#64748b", fontSize: 11 }}
                   tickLine={false}
                   axisLine={false}
                   tickFormatter={(value: number) => `$${formatCompact(value)}`}
                 />
                 <Tooltip
-                  contentStyle={{ backgroundColor: "#000", borderColor: "#333", borderRadius: "8px", color: "#fff" }}
-                  itemStyle={{ color: "#fff", fontWeight: 600 }}
+                  contentStyle={{ backgroundColor: "#ffffff", borderColor: "#e2e8f0", borderRadius: "12px", color: "#0f172a", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+                  itemStyle={{ color: "#0f172a", fontWeight: 600, fontSize: "12px" }}
                   formatter={(value: unknown) => formatCurrency(Number(value))}
                 />
-                <Legend iconType="circle" wrapperStyle={{ paddingTop: "20px" }} />
-                <Area type="monotone" dataKey="income" name="Income" stroke="#f8fafc" strokeWidth={3} fillOpacity={1} fill="url(#analyticsIncome)" />
-                <Area type="monotone" dataKey="payouts" name="Payouts" stroke="#858585" strokeWidth={3} fillOpacity={1} fill="url(#analyticsPayouts)" />
-                <Area type="monotone" dataKey="pending" name="Pending Review" stroke="#52525b" strokeWidth={2} fillOpacity={1} fill="url(#analyticsPending)" />
+                <Legend iconType="circle" wrapperStyle={{ paddingTop: "16px", fontSize: "12px" }} />
+                <Area type="monotone" dataKey="income" name="Income" stroke="#0f172a" strokeWidth={2.5} fillOpacity={1} fill="url(#analyticsIncome)" />
+                <Area type="monotone" dataKey="payouts" name="Payouts" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#analyticsPayouts)" />
+                <Area type="monotone" dataKey="pending" name="Pending Review" stroke="#f59e0b" strokeWidth={2} fillOpacity={1} fill="url(#analyticsPending)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </section>
 
-        <section className="rounded-[13px] border border-[#303030] bg-[#060606] p-6">
-          <h2 className="text-[18px] font-semibold text-white">Revenue Mix</h2>
-          <p className="mt-1 text-[13px] text-[#8d8d8d]">Distribution by platform and invoice source.</p>
-          <div className="mt-8 min-h-[300px]">
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={selectedData.sources}
-                  cx="50%"
-                  cy="45%"
-                  innerRadius={68}
-                  outerRadius={112}
-                  paddingAngle={5}
-                  dataKey="value"
-                  stroke="none"
-                >
-                  {selectedData.sources.map((entry, index) => (
-                    <Cell key={entry.name} fill={sourceColors[index % sourceColors.length]} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{ backgroundColor: "#000", borderColor: "#333", borderRadius: "8px", color: "#fff" }}
-                  formatter={(value: unknown) => formatCurrency(Number(value))}
-                />
-                <Legend
-                  verticalAlign="bottom"
-                  height={44}
-                  iconType="circle"
-                  formatter={(value) => <span className="text-[12px] font-medium text-[#c8c8c8]">{value}</span>}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+        <section className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs flex flex-col justify-between">
+          <div>
+            <h2 className="text-base font-bold text-slate-900">Revenue Mix</h2>
+            <p className="mt-0.5 text-xs text-slate-500">Distribution by platform & counterparty source.</p>
+            <div className="mt-4 min-h-[260px]">
+              <ResponsiveContainer width="100%" height={260}>
+                <PieChart>
+                  <Pie
+                    data={selectedData.sources}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={64}
+                    outerRadius={96}
+                    paddingAngle={4}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {selectedData.sources.map((entry, index) => (
+                      <Cell key={entry.name} fill={sourceColors[index % sourceColors.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{ backgroundColor: "#ffffff", borderColor: "#e2e8f0", borderRadius: "12px", color: "#0f172a", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+                    formatter={(value: unknown) => formatCurrency(Number(value))}
+                  />
+                  <Legend
+                    verticalAlign="bottom"
+                    height={40}
+                    iconType="circle"
+                    formatter={(value) => <span className="text-xs font-semibold text-slate-600">{value}</span>}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <div className="mt-4 rounded-[8px] border border-[#303030] bg-black px-4 py-3">
-            <p className="text-[12px] font-semibold text-[#777]">Largest source</p>
-            <p className="mt-1 text-[17px] font-semibold text-white">
+          <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5 mt-2">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Primary Channel</p>
+            <p className="mt-1 text-sm font-black text-slate-900">
               {topSource.name} · {formatCurrency(topSource.value)}
             </p>
           </div>
         </section>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
-        <section className="rounded-[13px] border border-[#303030] bg-[#060606] p-6">
-          <h2 className="text-[18px] font-semibold text-white">Top Earners</h2>
-          <p className="mt-1 text-[13px] text-[#8d8d8d]">
-            Highest performing contacts for {selectedData.label.toLowerCase()}.
+      {/* Top Earners and Operating Metrics */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
+        <section className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs">
+          <h2 className="text-base font-bold text-slate-900">Top Earners & Talent</h2>
+          <p className="mt-0.5 text-xs text-slate-500">
+            Highest gross settlement recipients for {selectedData.label.toLowerCase()}.
           </p>
-          <div className="mt-8 min-h-[300px] w-full">
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={selectedData.earners} layout="vertical" margin={{ top: 0, right: 30, left: 42, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#222" horizontal vertical={false} />
+          <div className="mt-6 min-h-[280px] w-full">
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={selectedData.earners} layout="vertical" margin={{ top: 0, right: 30, left: 30, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal vertical={false} />
                 <XAxis
                   type="number"
-                  stroke="#666"
-                  tick={{ fill: "#8d8d8d", fontSize: 12 }}
+                  stroke="#94a3b8"
+                  tick={{ fill: "#64748b", fontSize: 11 }}
                   tickFormatter={(value: number) => `$${formatCompact(value)}`}
                   axisLine={false}
                   tickLine={false}
@@ -691,108 +694,109 @@ export default function AnalyticsPage() {
                 <YAxis
                   dataKey="name"
                   type="category"
-                  width={112}
-                  stroke="#666"
-                  tick={{ fill: "#e8e8e8", fontSize: 12, fontWeight: 500 }}
+                  width={110}
+                  stroke="#94a3b8"
+                  tick={{ fill: "#334155", fontSize: 11, fontWeight: 600 }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <Tooltip
-                  cursor={{ fill: "#111" }}
-                  contentStyle={{ backgroundColor: "#000", borderColor: "#333", borderRadius: "8px", color: "#fff" }}
+                  cursor={{ fill: "rgba(241, 245, 249, 0.6)" }}
+                  contentStyle={{ backgroundColor: "#ffffff", borderColor: "#e2e8f0", borderRadius: "12px", color: "#0f172a", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
                   formatter={(value: unknown) => formatCurrency(Number(value))}
                 />
-                <Bar dataKey="amount" name="Earnings" fill="#f8fafc" radius={[0, 5, 5, 0]} barSize={24} />
+                <Bar dataKey="amount" name="Earnings" fill="#0f172a" radius={[0, 6, 6, 0]} barSize={22} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </section>
 
-        <section className="rounded-[13px] border border-[#303030] bg-[#060606] p-6">
-          <h2 className="text-[18px] font-semibold text-white">Operating Metrics</h2>
-          <p className="mt-1 text-[13px] text-[#8d8d8d]">Demo health signals for payments and reconciliation.</p>
+        <section className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs">
+          <h2 className="text-base font-bold text-slate-900">Operating Health Signals</h2>
+          <p className="mt-0.5 text-xs text-slate-500">Settlement velocity and automated reconciliation ratios.</p>
 
-          <div className="mt-6 grid grid-cols-2 gap-3">
-            <div className="rounded-[8px] border border-[#303030] bg-black p-4">
-              <p className="text-[12px] font-semibold text-[#777]">Payout ratio</p>
-              <p className="mt-2 text-[24px] font-semibold text-white">{payoutRatio.toFixed(1)}%</p>
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Payout Ratio</p>
+              <p className="mt-1 text-xl font-black text-slate-900">{payoutRatio.toFixed(1)}%</p>
             </div>
-            <div className="rounded-[8px] border border-[#303030] bg-black p-4">
-              <p className="text-[12px] font-semibold text-[#777]">Reserve ratio</p>
-              <p className="mt-2 text-[24px] font-semibold text-white">{reserveRatio.toFixed(1)}%</p>
+            <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Reserve Ratio</p>
+              <p className="mt-1 text-xl font-black text-slate-900">{reserveRatio.toFixed(1)}%</p>
             </div>
-            <div className="rounded-[8px] border border-[#303030] bg-black p-4">
-              <p className="text-[12px] font-semibold text-[#777]">Avg delay</p>
-              <p className="mt-2 text-[24px] font-semibold text-white">{selectedData.paymentDelayDays}d</p>
+            <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Avg Clearing</p>
+              <p className="mt-1 text-xl font-black text-slate-900">{selectedData.paymentDelayDays}d</p>
             </div>
-            <div className="rounded-[8px] border border-[#303030] bg-black p-4">
-              <p className="text-[12px] font-semibold text-[#777]">Autosplit</p>
-              <p className="mt-2 text-[24px] font-semibold text-white">{selectedData.autosplitAdoption}%</p>
+            <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Autosplit Rate</p>
+              <p className="mt-1 text-xl font-black text-emerald-600">{selectedData.autosplitAdoption}%</p>
             </div>
           </div>
 
-          <div className="mt-5 space-y-3">
+          <div className="mt-5 space-y-2.5">
             <InsightRow
               icon={CheckCircle2}
               tone="good"
-              title={`${selectedData.successRate}% payment success rate`}
-              detail={`${selectedData.failedPayments} failed payment${selectedData.failedPayments === 1 ? "" : "s"} in this view, mostly card authorization retries.`}
+              title={`${selectedData.successRate}% settlement success rate`}
+              detail={`${selectedData.failedPayments} authorization retries in this cycle.`}
             />
             <InsightRow
               icon={LineChartIcon}
               title={`${topSource.name} is leading revenue`}
-              detail={`${formatCurrency(topSource.value)} captured from the strongest platform or invoice source for ${selectedData.label.toLowerCase()}.`}
+              detail={`${formatCurrency(topSource.value)} captured from highest performing channel.`}
             />
             <InsightRow
               icon={AlertCircle}
               tone={selectedData.pendingReview > 90000 ? "warning" : "neutral"}
-              title="Approval queue watch"
-              detail={`${formatCurrency(selectedData.pendingReview)} is pending finance review. Batch Pay and Pay All can clear this queue in the demo flow.`}
+              title="Approval queue movement"
+              detail={`${formatCurrency(selectedData.pendingReview)} pending clearance via Batch Pay.`}
             />
           </div>
         </section>
       </div>
 
-      <section className="mt-6 rounded-[13px] border border-[#303030] bg-[#060606] p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      {/* Payment Recommendations */}
+      <section className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-[18px] font-semibold text-white">Payment Recommendations</h2>
-            <p className="mt-1 text-[13px] text-[#8d8d8d]">
-              Actionable demo prompts connected to the payment flows you are building.
+            <h2 className="text-base font-bold text-slate-900">Optimization Playbook</h2>
+            <p className="mt-0.5 text-xs text-slate-500">
+              Automated suggestions based on recent volume and counterparty trends.
             </p>
           </div>
-          <div className="inline-flex w-fit items-center gap-2 rounded-[8px] border border-[#303030] bg-black px-4 py-2 text-[13px] font-semibold text-white">
-            <RefreshCw className="h-4 w-4" />
-            Updates with range and scenario
+          <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-1.5 text-xs font-semibold text-slate-600">
+            <RefreshCw className="h-3.5 w-3.5 text-slate-400" />
+            Live rule optimization active
           </div>
         </div>
 
         <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded-[9px] border border-[#303030] bg-black p-4">
-            <div className="flex items-center gap-2 text-white">
-              <ArrowUpRight className="h-4 w-4" />
-              <p className="text-[15px] font-semibold">Use Pay All</p>
+          <div className="rounded-xl border border-slate-200/80 bg-slate-50/60 p-4 transition-all hover:bg-slate-50">
+            <div className="flex items-center gap-2 text-slate-900">
+              <ArrowUpRight className="h-4 w-4 text-emerald-600" />
+              <p className="text-xs font-bold">Use Pay All for approvals</p>
             </div>
-            <p className="mt-3 text-[13px] leading-5 text-[#8d8d8d]">
-              Clear {formatCurrency(selectedData.pendingReview)} from pending review when approvals are complete.
+            <p className="mt-1.5 text-xs leading-relaxed text-slate-500 font-medium">
+              Clear {formatCurrency(selectedData.pendingReview)} from pending review when campaign deliverables are signed off.
             </p>
           </div>
-          <div className="rounded-[9px] border border-[#303030] bg-black p-4">
-            <div className="flex items-center gap-2 text-white">
-              <WalletCards className="h-4 w-4" />
-              <p className="text-[15px] font-semibold">Batch recurring payouts</p>
+          <div className="rounded-xl border border-slate-200/80 bg-slate-50/60 p-4 transition-all hover:bg-slate-50">
+            <div className="flex items-center gap-2 text-slate-900">
+              <WalletCards className="h-4 w-4 text-blue-600" />
+              <p className="text-xs font-bold">Batch recurring payouts</p>
             </div>
-            <p className="mt-3 text-[13px] leading-5 text-[#8d8d8d]">
-              Group high-volume {scenario === "music_spike" ? "streaming payouts" : "invoice payouts"} to reduce review time.
+            <p className="mt-1.5 text-xs leading-relaxed text-slate-500 font-medium">
+              Group high-volume {scenario === "music_spike" ? "streaming payouts" : "invoice payouts"} to reduce audit overhead.
             </p>
           </div>
-          <div className="rounded-[9px] border border-[#303030] bg-black p-4">
-            <div className="flex items-center gap-2 text-white">
-              <Users className="h-4 w-4" />
-              <p className="text-[15px] font-semibold">Push split adoption</p>
+          <div className="rounded-xl border border-slate-200/80 bg-slate-50/60 p-4 transition-all hover:bg-slate-50">
+            <div className="flex items-center gap-2 text-slate-900">
+              <Users className="h-4 w-4 text-purple-600" />
+              <p className="text-xs font-bold">Expand split adoption</p>
             </div>
-            <p className="mt-3 text-[13px] leading-5 text-[#8d8d8d]">
-              Autosplit is at {selectedData.autosplitAdoption}%. Prioritize top earners to make Split Pay feel native.
+            <p className="mt-1.5 text-xs leading-relaxed text-slate-500 font-medium">
+              Autosplit is at {selectedData.autosplitAdoption}%. Prioritize top earners to make automated deductions standard.
             </p>
           </div>
         </div>

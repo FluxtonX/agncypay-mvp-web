@@ -348,16 +348,16 @@ function Panel({
   children: React.ReactNode;
   className?: string;
 }) {
-  return <section className={cn("rounded-[13px] border border-white/20 bg-[#050505]", className)}>{children}</section>;
+  return <section className={cn("rounded-2xl border border-slate-200/80 bg-white shadow-xs", className)}>{children}</section>;
 }
 
 function FinanceAppPromoCard({ className }: { className?: string }) {
   return (
-    <Panel className={cn("overflow-hidden p-0", className)}>
+    <Panel className={cn("overflow-hidden p-0 border border-slate-200/80 shadow-xs", className)}>
       <img
         src="/dashboard-app-promo.png"
         alt="For Those Who Create — Get AgncyPay on Google Play and the App Store"
-        className="block h-auto w-full rounded-[12px]"
+        className="block h-auto w-full rounded-2xl"
         loading="lazy"
       />
     </Panel>
@@ -375,13 +375,13 @@ function InvoiceStatusPill({ invoice }: { invoice: (typeof dashboardInvoices)[nu
   const label = getInvoiceStatusLabel(invoice.status);
   const colorClass =
     label === "Paid"
-      ? "border-[#10b95f] bg-[#082315] text-[#70ff9e]"
+      ? "border-emerald-200 bg-emerald-50 text-emerald-700"
       : label === "Pay"
-        ? "border-[#ff3b30] bg-[#250706] text-[#ff9088]"
-        : "border-[#ff8a00] bg-[#261603] text-[#ffb866]";
+        ? "border-rose-200 bg-rose-50 text-rose-700"
+        : "border-amber-200 bg-amber-50 text-amber-700";
 
   return (
-    <span className={cn("inline-flex h-7 items-center rounded-[7px] border px-2.5 text-[12px] font-semibold", colorClass)}>
+    <span className={cn("inline-flex h-6 items-center rounded-full border px-2.5 text-[11px] font-semibold", colorClass)}>
       {label}
     </span>
   );
@@ -390,7 +390,7 @@ function InvoiceStatusPill({ invoice }: { invoice: (typeof dashboardInvoices)[nu
 function RequestedPill({ state }: { state: (typeof quickBooksInvoiceRows)[number]["requested"] }) {
   if (state === "paid") {
     return (
-      <span className="inline-flex h-7 min-w-[70px] items-center justify-center rounded-full border border-[#2c2c2c] bg-black px-3 text-[10px] font-bold text-white">
+      <span className="inline-flex h-7 min-w-[70px] items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 px-3 text-[11px] font-bold text-emerald-700">
         <span className="mr-1 text-[11px] leading-none">A</span>
         paid
       </span>
@@ -398,7 +398,7 @@ function RequestedPill({ state }: { state: (typeof quickBooksInvoiceRows)[number
   }
 
   return (
-    <span className="inline-flex h-8 min-w-[126px] items-center justify-center rounded-full border border-[#00d779] bg-black px-3 text-[11px] font-bold text-white shadow-[0_0_10px_rgba(0,215,121,0.1)]">
+    <span className="inline-flex h-7 min-w-[114px] items-center justify-center rounded-full border border-slate-900 bg-slate-900 px-3 text-[11px] font-bold text-white shadow-xs">
       Request <span className="mx-1 text-[11px] leading-none">A</span> pay
     </span>
   );
@@ -407,21 +407,16 @@ function RequestedPill({ state }: { state: (typeof quickBooksInvoiceRows)[number
 function InvoiceStatusBadge({ status }: { status: (typeof quickBooksInvoiceRows)[number]["status"] }) {
   if (status === "Done") {
     return (
-      <span className="inline-flex h-7 items-center gap-1.5 rounded-full border border-[#242424] bg-[#0b0b0b] px-2.5 text-[12px] font-semibold text-[#bdbdbd]">
-        <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#00d779] text-black">
-          <CheckCircle2 className="h-2.5 w-2.5" />
-        </span>
+      <span className="inline-flex h-6 items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 text-[11px] font-semibold text-emerald-700">
+        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
         Done
       </span>
     );
   }
 
   return (
-    <span className="inline-flex h-7 items-center gap-1.5 rounded-full border border-[#242424] bg-[#0b0b0b] px-2.5 text-[12px] font-semibold text-[#8f8f8f]">
-      <span className="relative h-3.5 w-3.5 rounded-full border border-[#555]">
-        <span className="absolute left-1/2 top-0 h-1.5 w-px -translate-x-1/2 bg-[#777]" />
-        <span className="absolute left-1/2 top-1/2 h-px w-1.5 -translate-y-1/2 bg-[#777]" />
-      </span>
+    <span className="inline-flex h-6 items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 text-[11px] font-semibold text-amber-700">
+      <span className="relative h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
       In Process
     </span>
   );
@@ -453,23 +448,23 @@ function QuickBooksInvoicesList() {
       <div className="overflow-x-auto">
         <table className="min-w-[860px] w-full text-left">
           <thead>
-            <tr className="h-11 bg-[#232323] text-[12px] font-bold text-[#e6e6e6]">
-              <th className="w-[40px] px-2">
-                <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-[#2ca01c]">
-                  <span className="text-[15px] font-black tracking-[-0.08em] text-white">qb</span>
+            <tr className="h-10 border-b border-slate-200 bg-slate-50/75 text-[12px] font-semibold text-slate-500 uppercase tracking-wider">
+              <th className="w-[40px] px-3">
+                <div className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-md bg-[#2ca01c]">
+                  <span className="text-[13px] font-black tracking-[-0.08em] text-white">qb</span>
                 </div>
               </th>
-              <th className="w-[40px] px-2">
+              <th className="w-[40px] px-3">
                 <button
                   type="button"
                   onClick={toggleAllInvoices}
                   aria-label={allSelected ? "Deselect all invoices" : "Select all invoices"}
                   className={cn(
-                    "flex h-5 w-5 items-center justify-center rounded-[5px] border-2 transition-colors",
-                    allSelected ? "border-[#00d779] bg-[#00d779]" : "border-[#444] bg-transparent"
+                    "flex h-4 w-4 items-center justify-center rounded border transition-colors",
+                    allSelected ? "border-slate-900 bg-slate-900" : "border-slate-300 bg-white hover:border-slate-400"
                   )}
                 >
-                  {allSelected ? <CheckCircle2 className="h-3.5 w-3.5 text-black" /> : null}
+                  {allSelected ? <Check className="h-3 w-3 text-white" /> : null}
                 </button>
               </th>
               <th className="px-3">Invoice(s)</th>
@@ -481,7 +476,7 @@ function QuickBooksInvoicesList() {
               <th className="w-[36px]" />
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-100">
             {quickBooksInvoiceRows.map((row) => {
               const isSelected = selectedInvoiceIds.includes(row.id);
 
@@ -498,14 +493,14 @@ function QuickBooksInvoicesList() {
                   }
                 }}
                 className={cn(
-                  "h-[52px] cursor-pointer border-t border-[#1f1f1f] bg-black text-[#e6e6e6] transition-colors hover:bg-[#080808] focus:bg-[#0b0b0b] focus:outline-none",
-                  isSelected && "bg-[#06140d] shadow-[inset_3px_0_0_#00d779]"
+                  "h-[52px] cursor-pointer bg-white text-slate-900 transition-colors hover:bg-slate-50/80 focus:bg-slate-50 focus:outline-none",
+                  isSelected && "bg-slate-50 shadow-[inset_3px_0_0_#0F172A]"
                 )}
               >
-                <td className="px-2 text-center text-[#8a8a8a]">
+                <td className="px-3 text-center text-slate-400">
                   <GripVertical className="mx-auto h-4 w-4" />
                 </td>
-                <td className="px-2">
+                <td className="px-3">
                   <button
                     type="button"
                     onClick={(event) => {
@@ -514,29 +509,29 @@ function QuickBooksInvoicesList() {
                     }}
                     aria-label={isSelected ? `Deselect ${row.id}` : `Select ${row.id}`}
                     className={cn(
-                      "flex h-5 w-5 items-center justify-center rounded-[5px] border-2 transition-colors",
-                      isSelected ? "border-[#00d779] bg-[#00d779]" : "border-[#2e2e2e] bg-transparent hover:border-[#777]"
+                      "flex h-4 w-4 items-center justify-center rounded border transition-colors",
+                      isSelected ? "border-slate-900 bg-slate-900" : "border-slate-300 bg-white hover:border-slate-400"
                     )}
                   >
-                    {isSelected ? <CheckCircle2 className="h-3.5 w-3.5 text-black" /> : null}
+                    {isSelected ? <Check className="h-3 w-3 text-white" /> : null}
                   </button>
                 </td>
-                <td className="px-3 text-[13px] font-semibold">{row.id}</td>
+                <td className="px-3 text-[13px] font-semibold text-slate-900">{row.id}</td>
                 <td className="px-3 text-center">
                   <RequestedPill state={row.requested} />
                 </td>
                 <td className="px-3 text-center">
                   <InvoiceStatusBadge status={row.status} />
                 </td>
-                <td className="px-3 text-center text-[13px] font-semibold text-[#d8d8d8]">{row.due}</td>
-                <td className="px-3 text-center text-[13px] font-semibold text-white">{row.amount}</td>
-                <td className="px-3 text-center text-[13px] font-semibold text-[#e8e8e8]">{row.client}</td>
-                <td className="px-2 text-[#8a8a8a]">
+                <td className="px-3 text-center text-[13px] font-medium text-slate-500">{row.due}</td>
+                <td className="px-3 text-center text-[13px] font-bold text-slate-900">{row.amount}</td>
+                <td className="px-3 text-center text-[13px] font-medium text-slate-700">{row.client}</td>
+                <td className="px-2 text-slate-400">
                   <button
                     type="button"
                     onClick={(event) => event.stopPropagation()}
                     aria-label={`More actions for ${row.id}`}
-                    className="flex h-7 w-7 items-center justify-center rounded-full text-[#8a8a8a] hover:text-white"
+                    className="flex h-7 w-7 items-center justify-center rounded-full text-slate-400 hover:text-slate-900"
                   >
                     <EllipsisVertical className="h-4 w-4" />
                   </button>
@@ -697,33 +692,33 @@ function CatalogValuationPanel() {
         <Play className="ml-2 h-6 w-6 fill-current" />
       </Link>
 
-      <Panel className="p-4 sm:p-6 bg-[#050505] light:bg-white border-white/20 light:border-black/10">
+      <Panel className="p-4 sm:p-6 bg-white border-slate-200/80 shadow-sm rounded-2xl">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_1fr]">
-          <div className="flex min-h-[170px] flex-col items-center justify-center rounded-[14px] border border-[#242424] light:border-black/10 bg-[#171717] light:bg-slate-50 p-5 text-center">
-            <p className="text-[24px] leading-8 text-[#a7a7a7] light:text-[#475569]">
+          <div className="flex min-h-[170px] flex-col items-center justify-center rounded-2xl border border-slate-200/80 bg-slate-50/70 p-5 text-center">
+            <p className="text-[20px] leading-7 text-slate-500 font-medium">
               Total Income
               <br />
               2026:
             </p>
-            <p className="mt-3 text-[36px] font-black leading-none text-[#13d463]">${liveTotalIncome.toLocaleString()}</p>
+            <p className="mt-3 text-[36px] font-black leading-none text-emerald-600">${liveTotalIncome.toLocaleString()}</p>
           </div>
 
-          <div className="flex min-h-[170px] flex-col justify-between rounded-[14px] border border-[#242424] light:border-black/10 bg-[#171717] light:bg-slate-50 p-5">
+          <div className="flex min-h-[170px] flex-col justify-between rounded-2xl border border-slate-200/80 bg-slate-50/70 p-5">
             <div>
-              <p className="text-[20px] text-[#a7a7a7] light:text-[#475569]">Payment Due</p>
-              <p className="mt-3 text-[31px] font-semibold leading-none text-white light:text-[#0F172A]">1 Apr</p>
+              <p className="text-[18px] text-slate-500 font-medium">Payment Due</p>
+              <p className="mt-2 text-[31px] font-bold leading-none text-slate-900">1 Apr</p>
             </div>
             <button
               type="button"
-              className="h-10 rounded-[8px] border border-[#454545] light:border-black/15 bg-[#222] light:bg-[#0F172A] text-[18px] font-semibold text-white light:text-white transition-colors hover:border-[#777] cursor-pointer"
+              className="h-10 rounded-xl border border-slate-900 bg-slate-900 text-[16px] font-semibold text-white transition-colors hover:bg-slate-800 cursor-pointer shadow-sm"
             >
               Pay Early
             </button>
           </div>
         </div>
 
-        <div className="mt-4 rounded-[14px] border border-[#242424] light:border-black/10 bg-[#171717] light:bg-slate-50 px-5 py-6">
-          <p className="text-[20px] text-[#a7a7a7] light:text-[#475569]">Yearly Activity</p>
+        <div className="mt-4 rounded-2xl border border-slate-200/80 bg-slate-50/70 px-5 py-6">
+          <p className="text-[18px] font-semibold text-slate-900">Yearly Activity</p>
           <div className="mt-5 grid h-[128px] grid-cols-12 items-end gap-3 overflow-visible">
             {yearlyActivity.map((month) => (
               <button
@@ -732,19 +727,19 @@ function CatalogValuationPanel() {
                 className="group relative flex h-full min-w-0 flex-col items-center justify-end gap-2 outline-none cursor-pointer"
                 aria-label={`${month.month}: ${month.revenue} revenue, ${month.streams} streams, ${month.growth} growth`}
               >
-                <span className="pointer-events-none absolute bottom-[calc(100%+10px)] left-1/2 z-10 w-[124px] -translate-x-1/2 translate-y-1 rounded-[7px] border border-[#2f2f2f] light:border-black/15 bg-[#0b0b0b] light:bg-white px-3 py-2 text-left opacity-0 shadow-2xl transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
-                  <span className="block text-[11px] font-black text-white light:text-[#0F172A]">{month.month}</span>
-                  <span className="mt-1 block text-[10px] font-semibold text-[#8f8f8f] light:text-[#475569]">Revenue {month.revenue}</span>
-                  <span className="block text-[10px] font-semibold text-[#8f8f8f] light:text-[#475569]">Streams {month.streams}</span>
-                  <span className={cn("mt-1 block text-[10px] font-black", month.growth.startsWith("-") ? "text-[#ff6b5f]" : "text-[#13d463]")}>
+                <span className="pointer-events-none absolute bottom-[calc(100%+10px)] left-1/2 z-10 w-[124px] -translate-x-1/2 translate-y-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left opacity-0 shadow-xl transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                  <span className="block text-[11px] font-bold text-slate-900">{month.month}</span>
+                  <span className="mt-1 block text-[10px] font-medium text-slate-500">Revenue {month.revenue}</span>
+                  <span className="block text-[10px] font-medium text-slate-500">Streams {month.streams}</span>
+                  <span className={cn("mt-1 block text-[10px] font-bold", month.growth.startsWith("-") ? "text-rose-600" : "text-emerald-600")}>
                     {month.growth}
                   </span>
                 </span>
                 <div
-                  className="w-full max-w-[30px] rounded-t-[4px] bg-[#13d463] shadow-[0_0_0_rgba(19,212,99,0)] transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:bg-[#20f076] group-hover:shadow-[0_0_18px_rgba(19,212,99,0.45)] group-focus-visible:-translate-y-1 group-focus-visible:bg-[#20f076] group-focus-visible:shadow-[0_0_18px_rgba(19,212,99,0.45)]"
+                  className="w-full max-w-[30px] rounded-t-[4px] bg-emerald-500 shadow-[0_0_0_rgba(16,185,129,0)] transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:bg-emerald-600 group-hover:shadow-[0_0_18px_rgba(16,185,129,0.35)] group-focus-visible:-translate-y-1 group-focus-visible:bg-emerald-600 group-focus-visible:shadow-[0_0_18px_rgba(16,185,129,0.35)]"
                   style={{ height: `${month.height}%` }}
                 />
-                <span className="text-[14px] font-semibold text-[#676767] light:text-[#475569] transition-colors duration-200 group-hover:text-white light:group-hover:text-[#0F172A] group-focus-visible:text-white">
+                <span className="text-[13px] font-medium text-slate-500 transition-colors duration-200 group-hover:text-slate-900 group-focus-visible:text-slate-900">
                   {month.label}
                 </span>
               </button>
@@ -799,23 +794,28 @@ function AutoSplitNotice({
   onClose: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 px-4 backdrop-blur-[1px]">
-      <div className="w-full max-w-[430px] rounded-[9px] border border-[#3a3a3a] bg-[#101010] p-6 text-white shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4 backdrop-blur-xs">
+      <div className="w-full max-w-[420px] rounded-2xl border border-slate-200/90 bg-white p-6 text-slate-900 shadow-xl">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-[22px] font-black">Autosplit enabled</h2>
-            <p className="mt-3 text-[14px] font-semibold leading-6 text-[#bdbdbd]">
+            <h2 className="text-lg font-bold text-slate-900">Autosplit Enabled</h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-500">
               AgncyPay will include a $5 autosplit fee when this invoice or contact is paid.
             </p>
           </div>
-          <button type="button" onClick={onClose} aria-label="Close autosplit notice">
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close autosplit notice"
+            className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="mt-6 h-10 w-full rounded-[7px] border border-white bg-white text-[13px] font-black text-black hover:bg-[#e8e8e8]"
+          className="mt-6 h-10 w-full rounded-xl bg-slate-900 text-sm font-semibold text-white hover:bg-slate-800 transition-colors"
         >
           Got it
         </button>
@@ -847,37 +847,37 @@ function WalletContactsOverlay({
     : walletContacts;
 
   return (
-    <div className="fixed inset-0 z-40 bg-black/55 px-4 py-16 backdrop-blur-[1px]">
-      <div className="mx-auto w-full max-w-[760px]">
+    <div className="fixed inset-0 z-40 bg-slate-900/40 px-4 py-16 backdrop-blur-xs">
+      <div className="mx-auto w-full max-w-[720px]">
         <div className="relative">
-          <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#8b8b8b] light:text-[#64748B]" />
+          <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
           <input
             autoFocus
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
-            placeholder="Name, Agncy ID, email, mobile"
-            className="h-[58px] w-full rounded-full border border-[#555] light:border-black/20 bg-[#2b2929] light:bg-white pl-14 pr-14 text-[14px] font-black text-white light:text-[#0F172A] outline-none placeholder:text-[#a7a7a7] light:placeholder:text-[#64748B] shadow-lg"
+            placeholder="Search name, Agncy ID, email, or mobile..."
+            className="h-14 w-full rounded-2xl border border-slate-200 bg-white pl-13 pr-12 text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400 shadow-lg focus:border-slate-400 focus:ring-4 focus:ring-slate-900/5 transition-all"
           />
           <button
             type="button"
             onClick={onClose}
-            className="absolute right-5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-white light:text-[#0F172A] hover:bg-white/[0.08] light:hover:bg-slate-200"
+            className="absolute right-4 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
             aria-label="Close wallet contacts"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="mt-2 rounded-[7px] border border-[#343434] light:border-black/10 bg-black light:bg-white px-8 py-8 shadow-2xl">
-          <p className="text-[14px] font-black text-white light:text-[#0F172A]">Recent searches</p>
-          <div className="mt-6 space-y-4">
+        <div className="mt-3 rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xl">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Recent contacts</p>
+          <div className="mt-4 divide-y divide-slate-100">
             {filteredContacts.map((contact) => {
               const active = autosplitContactIds.includes(contact.id);
               return (
-                <div key={contact.id} className="flex items-center justify-between gap-4 p-2 rounded-lg light:bg-slate-50 light:border light:border-black/5">
+                <div key={contact.id} className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
                   <div className="min-w-0">
-                    <p className="truncate text-[18px] font-black text-white light:text-[#0F172A]">{contact.name}</p>
-                    <p className="mt-0.5 truncate text-[13px] font-semibold text-[#9b9b9b] light:text-[#475569]">{contact.handle}</p>
+                    <p className="truncate text-sm font-bold text-slate-900">{contact.name}</p>
+                    <p className="mt-0.5 truncate text-xs text-slate-500">{contact.handle}</p>
                   </div>
                   <AutoSplitToggle
                     active={active}
@@ -888,18 +888,18 @@ function WalletContactsOverlay({
               );
             })}
           </div>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-6 flex flex-col gap-3 pt-4 border-t border-slate-100 sm:flex-row sm:items-center sm:justify-between">
             <button
               type="button"
               onClick={() => onQueryChange("")}
-              className="text-[13px] font-black text-[#22e03b] light:text-[#16a34a] underline cursor-pointer"
+              className="text-xs font-semibold text-slate-500 hover:text-slate-900 underline cursor-pointer"
             >
-              Clear all
+              Clear filter
             </button>
             <button
               type="button"
               onClick={onEnableAll}
-              className="h-10 rounded-[7px] border border-[#13e56d] light:border-emerald-500 bg-[#0d2b18] light:bg-[#0F172A] px-4 text-[13px] font-black text-white light:text-white cursor-pointer"
+              className="h-9 rounded-lg bg-emerald-600 hover:bg-emerald-700 px-4 text-xs font-bold text-white transition-colors cursor-pointer"
             >
               Autosplit all talent invoices
             </button>
@@ -924,77 +924,82 @@ function CreativeBankingPanel({
   onNet0: () => void;
 }) {
   return (
-    <Panel className="p-5 relative overflow-hidden border-white/20 light:border-black/10 bg-[#050505] light:bg-white">
+    <Panel className="p-5">
       <div>
-        <h2 className="text-[20px] font-bold text-white light:text-[#0F172A] tracking-tight">Payout Balance</h2>
-        <p className="text-[12px] text-[#8E8E93] light:text-[#475569] mt-1">Your available balances and earnings.</p>
+        <h2 className="text-lg font-bold text-slate-900 tracking-tight">Payout Balances</h2>
+        <p className="text-xs text-slate-500 mt-0.5">Your real-time settled balances, liquidity, and upcoming earnings.</p>
       </div>
 
-      <div className="mt-5 space-y-4">
+      <div className="mt-4 space-y-3">
         {/* Pending Balance Row */}
-        <div className="p-5 bg-[#050505] light:bg-slate-50 border border-white/10 light:border-black/10 rounded-xl flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#261a03] light:bg-amber-100 text-amber-500 light:text-amber-700 border border-amber-500/20 light:border-amber-400">
+        <div className="p-4 bg-amber-50/60 border border-amber-200/70 rounded-xl flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-800 border border-amber-200">
               <Clock className="h-5 w-5" />
             </div>
             <div>
-              <span className="text-[12px] font-semibold text-neutral-400 light:text-[#475569]">Pending Balance</span>
-              <p className="mt-1 text-[26px] font-black text-white light:text-[#0F172A] tracking-tight leading-none">
+              <span className="text-xs font-semibold text-amber-800">Pending Balance</span>
+              <p className="mt-0.5 text-2xl font-black text-slate-900 tracking-tight leading-none">
                 ${pending.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
-              <p className="text-[11px] text-[#8E8E93] light:text-[#475569] mt-1.5">Invoiced but awaiting brand payment.</p>
+              <p className="text-[11px] text-amber-700/80 mt-1">Invoiced but awaiting brand payment.</p>
             </div>
           </div>
-          <span className={`text-[11px] font-semibold px-3 py-1.5 rounded-lg shrink-0 ${pending > 0 ? "text-amber-400 bg-amber-500/10 border border-amber-500/20" : "text-neutral-600 light:text-slate-500 bg-white/[0.02] light:bg-slate-200 border border-white/[0.06] light:border-black/10"}`}>
-            {pending > 0 ? "Awaiting" : "None"}
+          <span className={cn(
+            "text-[11px] font-semibold px-2.5 py-1 rounded-full shrink-0 border",
+            pending > 0
+              ? "text-amber-800 bg-amber-100 border-amber-300"
+              : "text-slate-500 bg-white border-slate-200"
+          )}>
+            {pending > 0 ? "Awaiting" : "Cleared"}
           </span>
         </div>
 
         {/* Liquidity Balance Row */}
-        <div className="p-5 bg-[#050505] light:bg-slate-50 border border-white/10 light:border-black/10 rounded-xl flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#0A2616] light:bg-emerald-100 text-[#14C96B] light:text-emerald-700 border border-[#10b95f]/20 light:border-emerald-400">
+        <div className="p-4 bg-emerald-50/60 border border-emerald-200/70 rounded-xl flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-200">
               <Wallet className="h-5 w-5" />
             </div>
             <div>
-              <span className="text-[12px] font-semibold text-neutral-400 light:text-[#475569]">Liquidity Balance</span>
-              <p className="mt-1 text-[26px] font-black text-white light:text-[#0F172A] tracking-tight leading-none">
+              <span className="text-xs font-semibold text-emerald-800">Liquidity Balance</span>
+              <p className="mt-0.5 text-2xl font-black text-slate-900 tracking-tight leading-none">
                 ${liquidity.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
-              <p className="text-[11px] text-[#8E8E93] light:text-[#475569] mt-1.5">Available to send, withdraw, or spend anytime.</p>
+              <p className="text-[11px] text-emerald-700/80 mt-1">Available to send, withdraw, or spend anytime.</p>
             </div>
           </div>
           <button
             onClick={onWithdraw}
             disabled={liquidity <= 0}
-            className="h-10 px-4 rounded-xl border border-white/20 light:border-black/15 hover:border-white/40 bg-black light:bg-[#0F172A] hover:bg-white/[0.02] text-white light:text-white text-[12px] font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+            className="h-9 px-3.5 rounded-lg border border-slate-900 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-xs"
           >
             Withdraw
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-3.5 w-3.5" />
           </button>
         </div>
 
         {/* Crystallised Balance Row */}
-        <div className="p-5 bg-[#050505] light:bg-slate-50 border border-white/10 light:border-black/10 rounded-xl flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1A0B2E] light:bg-purple-100 text-[#9b51e0] light:text-purple-700 border border-[#8a2be2]/20 light:border-purple-400">
+        <div className="p-4 bg-purple-50/60 border border-purple-200/70 rounded-xl flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-purple-800 border border-purple-200">
               <Lock className="h-5 w-5" />
             </div>
             <div>
-              <span className="text-[12px] font-semibold text-neutral-400 light:text-[#475569]">Crystallised Balance</span>
-              <p className="mt-1 text-[26px] font-black text-white light:text-[#0F172A] tracking-tight leading-none">
+              <span className="text-xs font-semibold text-purple-800">Crystallised Balance</span>
+              <p className="mt-0.5 text-2xl font-black text-slate-900 tracking-tight leading-none">
                 ${crystallised.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
-              <p className="text-[11px] text-[#8E8E93] light:text-[#475569] mt-1.5">Earnings locked from completed settlements.</p>
+              <p className="text-[11px] text-purple-700/80 mt-1">Earnings locked from completed settlements.</p>
             </div>
           </div>
           <button
             onClick={onNet0}
             disabled={crystallised <= 0}
-            className="h-10 px-4 rounded-xl border border-white/20 light:border-black/15 hover:border-white/40 bg-black light:bg-[#0F172A] hover:bg-white/[0.02] text-white light:text-white text-[12px] font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+            className="h-9 px-3.5 rounded-lg border border-emerald-600 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-xs"
           >
             Early Payout
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
@@ -1004,13 +1009,17 @@ function CreativeBankingPanel({
 
 function DashboardFooter() {
   return (
-    <footer className="mt-8 border-y border-white/20">
-      <div className="mx-auto flex max-w-[1040px] flex-wrap items-center justify-center gap-8 px-4 py-8 text-[12px] font-bold text-white">
-        <img src="/agncypaybrand.png" alt="AgncyPay" className="h-[48px] w-auto object-contain scale-[1.45]" />
-        <Link href="/dashboard/support">Help</Link>
-        <Link href="/dashboard/support">Contact Us</Link>
-        <Link href="/dashboard/verification">Security</Link>
-        <Link href="/dashboard/settings">Fees</Link>
+    <footer className="mt-10 border-t border-slate-200 py-8">
+      <div className="mx-auto flex max-w-[1040px] flex-wrap items-center justify-center gap-6 px-4 text-xs font-semibold text-slate-500">
+        <img
+          src="/agncypaybrand.png"
+          alt="AgncyPay"
+          className="h-8 w-auto object-contain [filter:invert(1)_brightness(0.15)]"
+        />
+        <Link href="/dashboard/support" className="hover:text-slate-900 transition-colors">Help</Link>
+        <Link href="/dashboard/support" className="hover:text-slate-900 transition-colors">Contact Us</Link>
+        <Link href="/dashboard/verification" className="hover:text-slate-900 transition-colors">Security</Link>
+        <Link href="/dashboard/settings" className="hover:text-slate-900 transition-colors">Fees</Link>
       </div>
     </footer>
   );
@@ -1335,32 +1344,13 @@ export default function DashboardHomePage() {
   const workspaceType = activeWorkspace?.type || state.user?.accountType || "brand";
   const workspaceName = activeWorkspace?.name || "Acme Corp";
 
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isLightTheme, setIsLightTheme] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedTheme = localStorage.getItem("agncypay_theme_talent");
-      if (savedTheme) {
-        if (savedTheme === "light") {
-          document.documentElement.classList.add("light");
-          document.documentElement.classList.remove("dark");
-          setIsLightTheme(true);
-        } else {
-          document.documentElement.classList.add("dark");
-          document.documentElement.classList.remove("light");
-          setIsLightTheme(false);
-        }
-      } else {
-        if (false) {
-          document.documentElement.classList.add("light");
-          document.documentElement.classList.remove("dark");
-          setIsLightTheme(true);
-        } else {
-          document.documentElement.classList.add("dark");
-          document.documentElement.classList.remove("light");
-          setIsLightTheme(false);
-        }
-      }
+      document.documentElement.classList.add("light");
+      document.documentElement.classList.remove("dark");
+      setIsLightTheme(true);
     }
   }, []);
 
@@ -2003,65 +1993,53 @@ export default function DashboardHomePage() {
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen bg-background text-foreground transition-colors duration-200">
-      <div className="mx-auto max-w-[1520px] px-4 py-4 sm:px-6 lg:px-8">
-        <div className="flex flex-nowrap items-center justify-between gap-4 pb-4">
-          <div className="relative flex items-center">
-            <img src="/agncypaybrand.png" alt="AgncyPay" className="h-[52px] w-auto shrink-0 object-contain scale-[1.5] origin-left" />
+    <main className="min-h-screen bg-slate-50/40 text-slate-900 pb-12">
+      <div className="mx-auto max-w-[1520px] px-4 py-6 sm:px-6 lg:px-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-1 border-b border-slate-200/80">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              Welcome back, {state.user?.fullName || "Partner"}
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Real-time payment settlements, creator splits, and accounting ledger.
+            </p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full bg-white/[0.05] border border-white/20 flex items-center justify-center font-bold text-xs text-white">
-              {state.user?.fullName ? state.user.fullName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2) : "TL"}
-            </div>
-            <span className="text-xs font-bold text-[#E5E5EA] hidden sm:inline">
-              {state.user?.fullName || "Talent"}
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-2xs">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              Live Ledger Active
             </span>
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-neutral-400 hover:text-white transition-colors cursor-pointer"
-              title="Toggle Theme"
-            >
-              {isLightTheme ? <Moon className="h-4 w-4 text-neutral-400 hover:text-white" /> : <Sun className="h-4 w-4 text-neutral-400 hover:text-white" />}
-            </button>
-
-            <button
-              onClick={handleLogout}
-              className="p-2 text-neutral-400 hover:text-white transition-colors"
-              title="Log Out"
-            >
-              <LogOut className="h-4 w-4" />
-            </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]">
-          <div className="space-y-5">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]">
+          <div className="space-y-6">
             <FinanceAppPromoCard />
 
             {/* 1. Recent Income Panel */}
-            <Panel className="p-4 sm:p-5">
+            <Panel className="p-5">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-[18px] font-semibold text-white">Recent Income</h2>
-                  <p className="mt-1 text-[13px] text-[#8f8f8f]">
+                  <h2 className="text-lg font-bold text-slate-900">Recent Income</h2>
+                  <p className="mt-0.5 text-xs text-slate-500">
                     {qboConnected ? "Money received from QuickBooks Online synced invoices." : "Your latest account activity."}
                   </p>
                 </div>
                 {qboConnected && (
                   <Link
                     href="/dashboard/incomes"
-                    className="inline-flex items-center gap-2 rounded-[7px] border border-[#333] bg-[#0b0b0b] px-3 py-2 text-[12px] font-semibold text-white"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-2xs transition-colors"
                   >
                     View All
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3.5 w-3.5" />
                   </Link>
                 )}
               </div>
 
-              <div className="mt-4">
+              <div className="mt-5">
                 {qboLoading ? (
                   <div className="flex items-center justify-center py-8">
-                    <Loader2 className="h-5 w-5 animate-spin text-[#8f8f8f]" />
+                    <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
                   </div>
                 ) : !qboConnected ? (
                   /* ERP Connect Cards Grid */
@@ -2072,13 +2050,13 @@ export default function DashboardHomePage() {
                       { id: "quickbooks", name: "QuickBooks Online", desc: "Sync invoices, payments, and vendors automatically to your QBO account.", src: "/quickbook.png", connectUrl: "/api/auth/quickbooks/connect" },
                       { id: "xero", name: "Xero", desc: "Keep your Xero ledgers up to date in real-time as payments are processed.", src: "https://www.google.com/s2/favicons?domain=xero.com&sz=128" }
                     ].map((erp) => (
-                      <div key={erp.id} className="flex flex-col justify-between rounded-[10px] border border-[#2d2d2d] bg-[#080808] p-4 text-center animate-in fade-in duration-300">
+                      <div key={erp.id} className="flex flex-col justify-between rounded-xl border border-slate-200/90 bg-slate-50/70 p-4 text-center hover:border-slate-300 transition-all shadow-2xs">
                         <div>
-                          <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-white p-1.5 shadow">
+                          <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-white p-2 border border-slate-200/80 shadow-2xs">
                             <img src={erp.src} alt={erp.name} className="h-full w-full object-contain" />
                           </div>
-                          <h4 className="mt-3 text-[14px] font-semibold text-white">{erp.name}</h4>
-                          <span className="mt-1 inline-flex items-center rounded-full bg-[#1b1b1b] px-2 py-0.5 text-[9px] font-semibold text-[#8f8f8f]">
+                          <h4 className="mt-3 text-sm font-bold text-slate-900">{erp.name}</h4>
+                          <span className="mt-1 inline-flex items-center rounded-full bg-slate-200/70 px-2 py-0.5 text-[10px] font-semibold text-slate-600">
                             Not Connected
                           </span>
                         </div>
@@ -2086,7 +2064,7 @@ export default function DashboardHomePage() {
                           {erp.connectUrl ? (
                             <Link
                               href={erp.connectUrl}
-                              className="inline-flex h-8 w-full items-center justify-center rounded-[6px] border border-white bg-white text-[12px] font-semibold text-black hover:bg-[#e8e8e8]"
+                              className="inline-flex h-8 w-full items-center justify-center rounded-lg bg-slate-900 text-xs font-semibold text-white hover:bg-slate-800 transition-colors shadow-2xs"
                             >
                               Connect
                             </Link>
@@ -2096,7 +2074,7 @@ export default function DashboardHomePage() {
                               onClick={() => {
                                 alert(`${erp.name} integration setup will redirect to its authorization portal in production.`);
                               }}
-                              className="h-8 w-full rounded-[6px] border border-[#3a3a3a] bg-[#111] text-[12px] font-semibold text-white hover:border-[#555]"
+                              className="h-8 w-full rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs"
                             >
                               Connect
                             </button>
@@ -2107,9 +2085,9 @@ export default function DashboardHomePage() {
                   </div>
                 ) : (
                   /* Synced QuickBooks Invoices */
-                  <div className="space-y-2 animate-in fade-in duration-300">
+                  <div className="space-y-2.5">
                     {qboInvoices.length === 0 ? (
-                      <p className="py-4 text-center text-[13px] text-[#7f7f7f]">No invoices found in QuickBooks.</p>
+                      <p className="py-4 text-center text-xs text-slate-400">No invoices found in QuickBooks.</p>
                     ) : (
                       qboInvoices.slice(0, 5).map((inv) => {
                         const isOverdue = inv.daysText === "Overdue";
@@ -2122,26 +2100,26 @@ export default function DashboardHomePage() {
                           <Link
                             key={inv.id}
                             href={targetHref}
-                            className="flex items-center gap-3 rounded-[8px] border border-[#2a2a2a] bg-black px-3 py-2 transition-colors hover:border-[#555] hover:bg-white/[0.04] cursor-pointer"
+                            className="flex items-center gap-3 rounded-xl border border-slate-200/80 bg-white px-4 py-3 transition-colors hover:border-slate-300 hover:bg-slate-50/80 cursor-pointer shadow-2xs"
                           >
-                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-transparent">
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-50 border border-slate-200/60 p-1">
                               <img src="/quickbook.png" alt="QuickBooks" className="h-full w-full object-contain" />
                             </div>
 
                             <div className="min-w-0 flex-1">
-                              <p className="truncate text-[13px] font-semibold text-white">{inv.name}</p>
-                              <p className="truncate text-[11px] text-[#7f7f7f]">{inv.detail}</p>
+                              <p className="truncate text-sm font-semibold text-slate-900">{inv.name}</p>
+                              <p className="truncate text-xs text-slate-500">{inv.detail}</p>
                             </div>
 
                             <div className="flex items-center gap-3">
                               <span
                                 className={cn(
-                                  "inline-flex h-[22px] items-center rounded-full border px-2.5 text-[10px] font-bold",
+                                  "inline-flex h-6 items-center rounded-full border px-2.5 text-[11px] font-semibold",
                                   isPaid
-                                    ? "border-[#10b95f]/30 bg-[#082315] text-[#70ff9e]"
+                                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
                                     : isOverdue
-                                      ? "border-[#ff3b30]/30 bg-[#250706] text-[#ff9088]"
-                                      : "border-[#f59e0b]/30 bg-[#261a03] text-[#fbbf24]"
+                                      ? "border-rose-200 bg-rose-50 text-rose-700"
+                                      : "border-amber-200 bg-amber-50 text-amber-700"
                                 )}
                               >
                                 {inv.status}
@@ -2149,20 +2127,20 @@ export default function DashboardHomePage() {
 
                               <span
                                 className={cn(
-                                  "hidden text-[11px] sm:inline-block w-28 text-left",
-                                  isOverdue ? "text-[#ff9088]" : isPaid ? "text-[#70ff9e]" : "text-[#7f7f7f]"
+                                  "hidden text-xs sm:inline-block w-28 text-left font-medium",
+                                  isOverdue ? "text-rose-600" : isPaid ? "text-emerald-600" : "text-slate-500"
                                 )}
                               >
                                 {inv.daysText}
                               </span>
 
-                              <div className="hidden text-right text-[11px] text-[#7f7f7f] md:block">{inv.date}</div>
+                              <div className="hidden text-right text-xs text-slate-400 md:block">{inv.date}</div>
 
-                              <div className="min-w-[72px] text-right text-[13px] font-semibold text-white">
+                              <div className="min-w-[72px] text-right text-sm font-bold text-slate-900">
                                 {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(inv.amount)}
                               </div>
 
-                              <div className="flex h-8 w-8 items-center justify-center rounded-full text-[#7f7f7f] hover:text-white">
+                              <div className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:text-slate-700">
                                 <EllipsisVertical className="h-4 w-4" />
                               </div>
                             </div>
@@ -2180,51 +2158,51 @@ export default function DashboardHomePage() {
             )}
 
             {/* Recent Vendors Panel */}
-            <Panel className="p-4 sm:p-5">
+            <Panel className="p-5">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-[18px] font-semibold text-white">Recent Vendors</h2>
-                  <p className="mt-1 text-[13px] text-[#8f8f8f]">Vendor contacts and accounts synced from QuickBooks.</p>
+                  <h2 className="text-lg font-bold text-slate-900">Recent Vendors</h2>
+                  <p className="mt-0.5 text-xs text-slate-500">Vendor contacts and accounts synced from QuickBooks.</p>
                 </div>
                 {qboConnected && (
                   <Link
                     href="/dashboard/vendors"
-                    className="inline-flex items-center gap-2 rounded-[7px] border border-[#333] bg-[#0b0b0b] px-3 py-2 text-[12px] font-semibold text-white hover:border-[#555]"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-2xs transition-colors"
                   >
                     View All
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3.5 w-3.5" />
                   </Link>
                 )}
               </div>
 
-              <div className="mt-4">
+              <div className="mt-5">
                 {qboLoading ? (
                   <div className="flex items-center justify-center py-8">
-                    <Loader2 className="h-5 w-5 animate-spin text-[#8f8f8f]" />
+                    <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
                   </div>
                 ) : !qboConnected ? (
                   /* Disconnected Empty Vendors State */
-                  <div className="flex flex-col items-center rounded-[10px] border border-dashed border-[#2d2d2d] bg-[#060606] px-5 py-8 text-center animate-in fade-in duration-300">
-                    <h3 className="text-[14px] font-semibold text-[#8f8f8f]">No vendors synced</h3>
-                    <p className="mt-1.5 max-w-[290px] text-[11px] leading-[16px] text-[#555]">
+                  <div className="flex flex-col items-center rounded-xl border border-dashed border-slate-300 bg-slate-50/50 px-6 py-8 text-center">
+                    <h3 className="text-sm font-semibold text-slate-900">No vendors synced</h3>
+                    <p className="mt-1.5 max-w-[320px] text-xs leading-relaxed text-slate-500">
                       Connect QuickBooks to sync vendor contacts, track outstanding balances, and configure payout rules.
                     </p>
                     <Link
                       href="/dashboard/settings/integrations/quickbooks"
-                      className="mt-4 inline-flex h-[32px] items-center rounded-[6px] border border-white bg-white px-3.5 text-[11px] font-semibold text-black transition-colors hover:bg-[#e8e8e8]"
+                      className="mt-4 inline-flex h-8 items-center rounded-lg bg-slate-900 px-3.5 text-xs font-semibold text-white hover:bg-slate-800 transition-colors shadow-2xs"
                     >
                       Import Vendors
                     </Link>
                   </div>
                 ) : (
                   /* Connected Vendors list (Table structure) */
-                  <div className="overflow-x-auto animate-in fade-in duration-300">
+                  <div className="overflow-x-auto">
                     {qboVendors.length === 0 ? (
-                      <p className="py-4 text-center text-[13px] text-[#7f7f7f]">No vendors found in QuickBooks.</p>
+                      <p className="py-4 text-center text-xs text-slate-400">No vendors found in QuickBooks.</p>
                     ) : (
-                      <table className="w-full text-left text-[13px] border-collapse">
+                      <table className="w-full text-left text-xs border-collapse">
                         <thead>
-                          <tr className="border-b border-[#2a2a2a] text-[#7f7f7f] font-semibold">
+                          <tr className="border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider">
                             <th className="py-2.5 pr-3">Vendor / Company</th>
                             <th className="py-2.5 px-3">Contact</th>
                             <th className="py-2.5 px-3 hidden sm:table-cell">Account #</th>
@@ -2232,33 +2210,33 @@ export default function DashboardHomePage() {
                             <th className="py-2.5 pl-3 text-right">Status</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y divide-slate-100">
                           {qboVendors.slice(0, 5).map((v) => (
                             <tr
                               key={v.id}
-                              className="border-b border-[#1a1a1a] last:border-0 hover:bg-white/[0.02] transition-colors"
+                              className="hover:bg-slate-50/70 transition-colors"
                             >
                               <td className="py-3 pr-3 flex items-center gap-3">
-                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] border border-[#303030] bg-[#060606]">
-                                  <span className="text-[11px] font-black text-white">{v.fallback}</span>
+                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-slate-800 font-bold">
+                                  <span className="text-[11px] font-black">{v.fallback}</span>
                                 </div>
                                 <div className="min-w-0">
-                                  <p className="font-semibold text-white truncate">{v.name}</p>
-                                  {v.company && <p className="text-[11px] text-[#7f7f7f] truncate">{v.company}</p>}
+                                  <p className="font-bold text-slate-900 truncate">{v.name}</p>
+                                  {v.company && <p className="text-[11px] text-slate-400 truncate">{v.company}</p>}
                                 </div>
                               </td>
-                              <td className="py-3 px-3 text-[#d1d1d6] max-w-[150px] truncate">
+                              <td className="py-3 px-3 text-slate-600 max-w-[150px] truncate">
                                 <p>{v.email}</p>
-                                {v.phone && v.phone !== "No Phone" && <p className="text-[11px] text-[#7f7f7f]">{v.phone}</p>}
+                                {v.phone && v.phone !== "No Phone" && <p className="text-[11px] text-slate-400">{v.phone}</p>}
                               </td>
-                              <td className="py-3 px-3 text-[#8f8f8f] hidden sm:table-cell">{v.acctNum}</td>
-                              <td className="py-3 px-3 text-right font-semibold text-white">{v.balance}</td>
+                              <td className="py-3 px-3 text-slate-500 hidden sm:table-cell font-mono">{v.acctNum}</td>
+                              <td className="py-3 px-3 text-right font-bold text-slate-900">{v.balance}</td>
                               <td className="py-3 pl-3 text-right">
                                 <span className={cn(
                                   "inline-flex h-6 items-center rounded-full border px-2.5 text-[10px] font-bold",
                                   v.active
-                                    ? "border-[#10b95f]/30 bg-[#082315] text-[#70ff9e]"
-                                    : "border-[#3a3a3a] bg-[#1a1a1a] text-[#8f8f8f]"
+                                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                                    : "border-slate-200 bg-slate-100 text-slate-600"
                                 )}>
                                   {v.active ? "Active" : "Inactive"}
                                 </span>
@@ -2281,38 +2259,38 @@ export default function DashboardHomePage() {
             {/* Card Program and Treasury Cards side-by-side */}
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               {/* 7. Card Program Panel */}
-              <Panel className="flex min-h-[190px] flex-col justify-between p-4 sm:p-5">
+              <Panel className="flex min-h-[190px] flex-col justify-between p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#777]">Card program</p>
-                    <h3 className="mt-2 text-[24px] font-semibold text-white">AgncyPay Card</h3>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Card program</p>
+                    <h3 className="mt-1 text-xl font-bold text-slate-900">AgncyPay Card</h3>
                   </div>
                   <span className={cn(
-                    "inline-flex h-7 items-center rounded-full border px-3 text-[11px] font-black",
-                    qboConnected ? "border-[#14c96b] bg-[#082315] text-[#70ff9e]" : "border-[#3a3a3a] bg-[#111] text-[#777]"
+                    "inline-flex h-6 items-center rounded-full border px-2.5 text-[10px] font-bold",
+                    qboConnected ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-slate-200 bg-slate-100 text-slate-600"
                   )}>
                     {qboConnected ? "Active" : "Inactive"}
                   </span>
                 </div>
-                <div className="mt-5 grid grid-cols-3 gap-2">
+                <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
                     ["Available", `$${liveAvailable.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`],
                     ["Pending", "$3,200.00"],
                     ["Cards", "4"],
                   ].map(([label, value]) => (
-                    <div key={label} className="rounded-[8px] border border-[#2f2f2f] bg-black px-3 py-3">
-                      <p className="text-[11px] font-semibold text-[#777]">{label}</p>
-                      <p className="mt-2 truncate text-[15px] font-black text-white">{value}</p>
+                    <div key={label} className="rounded-xl border border-slate-200/70 bg-slate-50/70 p-3">
+                      <p className="text-[11px] font-semibold text-slate-400">{label}</p>
+                      <p className="mt-1 truncate text-sm font-bold text-slate-900">{value}</p>
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 flex items-center justify-between gap-4">
-                  <p className="text-[12px] font-semibold leading-5 text-[#8f8f8f]">
+                <div className="mt-4 flex items-center justify-between gap-4 pt-3 border-t border-slate-100">
+                  <p className="text-xs text-slate-500">
                     Virtual and physical cards for approved workspace spend.
                   </p>
                   <Link
                     href="/dashboard/wallet"
-                    className="inline-flex h-9 shrink-0 items-center rounded-[7px] border border-[#333] bg-[#111] px-3 text-[12px] font-semibold text-white hover:border-[#666]"
+                    className="inline-flex h-8 shrink-0 items-center rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-2xs transition-colors"
                   >
                     Manage
                   </Link>
@@ -2320,21 +2298,21 @@ export default function DashboardHomePage() {
               </Panel>
 
               {/* 8. Treasury/AgncyPay Cards Right Section */}
-              <Panel className="flex flex-col overflow-hidden p-4 sm:p-5 gap-4">
+              <Panel className="flex flex-col justify-between p-5">
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     ["Limit", "$10,000.00"],
                     ["Spent", `$${liveSpent.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`],
                     ["Review", "3"],
                   ].map(([label, value]) => (
-                    <div key={label} className="rounded-[8px] border border-[#2f2f2f] bg-black px-3 py-3">
-                      <p className="text-[11px] font-semibold text-[#777]">{label}</p>
-                      <p className="mt-2 truncate text-[15px] font-black text-white">{value}</p>
+                    <div key={label} className="rounded-xl border border-slate-200/70 bg-slate-50/70 p-3">
+                      <p className="text-[11px] font-semibold text-slate-400">{label}</p>
+                      <p className="mt-1 truncate text-sm font-bold text-slate-900">{value}</p>
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-row gap-5 mt-1 items-center">
-                  <div className="relative w-[140px] h-[200px] shrink-0 rounded-[8px] overflow-hidden border border-[#2f2f2f]">
+                <div className="flex flex-row gap-4 mt-4 items-center">
+                  <div className="relative w-[110px] h-[130px] shrink-0 rounded-xl overflow-hidden border border-slate-200 shadow-2xs">
                     <img
                       src="/mobilelook.jpeg"
                       alt="AgncyPay Mobile View"
@@ -2343,24 +2321,25 @@ export default function DashboardHomePage() {
                     />
                   </div>
                   <div className="flex flex-1 flex-col justify-center">
-                    <h4 className="text-[20px] sm:text-[22px] font-bold text-white leading-[1.35]">
-                      Online in Stores,<br />
+                    <h4 className="text-base font-bold text-slate-900 leading-snug">
+                      Online &amp; in Stores,<br />
                       Use AgncyPay Cards
                     </h4>
+                    <p className="text-xs text-slate-500 mt-1">Instant split disbursement straight to your mobile card.</p>
                   </div>
                 </div>
               </Panel>
             </div>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-6">
             {/* 1. Send / Request Analytics */}
             <Panel className="p-4 sm:p-5">
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                 {quickActions.map((action) => {
                   const Icon = action.icon;
                   const baseClassName =
-                    "flex flex-col items-center gap-2.5 rounded-[10px] border border-[#3a3a3a] light:border-black/15 bg-[#090909] light:bg-[#F8FAFC] px-2 py-3.5 text-center transition-colors hover:border-white/60 light:hover:border-black/40 group cursor-pointer";
+                    "flex flex-col items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/60 p-3 text-center transition-all hover:bg-white hover:border-slate-300 hover:shadow-xs group cursor-pointer";
 
                   if (action.label === "Wallet ID contacts") {
                     return (
@@ -2370,10 +2349,10 @@ export default function DashboardHomePage() {
                         onClick={() => setIsWalletContactsOpen(true)}
                         className={baseClassName}
                       >
-                        <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-[#4a4a4a] light:border-black/10 bg-black light:bg-[#0F172A] text-white group-hover:scale-105 transition-transform">
-                          <Icon className="h-5 w-5 text-white light:text-white" />
+                        <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-800 group-hover:scale-105 shadow-2xs transition-transform">
+                          <Icon className="h-5 w-5" />
                         </span>
-                        <span className="text-[10px] font-semibold leading-4 text-white light:text-[#0F172A]">{action.label}</span>
+                        <span className="text-[11px] font-semibold text-slate-700 group-hover:text-slate-900 leading-tight">{action.label}</span>
                       </button>
                     );
                   }
@@ -2384,10 +2363,10 @@ export default function DashboardHomePage() {
                       href={action.href}
                       className={baseClassName}
                     >
-                      <span className="flex h-10 w-10 items-center justify-center rounded-[9px] border border-[#4a4a4a] light:border-black/10 bg-black light:bg-[#0F172A] text-white group-hover:scale-105 transition-transform">
-                        <Icon className="h-5 w-5 text-white light:text-white" />
+                      <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-800 group-hover:scale-105 shadow-2xs transition-transform">
+                        <Icon className="h-5 w-5" />
                       </span>
-                      <span className="text-[10px] font-semibold leading-4 text-white light:text-[#0F172A]">{action.label}</span>
+                      <span className="text-[11px] font-semibold text-slate-700 group-hover:text-slate-900 leading-tight">{action.label}</span>
                     </Link>
                   );
                 })}
@@ -2398,16 +2377,6 @@ export default function DashboardHomePage() {
               <ModelIncomeList invoices={widgetInvoices} />
             )}
 
-            {/* Shortcuts Panel */}
-            <Panel className="p-4 sm:p-5">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <h2 className="text-[18px] font-semibold text-white">Quick Actions</h2>
-                  <p className="mt-1 text-[13px] text-[#8f8f8f]">Fast access to invoice and payment tools.</p>
-                </div>
-              </div>
-            </Panel>
-
             <CreativeBankingPanel
               liquidity={liquidityBalance}
               crystallised={crystallisedBalance}
@@ -2416,34 +2385,32 @@ export default function DashboardHomePage() {
               onNet0={() => setIsNet0Open(true)}
             />
 
-            {/* 5. Upload File Section */}
-            {/* <CsvDropzonePanel /> */}
-
             {/* 6. Banks and Cards */}
-            <Panel className="p-4 sm:p-5">
+            <Panel className="p-5">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-[18px] font-semibold text-white">Banks and Cards</h2>
+                  <h2 className="text-lg font-bold text-slate-900">Banks and Cards</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">Linked accounts for deposits and ACH settlements.</p>
                 </div>
               </div>
 
-              <div className="mt-4 space-y-3">
+              <div className="mt-4 space-y-2.5">
                 {linkedCards.length > 0 ? (
                   linkedCards.map((card, i) => (
                     <div
                       key={i}
-                      className="flex items-center gap-3 rounded-[10px] border border-[#3a3a3a] bg-[#090909] p-3 animate-in fade-in duration-300"
+                      className="flex items-center gap-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 p-3 hover:bg-white hover:border-slate-300 transition-colors shadow-2xs"
                     >
                       <BankCardFace card={card} />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-[14px] font-semibold text-white">{card.name}</p>
-                        <p className="mt-1 text-[12px] text-[#8f8f8f]">{card.detail}</p>
+                        <p className="truncate text-sm font-semibold text-slate-900">{card.name}</p>
+                        <p className="mt-0.5 text-xs text-slate-500">{card.detail}</p>
                       </div>
                     </div>
                   ))
                 ) : (
                   <div className="flex flex-col items-center py-4 text-center">
-                    <p className="text-[12px] text-[#555]">No bank accounts or cards linked.</p>
+                    <p className="text-xs text-slate-400">No bank accounts or cards linked.</p>
                   </div>
                 )}
               </div>
@@ -2454,46 +2421,46 @@ export default function DashboardHomePage() {
                   resetLinkModal();
                   setIsLinkModalOpen(true);
                 }}
-                className="mt-4 inline-flex h-10 items-center gap-2 rounded-[7px] border border-[#333] bg-[#0b0b0b] px-3 text-[12px] font-semibold text-white hover:border-[#666] w-fit"
+                className="mt-4 inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-2xs"
               >
                 Link a card or bank
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="h-3.5 w-3.5" />
               </button>
             </Panel>
 
             {/* 7. Plaid Connection */}
-            <Panel className="overflow-hidden p-4 sm:p-5">
+            <Panel className="p-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-[13px] font-black uppercase tracking-[0.12em] text-[#a9a9a9]">Plaid</p>
-                  <h2 className="mt-1 text-[22px] font-semibold text-white">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Plaid Secure Rail</p>
+                  <h2 className="mt-1 text-lg font-bold text-slate-900">
                     {plaidConnected ? plaidInstitutionName : "Connect Bank"}
                   </h2>
-                  <p className="mt-2 max-w-[280px] text-[13px] leading-5 text-[#8f8f8f]">
+                  <p className="mt-1 max-w-[280px] text-xs leading-relaxed text-slate-500">
                     {plaidConnected
-                      ? "Your bank account is securely linked for monthly royalty distributions."
-                      : "Link your payout method to receive monthly royalty distributions automatically."}
+                      ? "Your bank account is securely linked for automated royalty distributions."
+                      : "Link your payout method to receive automated royalty distributions."}
                   </p>
                 </div>
                 <span className={cn(
-                  "inline-flex h-10 shrink-0 items-center rounded-[7px] border bg-white px-3",
-                  plaidConnected ? "border-green-500/30" : "border-[#333]"
+                  "inline-flex h-9 shrink-0 items-center rounded-lg border bg-white px-3 shadow-2xs",
+                  plaidConnected ? "border-emerald-200" : "border-slate-200"
                 )}>
                   <img
                     src="/plaid-logo.svg"
                     alt="Plaid"
-                    className="h-6 w-[84px] object-contain"
+                    className="h-5 w-[76px] object-contain"
                     loading="lazy"
                   />
                 </span>
               </div>
-              <div className="mt-5 flex items-center justify-between gap-4">
+              <div className="mt-4 flex items-center justify-between gap-4 pt-3 border-t border-slate-100">
                 {plaidConnected ? (
                   <button
                     type="button"
                     onClick={handlePlaidDisconnect}
                     disabled={plaidDisconnecting}
-                    className="inline-flex h-9 items-center justify-center gap-1.5 rounded-[7px] border border-red-500/20 bg-red-500/5 px-3 text-[12px] font-semibold text-red-400 hover:bg-red-500/10 disabled:opacity-50"
+                    className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50 px-3 text-xs font-semibold text-rose-700 hover:bg-rose-100 disabled:opacity-50 transition-colors"
                   >
                     {plaidDisconnecting ? (
                       <>
@@ -2515,13 +2482,13 @@ export default function DashboardHomePage() {
                       setLinkModalStep("plaid_intro");
                       setIsLinkModalOpen(true);
                     }}
-                    className="inline-flex h-9 items-center rounded-[7px] border border-white bg-white px-3 text-[12px] font-semibold text-black hover:bg-[#e8e8e8]"
+                    className="inline-flex h-8 items-center rounded-lg bg-slate-900 px-3.5 text-xs font-semibold text-white hover:bg-slate-800 transition-colors shadow-2xs"
                   >
                     Set Up Payouts
                   </button>
                 )}
-                <span className="text-[11px] text-[#7f7f7f]">
-                  {plaidConnected ? "Active Plaid connection" : "Secure bank linking"}
+                <span className="text-[11px] text-slate-400 font-medium">
+                  {plaidConnected ? "Active connection" : "Bank-grade encryption"}
                 </span>
               </div>
             </Panel>
@@ -2542,50 +2509,50 @@ export default function DashboardHomePage() {
       
       {/* Net-0 Early Payout Modal */}
       {isNet0Open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 px-4 backdrop-blur-[2px]">
-          <div className="w-full max-w-[460px] rounded-2xl border border-white/20 bg-[#0A0A0A] p-6 text-white shadow-2xl relative overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4 backdrop-blur-xs">
+          <div className="w-full max-w-[460px] rounded-2xl border border-slate-200/90 bg-white p-6 text-slate-900 shadow-2xl relative overflow-hidden">
             
             {net0Stage === "idle" && (
               <>
-                <div className="flex justify-between items-start mb-6">
+                <div className="flex justify-between items-start mb-5">
                   <div>
-                    <h2 className="text-xl font-bold text-white flex items-center gap-1.5">
-                      <Sparkles className="h-4.5 w-4.5 text-white" />
+                    <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                      <Sparkles className="h-4.5 w-4.5 text-emerald-600" />
                       Net-0 Early Payout
                     </h2>
-                    <p className="text-xs text-neutral-400 mt-1 font-semibold">Advance secure campaign earnings instantly.</p>
+                    <p className="text-xs text-slate-500 mt-1">Advance secured campaign earnings instantly.</p>
                   </div>
-                  <button type="button" onClick={() => setIsNet0Open(false)} className="text-neutral-400 hover:text-white transition-colors">
+                  <button type="button" onClick={() => setIsNet0Open(false)} className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors">
                     <X className="h-5 w-5" />
                   </button>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3.5">
                   {/* Campaign List */}
-                  <div className="p-4 bg-white/[0.02] border border-white/10 rounded-xl">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#A3A3A3]">Locked Campaign Invoice</span>
+                  <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-xl">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Locked Campaign Invoice</span>
                     <div className="flex justify-between items-center mt-2">
                       <div>
-                        <h4 className="text-xs font-bold text-white">Adidas Originals Summer Campaign</h4>
-                        <p className="text-[10px] text-neutral-400 mt-0.5">Payout due date: July 20, 2026</p>
+                        <h4 className="text-xs font-bold text-slate-900">Adidas Originals Summer Campaign</h4>
+                        <p className="text-[10px] text-slate-500 mt-0.5">Payout due date: July 20, 2026</p>
                       </div>
-                      <span className="text-sm font-bold text-white">$38,275.80</span>
+                      <span className="text-sm font-bold text-slate-900">$38,275.80</span>
                     </div>
                   </div>
 
                   {/* Calculations */}
-                  <div className="p-4 bg-white/[0.01] border border-white/10 rounded-xl space-y-3 text-xs">
+                  <div className="p-4 bg-slate-50/70 border border-slate-200/80 rounded-xl space-y-2.5 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-neutral-400">Total Crystallised Value</span>
-                      <span className="text-white font-semibold">$38,275.80</span>
+                      <span className="text-slate-500">Total Crystallised Value</span>
+                      <span className="text-slate-900 font-semibold">$38,275.80</span>
                     </div>
-                    <div className="flex justify-between text-[#ff453a]">
+                    <div className="flex justify-between text-rose-600">
                       <span>Early Routing Fee (1.5%)</span>
                       <span className="font-semibold">-$574.14</span>
                     </div>
-                    <div className="flex justify-between border-t border-white/10 pt-3 text-sm font-bold">
-                      <span className="text-white">Net Advanced Credit</span>
-                      <span className="text-[#13d463] font-black">$37,701.66</span>
+                    <div className="flex justify-between border-t border-slate-200 pt-2.5 text-sm font-bold">
+                      <span className="text-slate-900">Net Advanced Credit</span>
+                      <span className="text-emerald-600 font-black">$37,701.66</span>
                     </div>
                   </div>
                 </div>
@@ -2594,14 +2561,14 @@ export default function DashboardHomePage() {
                   <button
                     type="button"
                     onClick={handleProcessNet0}
-                    className="w-full h-11 rounded-xl bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
+                    className="w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                   >
-                    Confirm & Deposit Instantly
+                    Confirm &amp; Deposit Instantly
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsNet0Open(false)}
-                    className="w-full h-11 rounded-xl bg-white/5 border border-white/20 text-white text-xs font-bold transition-all hover:bg-white/10 cursor-pointer"
+                    className="w-full h-10 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-semibold transition-all hover:bg-slate-50 cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -2610,10 +2577,10 @@ export default function DashboardHomePage() {
             )}
 
             {net0Stage !== "idle" && net0Stage !== "success" && (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <RefreshCw className="h-8 w-8 text-white animate-spin mb-4" />
-                <h3 className="text-base font-bold text-white">Processing Net-0 Advance</h3>
-                <p className="text-xs text-neutral-400 mt-2 max-w-[280px]">
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <RefreshCw className="h-8 w-8 text-slate-900 animate-spin mb-4" />
+                <h3 className="text-base font-bold text-slate-900">Processing Net-0 Advance</h3>
+                <p className="text-xs text-slate-500 mt-2 max-w-[280px]">
                   {net0Stage === "verifying" && "Verifying campaign contract clearance..."}
                   {net0Stage === "advancing" && "Advancing funds from Net-0 treasury pool..."}
                   {net0Stage === "crediting" && "Crediting active liquidity balance..."}
@@ -2623,14 +2590,14 @@ export default function DashboardHomePage() {
 
             {net0Stage === "success" && (
               <div className="flex flex-col items-center justify-center py-8 text-center animate-in zoom-in duration-300">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#13d463]/20 text-[#13d463] mb-4 border border-[#13d463]/30">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 mb-4 border border-emerald-200">
                   <Check className="h-6 w-6" />
                 </div>
-                <h3 className="text-lg font-bold text-white">Advance Complete!</h3>
-                <p className="text-xs text-[#13d463] mt-2 max-w-[260px] font-semibold">
+                <h3 className="text-lg font-bold text-slate-900">Advance Complete!</h3>
+                <p className="text-xs text-emerald-700 mt-2 max-w-[260px] font-semibold">
                   $37,701.66 has been credited to your Liquidity Balance.
                 </p>
-                <p className="text-[10px] text-neutral-500 font-semibold mt-3 font-mono">
+                <p className="text-[10px] text-slate-400 font-semibold mt-3 font-mono">
                   TX-ADV-AP{Date.now().toString().slice(-6)}
                 </p>
               </div>
@@ -2642,20 +2609,20 @@ export default function DashboardHomePage() {
 
       {/* Withdraw Funds Modal */}
       {isWithdrawOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 px-4 backdrop-blur-[2px]">
-          <div className="w-full max-w-[440px] rounded-2xl border border-white/20 bg-[#0A0A0A] p-6 text-white shadow-2xl relative overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4 backdrop-blur-xs">
+          <div className="w-full max-w-[440px] rounded-2xl border border-slate-200/90 bg-white p-6 text-slate-900 shadow-2xl relative overflow-hidden">
             
             {withdrawStage === "idle" && (
               <form onSubmit={handleProcessWithdrawal}>
-                <div className="flex justify-between items-start mb-6">
+                <div className="flex justify-between items-start mb-5">
                   <div>
-                    <h2 className="text-xl font-bold text-white flex items-center gap-1.5">
-                      <Wallet className="h-4.5 w-4.5 text-white" />
+                    <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                      <Wallet className="h-4.5 w-4.5 text-slate-800" />
                       Withdraw Funds
                     </h2>
-                    <p className="text-xs text-neutral-400 mt-1 font-semibold">Transfer cleared liquidity to your bank.</p>
+                    <p className="text-xs text-slate-500 mt-1">Transfer cleared liquidity to your bank.</p>
                   </div>
-                  <button type="button" onClick={() => setIsWithdrawOpen(false)} className="text-neutral-400 hover:text-white transition-colors">
+                  <button type="button" onClick={() => setIsWithdrawOpen(false)} className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors">
                     <X className="h-5 w-5" />
                   </button>
                 </div>
@@ -2663,7 +2630,7 @@ export default function DashboardHomePage() {
                 <div className="space-y-4">
                   {/* Select Card */}
                   <div className="flex flex-col gap-2">
-                    <label className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">Select Destination Card</label>
+                    <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Select Destination Card</label>
                     <div className="grid grid-cols-1 gap-2">
                       {bankCards.slice(0, 2).map((card, idx) => (
                         <button
@@ -2673,19 +2640,19 @@ export default function DashboardHomePage() {
                           className={cn(
                             "flex items-center gap-3 p-3 rounded-xl border text-left transition-all cursor-pointer",
                             selectedWithdrawCard === idx
-                              ? "border-white bg-white/[0.05]"
-                              : "border-white/10 bg-white/[0.01] hover:border-white/20"
+                              ? "border-slate-900 bg-slate-50 shadow-2xs"
+                              : "border-slate-200 bg-white hover:border-slate-300"
                           )}
                         >
-                          <div className="h-8 w-14 shrink-0 rounded bg-black overflow-hidden border border-white/15">
+                          <div className="h-8 w-14 shrink-0 rounded-md bg-slate-100 overflow-hidden border border-slate-200">
                             <img src={card.cardImage} alt={card.name} className="h-full w-full object-cover" />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <h4 className="text-xs font-bold text-white truncate">{card.name}</h4>
-                            <p className="text-[10px] text-neutral-400 mt-0.5">{card.detail}</p>
+                            <h4 className="text-xs font-bold text-slate-900 truncate">{card.name}</h4>
+                            <p className="text-[10px] text-slate-500 mt-0.5">{card.detail}</p>
                           </div>
                           {selectedWithdrawCard === idx && (
-                            <div className="h-4 w-4 rounded-full bg-white flex items-center justify-center text-black shrink-0">
+                            <div className="h-4 w-4 rounded-full bg-slate-900 flex items-center justify-center text-white shrink-0">
                               <Check className="h-2.5 w-2.5" />
                             </div>
                           )}
@@ -2697,20 +2664,20 @@ export default function DashboardHomePage() {
                   {/* Input Amount */}
                   <div className="flex flex-col gap-2">
                     <div className="flex justify-between items-center">
-                      <label htmlFor="withdrawAmount" className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">Amount to Withdraw</label>
+                      <label htmlFor="withdrawAmount" className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Amount to Withdraw</label>
                       <button
                         type="button"
                         onClick={() => {
                           setWithdrawAmount(liquidityBalance.toString());
                           setWithdrawError("");
                         }}
-                        className="text-[10px] font-bold text-white hover:underline cursor-pointer"
+                        className="text-[11px] font-bold text-emerald-600 hover:text-emerald-700 hover:underline cursor-pointer"
                       >
                         Use Max (${liquidityBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})
                       </button>
                     </div>
                     <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm font-semibold">$</span>
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-semibold">$</span>
                       <input
                         id="withdrawAmount"
                         type="number"
@@ -2723,15 +2690,15 @@ export default function DashboardHomePage() {
                           if (withdrawError) setWithdrawError("");
                         }}
                         className={cn(
-                          "w-full h-11 bg-black border rounded-xl pl-8 pr-4 text-sm text-white focus:outline-none transition-colors focus:border-white/30",
-                          withdrawError ? "border-[#ff453a]/50 focus:border-[#ff453a]" : "border-white/15"
+                          "w-full h-11 bg-white border rounded-xl pl-8 pr-4 text-sm text-slate-900 focus:outline-none transition-colors focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5",
+                          withdrawError ? "border-rose-400 focus:border-rose-500" : "border-slate-300"
                         )}
                         placeholder="0.00"
                         required
                       />
                     </div>
                     {withdrawError && (
-                      <span className="text-xs text-[#ff453a] font-semibold mt-0.5">{withdrawError}</span>
+                      <span className="text-xs text-rose-600 font-semibold mt-0.5">{withdrawError}</span>
                     )}
                   </div>
                 </div>
@@ -2739,14 +2706,14 @@ export default function DashboardHomePage() {
                 <div className="flex flex-col gap-2 mt-6">
                   <button
                     type="submit"
-                    className="w-full h-11 rounded-xl bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
+                    className="w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                   >
                     Withdraw Funds
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsWithdrawOpen(false)}
-                    className="w-full h-11 rounded-xl bg-white/5 border border-white/20 text-white text-xs font-bold transition-all hover:bg-white/10 cursor-pointer"
+                    className="w-full h-10 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-semibold transition-all hover:bg-slate-50 cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -2755,23 +2722,23 @@ export default function DashboardHomePage() {
             )}
 
             {withdrawStage === "submitting" && (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <RefreshCw className="h-8 w-8 text-white animate-spin mb-4" />
-                <h3 className="text-base font-bold text-white">Initiating Bank Transfer</h3>
-                <p className="text-xs text-neutral-400 mt-2">Routing instant ACH payment splits...</p>
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <RefreshCw className="h-8 w-8 text-slate-900 animate-spin mb-4" />
+                <h3 className="text-base font-bold text-slate-900">Initiating Bank Transfer</h3>
+                <p className="text-xs text-slate-500 mt-2">Routing instant ACH payment splits...</p>
               </div>
             )}
 
             {withdrawStage === "success" && (
               <div className="flex flex-col items-center justify-center py-8 text-center animate-in zoom-in duration-300">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#13d463]/20 text-[#13d463] mb-4 border border-[#13d463]/30">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 mb-4 border border-emerald-200">
                   <Check className="h-6 w-6" />
                 </div>
-                <h3 className="text-lg font-bold text-white">Transfer Successful!</h3>
-                <p className="text-xs text-[#13d463] mt-2 max-w-[260px] font-semibold">
+                <h3 className="text-lg font-bold text-slate-900">Transfer Successful!</h3>
+                <p className="text-xs text-emerald-700 mt-2 max-w-[260px] font-semibold">
                   ${parseFloat(withdrawAmount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} has been sent to your {bankCards[selectedWithdrawCard].fallback} account.
                 </p>
-                <p className="text-[10px] text-neutral-500 font-semibold mt-3 font-mono">
+                <p className="text-[10px] text-slate-400 font-semibold mt-3 font-mono">
                   TX-WIT-AP{Date.now().toString().slice(-6)}
                 </p>
               </div>
