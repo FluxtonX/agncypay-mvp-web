@@ -52,6 +52,10 @@ import { useApp } from "../../context/AppContext";
 type FirestoreUser = any;
 import { BatchPaymentCheckoutModal } from "../../components/payment/BatchPaymentCheckoutModal";
 import { IntegrationsPanel } from "../../components/dashboard/IntegrationsPanel";
+import { AppShell } from "../../components/shell/AppShell";
+import { MetricCard } from "../../components/data-display/MetricCard";
+import { Money } from "../../components/financial/Money";
+import { TransactionStatusBadge } from "../../components/financial/TransactionStatusBadge";
 
 // Refactored Data Models
 interface SplitItem {
@@ -209,71 +213,18 @@ export default function BrandDashboardPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedPlaid = localStorage.getItem("brand_plaid_accounts_v3");
+      // Clear out legacy mock default accounts
+      localStorage.removeItem("brand_plaid_accounts_v3");
+      const savedPlaid = localStorage.getItem("brand_plaid_real_accounts");
       if (savedPlaid) {
         try {
-          setPlaidAccounts(JSON.parse(savedPlaid));
+          const parsed = JSON.parse(savedPlaid);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setPlaidAccounts(parsed);
+          }
         } catch (e) {
           console.error("Error loading saved Plaid accounts", e);
         }
-      } else {
-        // Default realistic commercial bank feeds from talent view
-        const defaultAccounts: PlaidAccount[] = [
-          {
-            id: "plaid-default-chase-ink",
-            itemId: "item-chase-ink",
-            institutionName: "Chase",
-            name: "Ink Business Unlimited Visa",
-            mask: "8886",
-            type: "credit",
-            subtype: "credit card",
-            availableBalance: 150000.00,
-            currentBalance: 150000.00,
-            currency: "USD",
-            connectedAt: new Date().toISOString()
-          },
-          {
-            id: "plaid-default-mercury-io",
-            itemId: "item-mercury-io",
-            institutionName: "Mercury",
-            name: "Business IO Mastercard",
-            mask: "5557",
-            type: "credit",
-            subtype: "credit card",
-            availableBalance: 250000.00,
-            currentBalance: 250000.00,
-            currency: "USD",
-            connectedAt: new Date().toISOString()
-          },
-          {
-            id: "plaid-default-bofa-debit",
-            itemId: "item-bofa-debit",
-            institutionName: "Bank of America",
-            name: "Business Debit Visa",
-            mask: "8888",
-            type: "depository",
-            subtype: "debit card",
-            availableBalance: 310000.00,
-            currentBalance: 310000.00,
-            currency: "USD",
-            connectedAt: new Date().toISOString()
-          },
-          {
-            id: "plaid-default-mercury-debit",
-            itemId: "item-mercury-debit",
-            institutionName: "Mercury",
-            name: "Debit Mastercard",
-            mask: "8886",
-            type: "depository",
-            subtype: "debit card",
-            availableBalance: 450000.00,
-            currentBalance: 450000.00,
-            currency: "USD",
-            connectedAt: new Date().toISOString()
-          }
-        ];
-        setPlaidAccounts(defaultAccounts);
-        localStorage.setItem("brand_plaid_accounts_v3", JSON.stringify(defaultAccounts));
       }
     }
   }, []);
@@ -1000,233 +951,118 @@ export default function BrandDashboardPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col font-sans antialiased relative transition-colors duration-200">
-      {/* Background radial gradient decoration */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-white/[0.01] rounded-full blur-[100px] pointer-events-none" />
-
-      {/* Header - Modern Clean Light Interface */}
-      <header className="border-b border-slate-200/80 sticky top-0 z-50 shadow-xs backdrop-blur-md bg-white/95">
-        <div className="max-w-[1520px] mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="relative flex items-center mr-10">
-              <Link href="/branddashboard" className="flex items-center cursor-pointer z-50 hover:opacity-90 transition-opacity" aria-label="AgncyPay home">
-                <img
-                  src="/agncypaybrand-dark.png"
-                  alt="AgncyPay"
-                  className="h-8 sm:h-9 w-auto object-contain"
-                />
-              </Link>
-            </div>
-            <span className="h-4 w-[1px] hidden md:block bg-slate-200" />
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border border-slate-200 bg-slate-100/70 text-[11px] font-bold uppercase tracking-wider text-slate-700">
-              <Building2 className="h-3.5 w-3.5 text-slate-700" />
-              Brand Portal
-            </div>
+    <AppShell>
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              ID: {state.user?.activeWorkspaceId || state.user?.agncyId || "WS-2026-Q3"}
+            </span>
+            <span className="text-xs text-slate-400 font-mono">
+              {state.user?.email || "adidas.admin@company.com"}
+            </span>
           </div>
-
-          {/* Center Navigation Tabs */}
-          <nav className="hidden lg:flex items-center gap-1.5 p-1 rounded-2xl border border-slate-200 bg-slate-100/70">
-            <button 
-              onClick={() => router.push("/branddashboard")}
-              className="px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-xs transition-all cursor-pointer"
-            >
-              Home
-            </button>
-            <button 
-              onClick={() => router.push("/branddashboard/invoices")}
-              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
-            >
-              {workspaceType === "brand" ? "Payments" : "Sent Invoices"}
-            </button>
-            {workspaceType !== "brand" && (
-              <button 
-                onClick={() => router.push("/branddashboard/nodes")}
-                className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
-              >
-                Payout Split Nodes
-              </button>
-            )}
-            <button 
-              onClick={() => router.push("/branddashboard/wallet")}
-              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer flex items-center gap-1.5"
-            >
-              <Wallet className="w-3.5 h-3.5" />
-              Wallet
-            </button>
-          </nav>
- 
-          <div className="flex items-center gap-3">
-            {workspaceType === "agency" && (
-              <>
-                <button
-                  onClick={() => router.push("/agencydashboard/agencybanking")}
-                  className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs border border-emerald-500/30 transition-all flex items-center gap-1.5 cursor-pointer"
-                >
-                  <Landmark className="h-3.5 w-3.5 text-emerald-100" />
-                  Agency Banking
-                </button>
-                <div className="h-4 w-[1px] bg-slate-200" />
-                <button
-                  onClick={() => router.push("/dashboard")}
-                  className="text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1 cursor-pointer"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5" />
-                  Talent View
-                </button>
-                <div className="h-4 w-[1px] bg-slate-200" />
-              </>
-            )}
-            <div className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-full border border-slate-200 bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-800 shadow-2xs">
-                {state.user?.fullName ? state.user.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "AD"}
-              </div>
-              <span className="text-xs font-bold hidden sm:inline text-slate-900">
-                {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Adidas Corporate"}
-              </span>
-            </div>
-
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
-              title="Toggle Theme"
-            >
-              {isLightTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-            </button>
-
-            <button
-              onClick={handleLogout}
-              className="p-2 text-slate-500 hover:text-red-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
-              title="Log Out"
-            >
-              <LogOut className="h-4 w-4" />
-            </button>
-          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+            {state.workspaces.find((w) => w.id === state.activeWorkspaceId)?.name ||
+              (state.user?.fullName ? `${state.user.fullName}'s Workspace` : "Adidas Workspace")}
+          </h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Commercial payables, multi-split settlement engine, and connected banking feeds.
+          </p>
         </div>
-      </header>
 
-      {/* Hero Header Space */}
-      <section className="border-b border-slate-200/80 bg-white py-6 shadow-xs">
-        <div className="max-w-[1520px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            {workspaceType === "brand" ? (
-              <>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs font-mono font-bold text-slate-700 bg-slate-100 border border-slate-200/90 px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-2xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    ID: {state.user?.activeWorkspaceId || state.user?.agncyId || "WS-2026-Q3"}
-                  </span>
-                  <span className="h-3 w-[1px] bg-slate-200" />
-                  <span className="text-xs font-mono text-slate-500 font-medium">
-                    {state.user?.email || "adidas.admin@company.com"}
-                  </span>
-                </div>
-                <h1 className="text-3xl font-black mt-2 tracking-tight text-slate-950 font-sans">
-                  {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || (state.user?.fullName ? `${state.user.fullName}'s Workspace` : "Adidas Workspace")}
-                </h1>
-              </>
-            ) : (
-              <>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 border border-slate-200/90 flex items-center gap-1.5 shadow-2xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                    Agency Account
-                  </span>
-                  <span className="text-xs font-mono text-slate-500 font-medium">ID: {state.user?.agncyId || "AGNCY-9024"}</span>
-                </div>
-                <h1 className="text-3xl font-black mt-2 tracking-tight text-slate-950 font-sans">
-                  {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Agency"} Revenue Portal
-                </h1>
-              </>
-            )}
-          </div>
-
-          {/* "+ New Invoice" Button in the top right corner of the header section */}
+        <div className="flex items-center gap-2.5">
           {workspaceType === "agency" && (
             <button
               onClick={() => setIsNewInvoiceOpen(true)}
-              className="h-10 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs shrink-0"
+              className="h-9 px-4 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold hover:bg-slate-800 dark:hover:bg-slate-100 transition-all flex items-center gap-2 cursor-pointer shadow-xs"
             >
-              + New Invoice
+              <Plus className="w-4 h-4" />
+              <span>+ New Invoice</span>
             </button>
           )}
         </div>
-      </section>
+      </div>
 
-      {/* Main Workspace */}
-      <div className="max-w-[1520px] w-full mx-auto px-6 py-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        {/* Left Column - Core Approval and Splits (Wider) */}
+      {/* Main Workspace Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Left Column - Core Approval and Splits */}
         <div className="lg:col-span-8 space-y-6">
-
           {/* Analytics Cards Grid */}
-          <div className={`grid grid-cols-2 ${workspaceType === "brand" ? "md:grid-cols-2" : "md:grid-cols-4"} gap-4`}>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 ${workspaceType === "brand" ? "md:grid-cols-2" : "md:grid-cols-4"} gap-4`}>
             {(() => {
-              const paidInvoices = liveFunctionalInvoices.filter(i => 
-                workspaceType === "brand" 
-                  ? (i.status === "settled" || i.status === "talent_disbursed")
+              const paidInvoices = liveFunctionalInvoices.filter((i) =>
+                workspaceType === "brand"
+                  ? i.status === "settled" || i.status === "talent_disbursed"
                   : i.status === "talent_disbursed"
               );
               const dynamicPaidVolume = paidInvoices.reduce((acc, curr) => acc + curr.amount, 0);
-
               const displayPaidVolume = dynamicPaidVolume;
-              const disbursedVolume = liveFunctionalInvoices.filter(i => i.status === "talent_disbursed").reduce((acc, curr) => acc + curr.amount, 0);
+              const disbursedVolume = liveFunctionalInvoices
+                .filter((i) => i.status === "talent_disbursed")
+                .reduce((acc, curr) => acc + curr.amount, 0);
 
-              const awaitingItems = workspaceType === "brand"
-                ? liveFunctionalInvoices.filter(i => i.status === "awaiting_approval")
-                : liveFunctionalInvoices.filter(i => i.status === "settled");
+              const awaitingItems =
+                workspaceType === "brand"
+                  ? liveFunctionalInvoices.filter((i) => i.status === "awaiting_approval")
+                  : liveFunctionalInvoices.filter((i) => i.status === "settled");
               const awaitingTotal = awaitingItems.reduce((acc, curr) => acc + curr.amount, 0);
               const awaitingCount = awaitingItems.length;
 
-              const stats: any[] = workspaceType === "brand"
-                ? [
-                    { label: "Total Paid Volume", value: `$${displayPaidVolume.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, trend: undefined, icon: TrendingUp },
-                    {
-                      label: "Awaiting Payments",
-                      value: `$${awaitingTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-                      count: `${awaitingCount} invoice${awaitingCount !== 1 ? "s" : ""}`,
-                      icon: Clock
-                    }
-                  ]
-                : [
-                    { label: "Total Billed", value: `$${liveFunctionalInvoices.reduce((a, b) => a + b.amount, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, trend: "+15.2%", icon: TrendingUp },
-                    {
-                      label: "Pending Revenue",
-                      value: `$${awaitingTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-                      count: `${awaitingCount} invoice${awaitingCount !== 1 ? "s" : ""}`,
-                      icon: Clock
-                    },
-                    { label: "Total Paid", value: `$${displayPaidVolume.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, detail: "Settled to agency", icon: Coins },
-                    { label: "Talent Payouts", value: `$${disbursedVolume.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, detail: "Disbursed to talent", icon: Users }
-                  ];
- 
-              return stats.map((stat, idx) => {
+              if (workspaceType === "brand") {
                 return (
-                  <motion.div 
-                    key={idx} 
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, delay: idx * 0.08 }}
-                    whileHover={{ y: -2 }}
-                    className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:border-slate-300 hover:shadow-md transition-all relative overflow-hidden"
-                  >
-                    <div className="flex justify-between items-start">
-                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-                        {stat.label}
-                      </span>
-                      <div className="p-2 rounded-xl bg-slate-100/80 text-slate-700 border border-slate-200/60 shadow-2xs">
-                        <stat.icon className="h-4 w-4" />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <p className="text-3xl font-black text-slate-950 tracking-tight font-sans">{stat.value}</p>
-                      <div className="text-xs text-slate-500 mt-2 flex items-center gap-2 font-medium">
-                        {stat.trend && <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">{stat.trend}</span>}
-                        <span>{stat.count || stat.detail}</span>
-                      </div>
-                    </div>
-                  </motion.div>
+                  <>
+                    <MetricCard
+                      title="Total Paid Volume"
+                      value={displayPaidVolume}
+                      isCurrency={true}
+                      icon={<TrendingUp className="w-4 h-4 text-emerald-600" />}
+                    />
+                    <MetricCard
+                      title="Awaiting Payments"
+                      value={awaitingTotal}
+                      isCurrency={true}
+                      deltaPeriod={`${awaitingCount} pending invoice${awaitingCount !== 1 ? "s" : ""}`}
+                      icon={<Clock className="w-4 h-4 text-amber-600" />}
+                    />
+                  </>
                 );
-              });
+              }
+
+              return (
+                <>
+                  <MetricCard
+                    title="Total Billed"
+                    value={liveFunctionalInvoices.reduce((a, b) => a + b.amount, 0)}
+                    isCurrency={true}
+                    delta={15.2}
+                    icon={<TrendingUp className="w-4 h-4 text-emerald-600" />}
+                  />
+                  <MetricCard
+                    title="Pending Revenue"
+                    value={awaitingTotal}
+                    isCurrency={true}
+                    deltaPeriod={`${awaitingCount} pending`}
+                    icon={<Clock className="w-4 h-4 text-amber-600" />}
+                  />
+                  <MetricCard
+                    title="Total Paid"
+                    value={displayPaidVolume}
+                    isCurrency={true}
+                    deltaPeriod="Settled to agency"
+                    icon={<Coins className="w-4 h-4 text-blue-600" />}
+                  />
+                  <MetricCard
+                    title="Talent Payouts"
+                    value={disbursedVolume}
+                    isCurrency={true}
+                    deltaPeriod="Disbursed to talent"
+                    icon={<Users className="w-4 h-4 text-indigo-600" />}
+                  />
+                </>
+              );
             })()}
           </div>
 
@@ -1427,10 +1263,7 @@ export default function BrandDashboardPage() {
                     <span style={{ color: "#FFFFFF" }}>Connecting...</span>
                   </>
                 ) : (
-                  <>
-                    <Plus className="h-3.5 w-3.5 text-white" strokeWidth={2.5} style={{ color: "#FFFFFF" }} />
-                    <span style={{ color: "#FFFFFF" }}>+ Connect Bank (Plaid)</span>
-                  </>
+                  <span style={{ color: "#FFFFFF" }}>Connect Bank (Plaid)</span>
                 )}
               </button>
             </div>
@@ -1994,7 +1827,6 @@ export default function BrandDashboardPage() {
           </div>
         );
       })()}
-    </main>
-
+    </AppShell>
   );
 }

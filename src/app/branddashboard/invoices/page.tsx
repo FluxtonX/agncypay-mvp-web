@@ -36,6 +36,9 @@ import { PaymentModal } from "../../../components/payment/PaymentModal";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { LiveRefreshIndicator } from "../../../components/ui/LiveRefreshIndicator";
 import { ToastBanner, ToastMessage } from "../../../components/ui/ToastBanner";
+import { AppShell } from "../../../components/shell/AppShell";
+import { Money } from "../../../components/financial/Money";
+import { TransactionStatusBadge } from "../../../components/financial/TransactionStatusBadge";
 
 interface SplitItem {
   name: string;
@@ -323,74 +326,8 @@ export default function InvoicesQueuePage() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col font-sans antialiased relative transition-colors duration-200">
-      {/* Header */}
-      <header className="border-b border-slate-200/80 bg-white/95 sticky top-0 z-50 shadow-xs backdrop-blur-md">
-        <div className="max-w-[1520px] mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="relative flex items-center mr-10">
-              <Link href="/branddashboard" className="flex items-center cursor-pointer z-50 hover:opacity-85 transition-opacity">
-                <img
-                  src="/agncypaybrand.png"
-                  alt="AgncyPay"
-                  className={`h-11 w-auto object-contain scale-[1.5] origin-left transition-transform ${isLightTheme ? "[filter:invert(1)_brightness(0.15)]" : ""}`}
-                />
-              </Link>
-            </div>
-            <span className="h-4 w-[1px] bg-slate-200 hidden md:block" />
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100/70 border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-700">
-              <Building2 className="h-3.5 w-3.5 text-slate-700" />
-              Brand Portal (Corporate)
-            </div>
-          </div>
-
-          <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100/70 p-1 rounded-2xl border border-slate-200">
-            <button
-              onClick={() => router.push("/branddashboard")}
-              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer"
-            >
-              Home
-            </button>
-            <button
-              onClick={() => router.push("/branddashboard/invoices")}
-              className="px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-xs border border-slate-900 transition-all cursor-pointer"
-            >
-              Invoices & Approvals
-            </button>
-            <button
-              onClick={() => router.push("/branddashboard/wallet")}
-              className="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/80 transition-all cursor-pointer flex items-center gap-1.5"
-            >
-              Treasury
-            </button>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-800 shadow-2xs">
-                {state.user?.fullName ? state.user.fullName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2) : "AD"}
-              </div>
-              <span className="text-xs font-bold text-slate-900 hidden sm:inline">
-                {state.user?.fullName || "Adidas Corporate"}
-              </span>
-            </div>
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer mr-1"
-              title="Toggle Theme"
-            >
-              {isLightTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-            </button>
-
-            <button onClick={handleLogout} className="p-2 text-slate-500 hover:text-red-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer" title="Log Out">
-              <LogOut className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Container */}
-      <div className="max-w-[1520px] w-full mx-auto px-6 py-8 flex-1 flex flex-col gap-8">
+    <AppShell>
+      <div className="flex flex-col gap-6">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center gap-2">
           <Link
@@ -409,9 +346,9 @@ export default function InvoicesQueuePage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">{displayLabel}</span>
-              <span className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-1.5 block">
-                ${displayAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </span>
+              <div className="mt-1.5">
+                <Money amount={displayAmount} size="3xl" />
+              </div>
               <div className="mt-4 flex items-center gap-3 text-xs text-slate-500">
                 <span className="flex items-center gap-1.5 font-medium">
                   <Calendar className="h-4 w-4 text-slate-400" />
@@ -605,19 +542,14 @@ export default function InvoicesQueuePage() {
                         </td>
                         <td className="p-4 text-slate-800 font-semibold">{inv.vendorFee?.name || "Agency Workspace"}</td>
                         <td className="p-4 text-slate-500 font-mono">{inv.dueDate || "Net-30"}</td>
-                        <td className="p-4 text-right font-black text-slate-900 text-sm">
-                          ${inv.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        <td className="p-4 text-right font-semibold text-slate-900 text-sm">
+                          <Money amount={inv.amount} size="sm" />
                         </td>
                         <td className="p-4 text-center">
-                          <span
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                              isAwaiting
-                                ? "bg-amber-50 text-amber-800 border border-amber-200 animate-pulse"
-                                : "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                            }`}
-                          >
-                            {isAwaiting ? "Awaiting Settlement" : "Settled"}
-                          </span>
+                          <TransactionStatusBadge
+                            status={isAwaiting ? "PENDING" : "COMPLETED"}
+                            size="sm"
+                          />
                         </td>
                         <td className="p-4 text-right pr-6" onClick={(e) => e.stopPropagation()}>
                           {isAwaiting ? (
@@ -671,6 +603,6 @@ export default function InvoicesQueuePage() {
 
       {/* Toast Notification Banner */}
       <ToastBanner toast={toast} onDismiss={() => setToast(null)} />
-    </main>
+    </AppShell>
   );
 }

@@ -1,0 +1,142 @@
+/* ==========================================================================
+   AgncyPay Semantic Design Token System
+   Designed for premium B2B financial operating software (Inter, high contrast,
+   restrained surfaces, semantic status indicators, refined elevation).
+   ========================================================================== */
+
+:root {
+  /* Surfaces & Backgrounds */
+  --bg-app: #F8FAFC;
+  --surface-primary: #FFFFFF;
+  --surface-secondary: #F1F5F9;
+  --surface-tertiary: #E2E8F0;
+  --surface-elevated: #FFFFFF;
+  
+  /* Text & Typography */
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --text-disabled: #94A3B8;
+  --text-inverse: #FFFFFF;
+  
+  /* Borders & Dividers */
+  --border-default: #E2E8F0;
+  --border-subtle: #F1F5F9;
+  --border-strong: #CBD5E1;
+  --border-focus: #0F172A;
+  
+  /* Brand / Primary Actions */
+  --brand-primary: #0F172A;
+  --brand-hover: #1E293B;
+  --brand-active: #020617;
+  --brand-subtle: #F1F5F9;
+  --brand-focus-ring: rgba(15, 23, 42, 0.12);
+  
+  /* Semantic Status Tokens (Fintech Specific) */
+  --status-success-bg: #ECFDF5;
+  --status-success-text: #065F46;
+  --status-success-border: #A7F3D0;
+  --status-success-dot: #10B981;
+  
+  --status-warning-bg: #FFFBEB;
+  --status-warning-text: #92400E;
+  --status-warning-border: #FDE68A;
+  --status-warning-dot: #F59E0B;
+  
+  --status-danger-bg: #FEF2F2;
+  --status-danger-text: #991B1B;
+  --status-danger-border: #FECACA;
+  --status-danger-dot: #EF4444;
+  
+  --status-info-bg: #EFF6FF;
+  --status-info-text: #1E40AF;
+  --status-info-border: #BFDBFE;
+  --status-info-dot: #3B82F6;
+
+  --status-neutral-bg: #F8FAFC;
+  --status-neutral-text: #475569;
+  --status-neutral-border: #E2E8F0;
+  --status-neutral-dot: #94A3B8;
+
+  /* Shadows (Subtle Fintech Elevation) */
+  --shadow-2xs: 0 1px 2px 0 rgba(15, 23, 42, 0.03);
+  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-dropdown: 0 6px 12px -2px rgba(15, 23, 42, 0.08), 0 3px 6px -3px rgba(15, 23, 42, 0.06);
+  --shadow-modal: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+  
+  /* Radius System (Restrained Fintech Curves) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+}
+
+:root.dark {
+  /* Surfaces & Backgrounds */
+  --bg-app: #090D16;
+  --surface-primary: #0F172A;
+  --surface-secondary: #1E293B;
+  --surface-tertiary: #334155;
+  --surface-elevated: #1E293B;
+  
+  /* Text & Typography */
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-disabled: #64748B;
+  --text-inverse: #0F172A;
+  
+  /* Borders & Dividers */
+  --border-default: #1E293B;
+  --border-subtle: #172033;
+  --border-strong: #334155;
+  --border-focus: #F8FAFC;
+  
+  /* Brand / Primary Actions */
+  --brand-primary: #F8FAFC;
+  --brand-hover: #E2E8F0;
+  --brand-active: #CBD5E1;
+  --brand-subtle: #1E293B;
+  --brand-focus-ring: rgba(248, 250, 252, 0.2);
+  
+  /* Semantic Status Tokens (Fintech Specific) */
+  --status-success-bg: rgba(6, 95, 70, 0.25);
+  --status-success-text: #34D399;
+  --status-success-border: rgba(52, 211, 153, 0.35);
+  --status-success-dot: #10B981;
+  
+  --status-warning-bg: rgba(146, 64, 14, 0.25);
+  --status-warning-text: #FBBF24;
+  --status-warning-border: rgba(251, 191, 36, 0.35);
+  --status-warning-dot: #F59E0B;
+  
+  --status-danger-bg: rgba(153, 27, 27, 0.25);
+  --status-danger-text: #F87171;
+  --status-danger-border: rgba(248, 113, 113, 0.35);
+  --status-danger-dot: #EF4444;
+  
+  --status-info-bg: rgba(30, 64, 175, 0.25);
+  --status-info-text: #60A5FA;
+  --status-info-border: rgba(96, 165, 250, 0.35);
+  --status-info-dot: #3B82F6;
+
+  --status-neutral-bg: rgba(30, 41, 59, 0.5);
+  --status-neutral-text: #94A3B8;
+  --status-neutral-border: #334155;
+  --status-neutral-dot: #64748B;
+
+  /* Shadows (Fintech Elevation in Dark) */
+  --shadow-2xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+  --shadow-dropdown: 0 6px 12px -2px rgba(0, 0, 0, 0.6);
+  --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+}

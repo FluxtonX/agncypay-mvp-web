@@ -2,10 +2,8 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, CheckCircle2, Clock3, Lock } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock3, Lock, ShieldCheck } from "lucide-react";
 import { useApp } from "../../context/AppContext";
-import { Card } from "../ui/Card";
-import { Button } from "../ui/Button";
 
 interface VerificationGateProps {
   children?: React.ReactNode;
@@ -20,99 +18,118 @@ export function VerificationGate({ children }: VerificationGateProps) {
     return <>{children}</>;
   }
 
+  const organizationName = state.businessSetup.legalName || state.businessSetup.brandName || "Workspace";
+
   const checklist = [
-    { label: "Business information submitted", done: !!state.businessSetup.legalName },
-    { label: "Representative identity uploaded", done: state.representative.idFrontUploaded },
+    { label: "Business legal entity submitted", done: !!state.businessSetup.legalName },
+    { label: "Authorized representative verified", done: !!state.representative?.fullName },
     {
-      label: "Company documents uploaded",
+      label: "Corporate documentation uploaded",
       done:
         state.documents.filter((doc) =>
           ["uploaded", "approved", "processing"].includes(doc.status)
         ).length >= 4,
     },
     {
-      label: "Adidas brand authorization uploaded",
+      label: "Brand authorization & domain verified",
       done: state.brand.domainVerified && state.brand.trademarkCertUploaded,
     },
     {
-      label: "Manual compliance review",
+      label: "FinCEN compliance & KYB review",
       done: state.verificationStatus === "approved",
       pending: state.verificationStatus === "submitted" || state.verificationStatus === "in_review",
     },
     {
-      label: "Bank account verification",
+      label: "Cybrid clearing bank account",
       done: state.bankDetails.status === "approved",
       pending: state.bankDetails.status === "processing",
     },
   ];
 
   return (
-    <div className="space-y-6">
-      <Card className="relative flex flex-col justify-between gap-4 overflow-hidden border-[#333] bg-[#050505] p-5 sm:flex-row sm:items-center">
-        <div className="flex items-start gap-3">
-          <div className="shrink-0 rounded-lg border border-[#333] bg-[#111] p-2.5 text-white">
+    <div className="space-y-5">
+      {/* Status Warning Card */}
+      <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+        <div className="flex items-start gap-3.5">
+          <div className="shrink-0 rounded-xl border border-amber-300 bg-white p-2.5 text-amber-700 shadow-2xs">
             <Lock className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white">Verification Status: Locked</h3>
-            <p className="mt-1 max-w-xl text-xs leading-relaxed text-[#94A3B8]">
-              Your Adidas corporate account is in{" "}
-              <span className="font-semibold uppercase text-white">
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900">Verification Pending: Restricted Access</h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold border border-amber-300 uppercase">
                 {state.verificationStatus.replace("_", " ")}
               </span>
-              . Pay With AgncyPay features are locked until company details are approved.
+            </div>
+            <p className="mt-1 max-w-xl text-xs leading-relaxed text-slate-600">
+              Your <strong className="text-slate-900">{organizationName}</strong> corporate account is pending compliance clearance. Disbursals and Pay With AgncyPay features unlock automatically upon approval.
             </p>
           </div>
         </div>
 
-        <Button
-          size="sm"
-          variant="secondary"
-          rightIcon={<ArrowRight className="h-3.5 w-3.5" />}
-          onClick={() => router.push("/dashboard/verification")}
-          className="shrink-0"
+        <button
+          type="button"
+          onClick={() => router.push("/onboarding/business-setup")}
+          className="shrink-0 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs"
         >
-          Check Onboarding
-        </Button>
-      </Card>
+          <span>Complete KYB</span>
+          <ArrowRight className="h-3.5 w-3.5" />
+        </button>
+      </div>
 
-      <Card className="space-y-4 border-white/[0.04] p-5">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-white">
-          Adidas Verification Checklist
-        </h4>
-        <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
+      {/* Checklist Card */}
+      <div className="rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-slate-500" />
+            <span>{organizationName} Compliance Checklist</span>
+          </h4>
+          <span className="text-[11px] text-slate-400 font-medium">
+            {checklist.filter(c => c.done).length} of {checklist.length} verified
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2.5 text-xs sm:grid-cols-2">
           {checklist.map((item) => (
             <div
               key={item.label}
-              className="flex items-center gap-2.5 rounded-lg border border-white/[0.04] bg-white/[0.01] p-2.5"
+              className={`flex items-center gap-2.5 rounded-xl border p-3 transition-colors ${
+                item.done
+                  ? "border-emerald-200 bg-emerald-50/40 text-emerald-900"
+                  : item.pending
+                  ? "border-amber-200 bg-amber-50/40 text-amber-900"
+                  : "border-slate-100 bg-slate-50/60 text-slate-600"
+              }`}
             >
               {item.done ? (
-                <CheckCircle2 className="h-4.5 w-4.5 shrink-0 text-white" />
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
               ) : item.pending ? (
-                <span className="relative flex h-4.5 w-4.5 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/20 opacity-75" />
-                  <span className="relative inline-flex h-4.5 w-4.5 items-center justify-center rounded-full border border-white/40 bg-white/10 text-white">
+                <span className="relative flex h-4 w-4 shrink-0">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+                  <span className="relative inline-flex h-4 w-4 items-center justify-center rounded-full bg-amber-100 text-amber-700">
                     <Clock3 className="h-3 w-3" />
                   </span>
                 </span>
               ) : (
-                <div className="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border border-white/10 text-[#94A3B8]/40">
-                  <Clock3 className="h-3 w-3" />
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-400">
+                  <Clock3 className="h-2.5 w-2.5" />
                 </div>
               )}
               <span
-                className={
+                className={`text-xs ${
                   item.done
-                    ? "font-medium text-white line-through decoration-[#94A3B8]/30"
-                    : "font-medium text-[#94A3B8]"
-                }
+                    ? "font-semibold text-slate-800 line-through decoration-slate-300"
+                    : item.pending
+                    ? "font-semibold text-amber-900"
+                    : "font-medium text-slate-500"
+                }`}
               >
                 {item.label}
               </span>
             </div>
           ))}
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

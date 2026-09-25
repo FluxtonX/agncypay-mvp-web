@@ -1,8 +1,9 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
 :root {
-  --background: #FFFFFF;
-  --foreground: #0F172A;
+  --background: var(--bg-app);
+  --foreground: var(--text-primary);
   
   --color-brand-deep: #FFFFFF;
   --color-brand-mid: #F8FAFC;
@@ -15,15 +16,13 @@
   --color-warning: #D97706;
   --color-error: #DC2626;
   
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
   --border-color: #E2E8F0;
   --card-bg: #FFFFFF;
 }
 
 :root.dark {
-  --background: #0A0A0A;
-  --foreground: #F8FAFC;
+  --background: var(--bg-app);
+  --foreground: var(--text-primary);
   
   --color-brand-deep: #0A0A0A;
   --color-brand-mid: #0D0D0D;
@@ -36,16 +35,32 @@
   --color-warning: #F59E0B;
   --color-error: #EF4444;
   
-  --text-primary: #F8FAFC;
-  --text-secondary: #8E9196;
   --border-color: rgba(255, 255, 255, 0.1);
-  --card-bg: rgba(255, 255, 255, 0.02);
+  --card-bg: #0F172A;
 }
 
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   
+  --color-surface-primary: var(--surface-primary);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-tertiary: var(--surface-tertiary);
+  --color-surface-elevated: var(--surface-elevated);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-disabled: var(--text-disabled);
+
+  --color-border-default: var(--border-default);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-active: var(--brand-active);
+
   --color-brand-deep: var(--color-brand-deep);
   --color-brand-mid: var(--color-brand-mid);
   --color-brand-light: var(--color-brand-light);
@@ -57,6 +72,7 @@
   
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-heading: var(--font-outfit), Inter, system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   
   /* Standardized font scale optimized for high legibility */
   --font-size-xs: 13px;
@@ -90,31 +106,31 @@ h1, h2, h3, h4, h5, h6, .font-semibold, .font-bold, .font-extrabold, .font-black
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #000;
+  background: #F1F5F9;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.16);
+  background: #CBD5E1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #94A3B8;
 }
 
 /* Glassmorphism primitives */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.07);
 }
 
 .glass-panel-hover {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .glass-panel-hover:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
 }
 
@@ -140,9 +156,9 @@ h1, h2, h3, h4, h5, h6, .font-semibold, .font-bold, .font-extrabold, .font-black
 .animate-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.02) 25%,
-    rgba(255, 255, 255, 0.06) 50%,
-    rgba(255, 255, 255, 0.02) 75%
+    #F1F5F9 25%,
+    #E2E8F0 50%,
+    #F1F5F9 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
@@ -312,6 +328,13 @@ h1, h2, h3, h4, h5, h6, .font-semibold, .font-bold, .font-extrabold, .font-black
   color: #0A0A0A !important;
 }
 
+/* Restore white text inside intentionally dark containers */
+:root.light .bg-slate-900 .text-white,
+:root.light .bg-slate-800 .text-white,
+:root.light .bg-slate-950 .text-white {
+  color: #FFFFFF !important;
+}
+
 /* Explicit white text override for dark cards/buttons selected in light mode */
 :root.light .force-white-text,
 :root.light .force-white-text *,
@@ -334,6 +357,20 @@ h1, h2, h3, h4, h5, h6, .font-semibold, .font-bold, .font-extrabold, .font-black
 :root.light span.bg-\[\#0F172A\] svg,
 :root.light button.bg-black svg {
   color: #FFFFFF !important;
+}
+
+/* Exception: restore dark text for white-bg elements nested inside dark containers */
+:root.light .bg-slate-900 .bg-white,
+:root.light .bg-slate-900 .bg-white *,
+:root.light .bg-slate-900 button.bg-white,
+:root.light .bg-slate-900 button.bg-white *,
+:root.light .bg-slate-900 button.bg-slate-50,
+:root.light .bg-slate-900 button.bg-slate-50 *,
+:root.light .bg-slate-800 .bg-white,
+:root.light .bg-slate-800 .bg-white *,
+:root.light .bg-slate-950 .bg-white,
+:root.light .bg-slate-950 .bg-white * {
+  color: #0F172A !important;
 }
 
 :root.light .bg-\[\#0F172A\] .text-slate-300,
@@ -522,11 +559,6 @@ h1, h2, h3, h4, h5, h6, .font-semibold, .font-bold, .font-extrabold, .font-black
 }
 
 /* Ensure dark buttons in Light Mode retain white text and icons */
-:root.light button.bg-white span,
-:root.light button.bg-white svg {
-  color: #FFFFFF !important;
-}
-
 :root.light button.bg-black {
   background-color: #0F172A !important;
   color: #FFFFFF !important;
@@ -538,7 +570,7 @@ h1, h2, h3, h4, h5, h6, .font-semibold, .font-bold, .font-extrabold, .font-black
 }
 
 /* Light mode specific Creative Node Network overrides */
-:root.light svg path {
+:root.light .nodes-network-svg path {
   stroke: rgba(15, 23, 42, 0.4) !important;
 }
 
@@ -579,4 +611,107 @@ h1, h2, h3, h4, h5, h6, .font-semibold, .font-bold, .font-extrabold, .font-black
 :root.light .h-10.w-10.rounded-xl.bg-\[\#111\] text-neutral-400 {
   color: #0F172A !important;
 }
+
+/* ==========================================================================
+   Fintech Dark Mode System
+   Deep obsidian surfaces (#090D16), crisp slate cards (#111827),
+   subtle borders (rgba(255, 255, 255, 0.08)), high contrast text.
+   ========================================================================== */
+
+:root.dark,
+html.dark,
+.dark {
+  color-scheme: dark;
+}
+
+:root.dark body,
+html.dark body {
+  background-color: #090D16 !important;
+  color: #F8FAFC !important;
+}
+
+/* Shell background */
+:root.dark .min-h-screen {
+  background-color: #090D16 !important;
+}
+
+/* Card surfaces */
+:root.dark .bg-white {
+  background-color: #111827 !important;
+  color: #F8FAFC !important;
+  border-color: rgba(255, 255, 255, 0.09) !important;
+}
+
+/* Sub-card & Table header backgrounds */
+:root.dark .bg-slate-50,
+:root.dark .bg-slate-50\/40,
+:root.dark .bg-slate-50\/60,
+:root.dark .bg-slate-50\/70,
+:root.dark .bg-slate-50\/75,
+:root.dark .bg-slate-50\/80,
+:root.dark .bg-slate-50\/90,
+:root.dark .bg-slate-100 {
+  background-color: #162032 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Inputs & selects in dark mode */
+:root.dark input,
+:root.dark select,
+:root.dark textarea {
+  background-color: #162032 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #F8FAFC !important;
+}
+
+:root.dark input::placeholder {
+  color: #64748B !important;
+}
+
+/* Borders */
+:root.dark .border-slate-200,
+:root.dark .border-slate-200\/80,
+:root.dark .border-slate-200\/90,
+:root.dark .border-slate-100 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Typography contrast */
+:root.dark .text-slate-900 {
+  color: #F8FAFC !important;
+}
+
+:root.dark .text-slate-800,
+:root.dark .text-slate-700 {
+  color: #E2E8F0 !important;
+}
+
+:root.dark .text-slate-600,
+:root.dark .text-slate-500 {
+  color: #94A3B8 !important;
+}
+
+:root.dark .text-slate-400 {
+  color: #64748B !important;
+}
+
+/* Dark mode topbar and sidebar */
+:root.dark header.bg-white,
+:root.dark header.bg-white\/95,
+:root.dark aside.bg-white {
+  background-color: #0E1524 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Dark mode buttons */
+:root.dark button.bg-white {
+  background-color: #162032 !important;
+  color: #F8FAFC !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+:root.dark button.bg-white:hover {
+  background-color: #1E293B !important;
+}
+
 

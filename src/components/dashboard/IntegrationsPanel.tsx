@@ -320,21 +320,14 @@ export function IntegrationsPanel({
                   className={`w-full h-full object-contain filter drop-shadow-xs transition-transform duration-200 group-hover:scale-110 ${!isConn ? "opacity-85 group-hover:opacity-100" : ""}`} 
                 />
 
-                {/* Visible Status Badge (+ or Checkmark) */}
-                <div className="absolute top-1 right-1">
-                  {isConn ? (
+                {/* Status Badge (Checkmark when connected) */}
+                {isConn && (
+                  <div className="absolute top-1 right-1">
                     <div className="w-4 h-4 rounded-full bg-emerald-600 flex items-center justify-center text-white shadow-xs">
                       <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
                     </div>
-                  ) : (
-                    <div 
-                      className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-slate-900 group-hover:bg-slate-950 flex items-center justify-center text-white shadow-xs transition-transform duration-200 group-hover:scale-110"
-                      style={{ backgroundColor: "#0F172A", color: "#FFFFFF" }}
-                    >
-                      <Plus className="w-3 h-3 text-white" strokeWidth={2.5} style={{ color: "#FFFFFF" }} />
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
 
               {/* Tile Label */}
@@ -350,7 +343,7 @@ export function IntegrationsPanel({
                 </span>
               ) : (
                 <span className="text-[10px] text-slate-500 group-hover:text-slate-800 font-semibold mt-0.5 text-center truncate w-full flex items-center justify-center gap-0.5">
-                  <Plus className="w-2.5 h-2.5 text-slate-600 inline" strokeWidth={2.5} /> Connect
+                  Connect
                 </span>
               )}
             </motion.div>

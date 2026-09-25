@@ -37,6 +37,9 @@ import {
 import { useApp } from "../../../../context/AppContext";
 import { subscribeInvoicesByBrand, subscribeInvoicesByAgency } from "../../../../lib/api/invoices";
 import { CorporatePayoutTermsCard } from "../../../../components/dashboard/CorporatePayoutTermsCard";
+import { AppShell } from "../../../../components/shell/AppShell";
+import { Money } from "../../../../components/financial/Money";
+import { TransactionStatusBadge } from "../../../../components/financial/TransactionStatusBadge";
 
 // Types
 interface SplitItem {
@@ -231,111 +234,36 @@ export default function InvoiceDetailPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased relative pb-12 transition-colors duration-200">
-      {/* Header */}
-      <header className="border-b border-slate-200/80 bg-white/95 sticky top-0 z-50 shadow-sm backdrop-blur">
-        <div className="max-w-[1520px] mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="relative flex items-center mr-12">
-              <Link href="/agencydashboard" className="flex items-center cursor-pointer z-50 hover:opacity-80 transition-opacity">
-                <img
-                  src="/agncypaybrand.png"
-                  alt="AgncyPay"
-                  className="h-10 w-auto object-contain scale-[1.3] origin-left [filter:invert(1)_brightness(0.15)]"
-                />
-              </Link>
-              {(workspaceType === "brand" || workspaceType === "agency") && (
-                <span className="absolute -top-1.5 -right-4 translate-x-full rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-700">
-                  {workspaceType === "brand" ? "Brand" : "Agency"}
-                </span>
-              )}
-            </div>
-            <span className="h-4 w-[1px] bg-slate-200 hidden md:block" />
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-800">
-              <Building2 className="h-3 w-3 text-slate-700" />
-              Corporate Portal
-            </div>
-          </div>
-
-          <nav className="hidden lg:flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
-            <button 
-              onClick={() => router.push("/agencydashboard")}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer"
-            >
-              Home
-            </button>
-            <button 
-              onClick={() => router.push("/agencydashboard/invoices")}
-              className="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-white shadow-sm transition-all cursor-pointer"
-            >
-              Payments
-            </button>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center font-bold text-xs text-white">
-                {state.user?.fullName ? state.user.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "AD"}
-              </div>
-              <span className="text-xs font-bold text-slate-900 hidden sm:inline">
-                {state.workspaces.find(w => w.id === state.activeWorkspaceId)?.name || state.user?.fullName || "Adidas Corporate"}
-              </span>
-            </div>
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-slate-400 hover:text-slate-900 transition-colors cursor-pointer mr-1"
-              title="Toggle Theme"
-            >
-              {isLightTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-            </button>
-
-            <button
-              onClick={handleLogout}
-              className="p-2 text-slate-400 hover:text-slate-900 transition-colors cursor-pointer"
-              title="Log Out"
-            >
-              <LogOut className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Workspace (Strictly Styled after the Bilt layout) */}
-      <div className="max-w-[1520px] w-full mx-auto px-6 mt-8 flex-1 flex flex-col gap-6">
-        
+    <AppShell>
+      <div className="flex flex-col gap-6">
         {/* Dynamic Navigation Row */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          
-          {/* Top Address & Cost Center */}
-          <div className="flex flex-wrap items-baseline gap-2 text-slate-900">
-            <Link href="/agencydashboard/invoices" className="hover:opacity-80 transition-opacity">
-              <ArrowLeft className="h-5 w-5 inline-block mr-2 -mt-1 text-slate-500" />
+          <div className="flex flex-wrap items-center gap-2">
+            <Link 
+              href="/agencydashboard/invoices" 
+              className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-600 hover:text-slate-900 shadow-2xs transition-all flex items-center gap-1.5 shrink-0"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Invoices
             </Link>
-            <h2 className="text-xl font-bold tracking-tight text-slate-900">{activeInvoice.location},</h2>
-            <span className="text-xl font-extrabold text-emerald-600">{activeInvoice.costCenter}</span>
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-2">
-              {activeInvoice.brandName}
-            </span>
+            <span className="text-xs text-slate-400">/</span>
+            <span className="text-xs font-mono font-bold text-slate-600">{activeInvoice.id}</span>
+            <span className="text-xs text-slate-400">•</span>
+            <h2 className="text-sm font-bold text-slate-900">{activeInvoice.location}</h2>
+            <span className="text-xs font-bold text-emerald-600">({activeInvoice.costCenter})</span>
+            <span className="text-xs font-medium text-slate-500">{activeInvoice.brandName}</span>
           </div>
 
-          {/* Right Selector Pills */}
-          <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-full border border-slate-200">
-            <button className="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-white flex items-center gap-1.5 shadow-sm">
-              <Home className="h-3.5 w-3.5 text-emerald-400" />
-              Campaign Hub
-            </button>
-            <button 
-              onClick={() => router.push("/agencydashboard/invoices")}
-              className="px-4 py-1.5 rounded-full text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1.5 cursor-pointer transition-colors"
-            >
-              <Search className="h-3.5 w-3.5" />
-              All Invoices
-            </button>
+          <div className="flex items-center gap-2">
+            <TransactionStatusBadge
+              status={activeInvoice.status === "awaiting_approval" ? "PENDING" : "COMPLETED"}
+              size="sm"
+            />
           </div>
         </div>
 
         {/* Core Layout Grid (Left: 8 columns, Right: 4 columns) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
           {/* Left Column: Balance Due & Auto-Splits */}
           <div className="lg:col-span-8 space-y-6">
@@ -354,9 +282,9 @@ export default function InvoiceDetailPage() {
                 <div className="lg:col-span-6 flex flex-col justify-between h-full">
                   <div>
                     <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Balance due</span>
-                    <span className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-1.5 block">
-                      ${activeInvoice.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    </span>
+                    <div className="mt-1.5">
+                      <Money amount={activeInvoice.amount} size="3xl" />
+                    </div>
                     <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
                       <Calendar className="h-4 w-4 text-slate-400" />
                       <span>Due: {activeInvoice.dueDate}</span>
@@ -483,9 +411,7 @@ export default function InvoiceDetailPage() {
 
                     <div className="mt-4 flex justify-between items-baseline">
                       <span className="text-xs font-semibold text-slate-500">Direct Production Fee</span>
-                      <span className="text-base font-black text-slate-900">
-                        ${activeInvoice.vendorFee.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      </span>
+                      <Money amount={activeInvoice.vendorFee.amount} size="sm" />
                     </div>
                   </div>
                 </div>
@@ -497,8 +423,8 @@ export default function InvoiceDetailPage() {
                   <div className="flex justify-between items-center border-b border-slate-100 pb-2">
                     <div className="flex items-center gap-2">
                       <h4 className="text-xs font-black text-slate-500 uppercase tracking-wider">Agency & Talent Split</h4>
-                      <span className="text-[10px] text-slate-400 font-semibold">
-                        (Remaining Pool: ${activeInvoice.splitPool.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})
+                      <span className="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
+                        (Remaining Pool: <Money amount={activeInvoice.splitPool.total} size="xs" />)
                       </span>
                     </div>
                     <span className="text-[10px] text-slate-400 font-bold">2 Nodes</span>
@@ -540,9 +466,7 @@ export default function InvoiceDetailPage() {
                           <span className="text-xs font-semibold text-slate-500">
                             {split.percentage}% Share
                           </span>
-                          <span className="text-base font-black text-slate-900">
-                            ${split.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                          </span>
+                          <Money amount={split.amount} size="sm" />
                         </div>
                       </div>
                     ))}
@@ -667,6 +591,6 @@ export default function InvoiceDetailPage() {
         </div>
 
       </div>
-    </main>
+    </AppShell>
   );
 }

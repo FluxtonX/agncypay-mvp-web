@@ -41,42 +41,21 @@ export default function RootLayout({
             __html: `
               try {
                 const path = window.location.pathname;
-                let storageKey = 'agncypay_theme';
-                let defaultTheme = 'dark'; // fallback
-                
                 if (path === '/') {
                   document.documentElement.classList.add('dark');
                   document.documentElement.classList.remove('light');
-                  return;
-                }
-
-                defaultTheme = 'light';
-                document.documentElement.classList.add('light');
-                document.documentElement.classList.remove('dark');
-
-                const savedTheme = localStorage.getItem(storageKey);
-                
-                if (savedTheme) {
-                  if (savedTheme === 'light') {
-                    document.documentElement.classList.add('light');
-                    document.documentElement.classList.remove('dark');
-                  } else {
-                    document.documentElement.classList.add('dark');
-                    document.documentElement.classList.remove('light');
-                  }
                 } else {
-                  if (defaultTheme === 'light') {
-                    document.documentElement.classList.add('light');
-                    document.documentElement.classList.remove('dark');
-                  } else {
-                    document.documentElement.classList.add('dark');
-                    document.documentElement.classList.remove('light');
-                  }
+                  document.documentElement.classList.remove('dark');
+                  document.documentElement.classList.add('light');
+                  localStorage.removeItem('agncypay_theme');
+                  localStorage.removeItem('agncypay_theme_agency');
+                  localStorage.setItem('theme', 'light');
                 }
               } catch (_) {}
             `,
           }}
         />
+        <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" async />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-200">
         <ThemeEnforcer />
