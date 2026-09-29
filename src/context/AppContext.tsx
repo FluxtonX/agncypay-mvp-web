@@ -674,6 +674,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem("agncypay_state");
       localStorage.removeItem("agncypay_token");
       localStorage.removeItem("agncypay_refresh_token");
+      localStorage.removeItem("agncypay_connected_apps");
+      localStorage.removeItem("brand_plaid_accounts_v3");
+      localStorage.removeItem("agency_plaid_real_accounts_v4");
+      localStorage.removeItem("brand_invoices_v3");
+      localStorage.removeItem("agency_invoices_v3");
     }
   };
 

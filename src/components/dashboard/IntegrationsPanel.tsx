@@ -126,49 +126,26 @@ export function IntegrationsPanel({
       }
     }
 
-    // Check backend QuickBooks & Integrations status
-    apiGetQuickBooksStatus()
-      .then((qbData) => {
-        if (qbData && qbData.connected) {
-          setConnectedIds((prev) => Array.from(new Set([...prev, "quickbooks"])));
-        }
-      })
-      .catch(() => {});
-
+    // Check backend Integrations status strictly for the authenticated user
     apiGetIntegrationsStatus()
       .then((data: any) => {
-        setConnectedIds((prev) => {
-          const backendList = [...prev];
-          let changed = false;
-          if (data.qboConnected && !backendList.includes("quickbooks")) {
-            backendList.push("quickbooks");
-            changed = true;
-            if (onSync) onSync("quickbooks");
-          }
-          if (changed) {
-            localStorage.setItem("agncypay_connected_apps", JSON.stringify(backendList));
-          }
-          return backendList;
-        });
+        const active: string[] = [];
+        if (data?.qboConnected || data?.quickbooks) {
+          active.push("quickbooks");
+          if (onSync) onSync("quickbooks");
+        }
+        if (data?.xeroConnected || data?.xero) {
+          active.push("xero");
+          if (onSync) onSync("xero");
+        }
+        if (data?.sageConnected || data?.sage) {
+          active.push("sage");
+        }
+        setConnectedIds(active);
       })
       .catch(() => {
-        // Fallback to local storage if API check is unavailable
+        setConnectedIds([]);
       });
-
-
-
-    // Load saved preferences from localStorage
-    const saved = localStorage.getItem("agncypay_connected_apps");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setConnectedIds((prev) => Array.from(new Set([...prev, ...parsed])));
-        }
-      } catch (e) {
-        console.error("Error parsing saved connected apps", e);
-      }
-    }
   }, [onSync]);
 
   const saveConnectedApps = (ids: string[]) => {
@@ -183,14 +160,13 @@ export function IntegrationsPanel({
       if (app.id === "quickbooks") {
         setConnectingId(app.id);
         setStatusType("loading");
-        setStatusMessage(`Redirecting to ${app.fullName} authentication portal...`);
-        apiConnectQuickBooks()
+        const currentPath = typeof window !== "undefined" ? window.location.pathname : "/branddashboard";
+        apiConnectQuickBooks(currentPath)
           .then((res: any) => {
-            window.location.href = res.url || "http://localhost:3001/api/v1/quickbooks/connect";
+            window.location.href = res.url || `http://localhost:3001/api/v1/quickbooks/connect?returnTo=${encodeURIComponent(currentPath)}`;
           })
-
           .catch(() => {
-            window.location.href = "http://localhost:3001/api/v1/quickbooks/connect";
+            window.location.href = `http://localhost:3001/api/v1/quickbooks/connect?returnTo=${encodeURIComponent(currentPath)}`;
           });
         return;
       }

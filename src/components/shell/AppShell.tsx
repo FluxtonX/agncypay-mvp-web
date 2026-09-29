@@ -28,11 +28,11 @@ export function AppShell({ children }: AppShellProps) {
             className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white dark:bg-slate-900 shadow-2xl">
+          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white shadow-2xl">
             <div className="absolute top-3 right-3 z-50">
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-700"
                 aria-label="Close navigation"
               >
                 <X className="w-5 h-5" />
@@ -55,7 +55,7 @@ export function AppShell({ children }: AppShellProps) {
           onOpenCommandPalette={() => setCommandPaletteOpen(true)}
           onToggleMobileMenu={() => setMobileMenuOpen(true)}
         />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1520px] w-full mx-auto bg-[#F8FAFC] rounded-none">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1520px] w-full mx-auto bg-white rounded-none">
           {children}
         </main>
       </div>

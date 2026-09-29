@@ -167,7 +167,7 @@ export default function BusinessSetupPage() {
         ...entityData,
       });
 
-      // Submit to backend which calls Cybrid Customer + KYB creation + provisions deposit accounts
+      // Submit to backend which calls Conduit Customer + KYB creation + provisions deposit accounts
       await apiSubmitLegalEntity();
 
       setIsSuccess(true);

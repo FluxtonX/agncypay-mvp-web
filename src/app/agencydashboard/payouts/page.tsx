@@ -39,73 +39,7 @@ interface PayoutItem {
   date: string;
 }
 
-const INITIAL_PAYOUTS: PayoutItem[] = [
-  {
-    id: "PAY-2026-081",
-    recipientName: "Marcus Chen",
-    recipientHandle: "@marcusvisuals",
-    campaign: "Acme Global Q3 Campaign",
-    invoiceRef: "INV-2026-104",
-    rail: "Chase RTP Instant (••••1182)",
-    grossAmount: 24000,
-    netPayout: 19200,
-    taxHoldback: 2400,
-    status: "queued",
-    date: "Sep 25, 2026",
-  },
-  {
-    id: "PAY-2026-080",
-    recipientName: "Maya Lin",
-    recipientHandle: "@mayacreates",
-    campaign: "Nike Fall Showcase 2026",
-    invoiceRef: "INV-2026-098",
-    rail: "Evolve ACH Direct (••••4921)",
-    grossAmount: 16500,
-    netPayout: 14025,
-    taxHoldback: 1650,
-    status: "processing",
-    date: "Sep 24, 2026",
-  },
-  {
-    id: "PAY-2026-079",
-    recipientName: "Sarah Jenkins",
-    recipientHandle: "@sarahj_style",
-    campaign: "Sephora Brand Ambassador",
-    invoiceRef: "INV-2026-095",
-    rail: "Mercury Wire (••••9032)",
-    grossAmount: 12000,
-    netPayout: 10200,
-    taxHoldback: 1200,
-    status: "settled",
-    date: "Sep 22, 2026",
-  },
-  {
-    id: "PAY-2026-078",
-    recipientName: "Elena Rostova",
-    recipientHandle: "@elenarostova",
-    campaign: "Red Bull Global Tour",
-    invoiceRef: "INV-2026-091",
-    rail: "FedNow Instant (••••3341)",
-    grossAmount: 35000,
-    netPayout: 28000,
-    taxHoldback: 3500,
-    status: "settled",
-    date: "Sep 20, 2026",
-  },
-  {
-    id: "PAY-2026-077",
-    recipientName: "Jordan Rivera",
-    recipientHandle: "@jriveraphoto",
-    campaign: "Vogue Editorial Sprint",
-    invoiceRef: "INV-2026-088",
-    rail: "USDC Treasury Vault",
-    grossAmount: 8500,
-    netPayout: 7650,
-    taxHoldback: 850,
-    status: "scheduled",
-    date: "Sep 28, 2026",
-  },
-];
+const INITIAL_PAYOUTS: PayoutItem[] = [];
 
 export default function TalentPayoutsPage() {
   const [payouts, setPayouts] = useState<PayoutItem[]>(INITIAL_PAYOUTS);

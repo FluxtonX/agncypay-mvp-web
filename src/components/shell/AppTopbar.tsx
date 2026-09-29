@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import {
   Search,
   Bell,
-  Sun,
-  Moon,
   Menu,
   CheckCircle2,
   HelpCircle,
@@ -24,29 +22,7 @@ export function AppTopbar({
   onToggleMobileMenu,
 }: AppTopbarProps) {
   const { state } = useApp();
-  const [isDark, setIsDark] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const root = document.documentElement;
-    if (root.classList.contains("dark")) {
-      root.classList.remove("dark");
-      root.classList.add("light");
-      setIsDark(false);
-      localStorage.setItem("agncypay_theme_agency", "light");
-    } else {
-      root.classList.add("dark");
-      root.classList.remove("light");
-      setIsDark(true);
-      localStorage.setItem("agncypay_theme_agency", "dark");
-    }
-  };
 
   return (
     <header className="h-16 shrink-0 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-20 transition-colors">
@@ -122,14 +98,6 @@ export function AppTopbar({
           )}
         </div>
 
-        {/* Theme Toggle */}
-        <button
-          onClick={toggleTheme}
-          className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-2xs"
-          aria-label="Toggle theme"
-        >
-          {isDark ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4" />}
-        </button>
       </div>
     </header>
   );

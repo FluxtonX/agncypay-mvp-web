@@ -24,8 +24,8 @@ export async function apiGetQuickBooksStatus() {
   return apiClient<{ status: string; connected: boolean; realmId: string; lastSync: string; lastError: string }>("/quickbooks/status");
 }
 
-export async function apiConnectQuickBooks() {
-  return apiClient<{ url: string }>("/quickbooks/connect");
+export async function apiConnectQuickBooks(returnTo = "/branddashboard") {
+  return apiClient<{ url: string }>(`/quickbooks/connect?returnTo=${encodeURIComponent(returnTo)}`);
 }
 
 export async function apiFetchQuickBooksInvoices() {

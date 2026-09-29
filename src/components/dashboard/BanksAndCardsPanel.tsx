@@ -29,7 +29,7 @@ export function BanksAndCardsPanel({ onConnectAccount }: BanksAndCardsPanelProps
   const [isPlaidLoading, setIsPlaidLoading] = useState(false);
   const [plaidError, setPlaidError] = useState<string | null>(null);
 
-  // Initialize Plaid Link SDK & Load Cybrid Deposit Account
+  // Initialize Plaid Link SDK & Load Conduit Deposit/Virtual Account
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!document.getElementById("plaid-link-sdk")) {

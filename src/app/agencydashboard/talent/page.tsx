@@ -45,80 +45,13 @@ interface TalentMember {
   joinedDate: string;
 }
 
-const INITIAL_TALENT: TalentMember[] = [
-  {
-    id: "tal-1",
-    name: "Maya Lin",
-    handle: "@mayacreates",
-    category: "Fashion & Lifestyle",
-    splitTemplate: "Standard 85/15 Creator",
-    talentShare: 85,
-    status: "active",
-    payoutRail: "Evolve ACH Direct (••••4921)",
-    ytdEarnings: 42800,
-    email: "maya@linstudios.com",
-    joinedDate: "Jan 12, 2026",
-  },
-  {
-    id: "tal-2",
-    name: "Marcus Chen",
-    handle: "@marcusvisuals",
-    category: "Cinematography & VFX",
-    splitTemplate: "Commercial 80/20",
-    talentShare: 80,
-    status: "active",
-    payoutRail: "Chase RTP Instant (••••1182)",
-    ytdEarnings: 68200,
-    email: "marcus@chenmedia.io",
-    joinedDate: "Feb 04, 2026",
-  },
-  {
-    id: "tal-3",
-    name: "Sarah Jenkins",
-    handle: "@sarahj_style",
-    category: "Commercial Talent",
-    splitTemplate: "Standard 85/15 Creator",
-    talentShare: 85,
-    status: "active",
-    payoutRail: "Mercury Wire (••••9032)",
-    ytdEarnings: 29400,
-    email: "sarah.jenkins@creator.co",
-    joinedDate: "Mar 18, 2026",
-  },
-  {
-    id: "tal-4",
-    name: "Jordan Rivera",
-    handle: "@jriveraphoto",
-    category: "Editorial Photography",
-    splitTemplate: "Exclusive 90/10",
-    talentShare: 90,
-    status: "kyc_pending",
-    payoutRail: "Awaiting Bank Verification",
-    ytdEarnings: 14100,
-    email: "jordan@riveracreative.com",
-    joinedDate: "May 22, 2026",
-  },
-  {
-    id: "tal-5",
-    name: "Elena Rostova",
-    handle: "@elenarostova",
-    category: "Global Brand Ambassador",
-    splitTemplate: "Tiered Campaign Split",
-    talentShare: 80,
-    status: "active",
-    payoutRail: "Cross River FedNow (••••7721)",
-    ytdEarnings: 94500,
-    email: "elena@rostovaglobal.com",
-    joinedDate: "Jun 02, 2026",
-  },
-];
+const INITIAL_TALENT: TalentMember[] = [];
 
 export default function AgencyTalentPage() {
   const [talentList, setTalentList] = useState<TalentMember[]>(INITIAL_TALENT);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "kyc_pending">("all");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [showEmptySim, setShowEmptySim] = useState(false);
 
   // New talent form state
   const [newName, setNewName] = useState("");
@@ -230,16 +163,14 @@ export default function AgencyTalentPage() {
     }
   };
 
-  const filteredTalent = showEmptySim
-    ? []
-    : talentList.filter((t) => {
-        const matchesQuery =
-          t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          t.handle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          t.category.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesStatus = statusFilter === "all" || t.status === statusFilter;
-        return matchesQuery && matchesStatus;
-      });
+  const filteredTalent = talentList.filter((t) => {
+    const matchesQuery =
+      t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.handle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.category.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === "all" || t.status === statusFilter;
+    return matchesQuery && matchesStatus;
+  });
 
   const totalYtd = talentList.reduce((acc, t) => acc + t.ytdEarnings, 0);
 
@@ -276,14 +207,6 @@ export default function AgencyTalentPage() {
           <div className="flex items-center gap-2.5">
             <button
               type="button"
-              onClick={() => setShowEmptySim(!showEmptySim)}
-              className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 hover:bg-slate-50 shadow-2xs transition-all cursor-pointer"
-            >
-              {showEmptySim ? "Restore Seed Data" : "Simulate Empty State"}
-            </button>
-
-            <button
-              type="button"
               onClick={() => setIsCrmModalOpen(true)}
               className="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-2xs transition-all flex items-center gap-2 cursor-pointer"
             >
@@ -306,29 +229,26 @@ export default function AgencyTalentPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <MetricCard
             title="Represented Talent"
-            value={showEmptySim ? 0 : talentList.length}
+            value={talentList.length}
             isCurrency={false}
             icon={<Users className="w-4 h-4 text-blue-600" />}
-            delta={12.5}
-            deltaPeriod="vs last month"
           />
           <MetricCard
             title="YTD Talent Disbursed"
-            value={showEmptySim ? 0 : totalYtd}
+            value={totalYtd}
             isCurrency={true}
             icon={<DollarSign className="w-4 h-4 text-emerald-600" />}
-            delta={24.8}
           />
           <MetricCard
             title="Instant Payout Rails"
-            value={showEmptySim ? "0 Rails" : "4 Active"}
+            value={talentList.length > 0 ? "Active" : "Ready"}
             isCurrency={false}
             icon={<CreditCard className="w-4 h-4 text-indigo-600" />}
             tooltip="ACH, RTP, FedNow, Wire"
           />
           <MetricCard
             title="KYC Compliance"
-            value={showEmptySim ? "0 Pending" : `${talentList.filter((t) => t.status === "active").length} Verified`}
+            value={`${talentList.filter((t) => t.status === "active").length} Verified`}
             isCurrency={false}
             icon={<ShieldCheck className="w-4 h-4 text-sky-600" />}
             tooltip="FinCEN cleared"
@@ -393,16 +313,11 @@ export default function AgencyTalentPage() {
               </div>
               <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">No Talent in Roster</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mt-1.5 leading-relaxed">
-                {showEmptySim
-                  ? "Simulation mode is active. Click 'Restore Seed Data' above to preview active creators with automatic split configurations."
-                  : "No creators match your current search or filter criteria. Add creators to automate revenue disbursal."}
+                No creators have been added yet. Add your first creator manually or use CRM &amp; CSV Sync to import your creator roster.
               </p>
               <button
                 type="button"
-                onClick={() => {
-                  setShowEmptySim(false);
-                  setIsAddModalOpen(true);
-                }}
+                onClick={() => setIsAddModalOpen(true)}
                 className="mt-6 px-4 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold flex items-center gap-2 shadow-xs cursor-pointer"
               >
                 <Plus className="w-4 h-4" />

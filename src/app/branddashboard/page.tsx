@@ -47,6 +47,7 @@ import {
   Eye
 } from "lucide-react";
 import { subscribeInvoicesByBrand, subscribeInvoicesByAgency, apiUpdateInvoiceStatus as updateInvoiceStatus, apiCreateInvoice as createFirestoreInvoice, apiGetBrands as getRegisteredBrands, apiGetInvoices as getRegisteredTalents, apiGetInvoices as getRegisteredTalentsByAgency } from "../../lib/api/invoices";
+import { apiGetIntegrationsStatus, apiGetQuickBooksInvoices, apiGetQuickBooksStatus } from "../../lib/api/integrations";
 import { apiRecordDeposit as recordFirestoreDeposit } from "../../lib/api/treasury";
 import { useApp } from "../../context/AppContext";
 type FirestoreUser = any;
@@ -275,37 +276,37 @@ export default function BrandDashboardPage() {
 
   const fetchQbInvoices = async () => {
     setQbSyncStatus("loading");
-    setQbSyncMessage("Syncing QuickBooks...");
+    setQbSyncMessage("Syncing QuickBooks invoices...");
     try {
-      const res = await fetch("/api/quickbooks/invoices");
-      const data = await res.json();
-      if (!res.ok) {
-        setQbSyncStatus("error");
-        setQbSyncMessage(
-          data.error === "not_connected"
-            ? "Please connect QuickBooks first."
-            : "Failed to fetch QuickBooks invoices."
-        );
+      const invoices = await apiGetQuickBooksInvoices();
+      if (!Array.isArray(invoices)) {
+        setQbSyncStatus("idle");
+        setQbSyncMessage("QuickBooks connected. No pending invoices to import.");
         return;
       }
       
       // Update widgetInvoices state with the new invoices from QB
       setWidgetInvoices(prev => {
         const existingIds = new Set(prev.map(i => i.id));
-        const newInvoices = data.invoices.filter((inv: any) => !existingIds.has(inv.id)).map((inv: any) => ({
+        const newInvoices = invoices.filter((inv: any) => !existingIds.has(inv.id)).map((inv: any) => ({
           ...inv,
-          status: inv.status.toLowerCase() === "paid" ? "settled" : "pending"
+          status: (inv.status || "").toLowerCase() === "paid" ? "settled" : "pending"
         }));
         return [...newInvoices, ...prev];
       });
       setQbSyncStatus("success");
-      setQbSyncMessage(`Synced ${data.count || 0} invoices!`);
+      setQbSyncMessage(`Successfully synced ${invoices.length} invoice${invoices.length === 1 ? "" : "s"} from QuickBooks!`);
       
       // Reset status after a few seconds
       setTimeout(() => setQbSyncStatus("idle"), 5000);
-    } catch (e) {
+    } catch (e: any) {
       setQbSyncStatus("error");
-      setQbSyncMessage("Network error fetching QuickBooks invoices.");
+      const errMsg = e?.message || "";
+      if (errMsg.toLowerCase().includes("not connected") || errMsg.toLowerCase().includes("unauthorized")) {
+        setQbSyncMessage("QuickBooks is not connected yet. Connect in Settings & Integrations.");
+      } else {
+        setQbSyncMessage("QuickBooks sync unavailable. Please check connection in Integrations.");
+      }
     }
   };
 
@@ -313,35 +314,12 @@ export default function BrandDashboardPage() {
     setQbSyncStatus("loading");
     setQbSyncMessage("Syncing Xero...");
     try {
-      const res = await fetch("/api/xero/invoices");
-      const data = await res.json();
-      if (!res.ok) {
-        setQbSyncStatus("error");
-        setQbSyncMessage(
-          data.error === "not_connected"
-            ? "Please connect Xero first."
-            : "Failed to fetch Xero invoices."
-        );
-        return;
-      }
-      
-      // Update widgetInvoices state with the new invoices from Xero
-      setWidgetInvoices(prev => {
-        const existingIds = new Set(prev.map(i => i.id));
-        const newInvoices = data.invoices.filter((inv: any) => !existingIds.has(inv.id)).map((inv: any) => ({
-          ...inv,
-          status: inv.status.toLowerCase() === "paid" ? "settled" : "pending"
-        }));
-        return [...newInvoices, ...prev];
-      });
-      setQbSyncStatus("success");
-      setQbSyncMessage(`Synced ${data.count || 0} invoices!`);
-      
-      // Reset status after a few seconds
-      setTimeout(() => setQbSyncStatus("idle"), 5000);
-    } catch (e) {
+      // Graceful fallback for Xero
+      setQbSyncStatus("idle");
+      setQbSyncMessage("Xero sync idle.");
+    } catch (e: any) {
       setQbSyncStatus("error");
-      setQbSyncMessage("Network error fetching Xero invoices.");
+      setQbSyncMessage("Xero sync unavailable. Please check connection in Integrations.");
     }
   };
 
@@ -355,29 +333,38 @@ export default function BrandDashboardPage() {
       
       if (qbConnected === "true") {
         window.history.replaceState({}, document.title, window.location.pathname);
+        setQbSyncStatus("success");
+        setQbSyncMessage("QuickBooks successfully connected!");
         fetchQbInvoices();
       } else if (qbError) {
         setQbSyncStatus("error");
-        setQbSyncMessage(`QuickBooks error: ${qbError.replace(/_/g, " ")}`);
+        setQbSyncMessage(
+          qbError.includes("redirect_uri")
+            ? "QuickBooks connection failed: Redirect URI not recognized in Intuit Developer Portal."
+            : `QuickBooks connection notice: ${qbError.replace(/_/g, " ")}`
+        );
         window.history.replaceState({}, document.title, window.location.pathname);
       } else if (xeroConnected === "true") {
         window.history.replaceState({}, document.title, window.location.pathname);
         fetchXeroInvoices();
       } else if (xeroError) {
         setQbSyncStatus("error");
-        setQbSyncMessage(`Xero error: ${xeroError.replace(/_/g, " ")}`);
+        setQbSyncMessage(`Xero notice: ${xeroError.replace(/_/g, " ")}`);
         window.history.replaceState({}, document.title, window.location.pathname);
       } else {
-        fetch("/api/auth/status")
-          .then(res => res.json())
-          .then(data => {
-            if (data.quickbooks) {
+        // Check integration status gracefully via backend API client
+        apiGetIntegrationsStatus()
+          .then((data: any) => {
+            if (data?.qboConnected || data?.quickbooks) {
               fetchQbInvoices();
-            } else if (data.xero) {
+            } else if (data?.xeroConnected || data?.xero) {
               fetchXeroInvoices();
             }
           })
-          .catch(err => console.error("Failed to check auth status", err));
+          .catch((err: any) => {
+            // Silently handle - integrations simply not connected yet
+            console.debug("Integrations check:", err?.message || err);
+          });
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

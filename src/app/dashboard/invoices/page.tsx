@@ -33,6 +33,7 @@ import {
 import { cn } from "../../../lib/utils";
 import { downloadTableReportPdf } from "../../../lib/pdfExport";
 import { useApp } from "../../../context/AppContext";
+import { apiGetIntegrationsStatus, apiGetQuickBooksInvoices } from "../../../lib/api/integrations";
 import { AgncyPayLogo } from "../../../components/payment/AgncyPayLogo";
 import {
   WorkspaceType,
@@ -682,37 +683,29 @@ export default function InvoicesPortalPage() {
     setQbSyncStatus("loading");
     setQbSyncMessage("Fetching invoices from QuickBooks...");
     try {
-      const res = await fetch("/api/quickbooks/invoices");
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        setQbSyncStatus("error");
-        setQbSyncMessage(
-          data.error === "not_connected"
-            ? "QuickBooks not connected."
-            : data.error === "token_expired"
-            ? "QuickBooks session expired. Please reconnect."
-            : "Failed to fetch QuickBooks invoices."
-        );
-        return;
-      }
-      const qbInvoices = data.invoices || [];
-      if (qbInvoices.length > 0) {
+      const qbInvoices = await apiGetQuickBooksInvoices();
+      if (Array.isArray(qbInvoices) && qbInvoices.length > 0) {
         setInvoiceRows((prev) => {
           const existingIds = new Set(prev.map((inv) => inv.id));
           const newOnes = qbInvoices.filter((inv: any) => !existingIds.has(inv.id));
           return [...newOnes, ...prev];
         });
+        setConnectedSource("quickbooks");
+        setQbSyncStatus("success");
+        setQbSyncMessage(`${qbInvoices.length} invoice${qbInvoices.length === 1 ? "" : "s"} imported from QuickBooks.`);
+      } else {
+        setConnectedSource("quickbooks");
+        setQbSyncStatus("idle");
+        setQbSyncMessage("QuickBooks connected — no pending invoices found.");
       }
-      setConnectedSource("quickbooks");
-      setQbSyncStatus("success");
-      setQbSyncMessage(
-        qbInvoices.length > 0
-          ? `${qbInvoices.length} invoice${qbInvoices.length === 1 ? "" : "s"} imported from QuickBooks.`
-          : "QuickBooks connected — no invoices found."
-      );
-    } catch {
+    } catch (err: any) {
       setQbSyncStatus("error");
-      setQbSyncMessage("Network error fetching QuickBooks invoices.");
+      const msg = err?.message || "";
+      if (msg.toLowerCase().includes("not connected") || msg.toLowerCase().includes("unauthorized")) {
+        setQbSyncMessage("QuickBooks is not connected yet. Connect your account in Settings.");
+      } else {
+        setQbSyncMessage("QuickBooks sync unavailable. Please check connection in Integrations.");
+      }
     }
   }, []);
 
@@ -730,9 +723,9 @@ export default function InvoicesPortalPage() {
       router.replace("/dashboard/invoices");
       setQbSyncStatus("error");
       setQbSyncMessage(
-        qbError === "state_mismatch"
-          ? "Security check failed. Please try again."
-          : `QuickBooks authorization failed: ${qbError.replace(/_/g, " ")}.`
+        qbError.includes("redirect_uri")
+          ? "QuickBooks connection failed: Redirect URI not registered in Intuit Developer Portal."
+          : `QuickBooks authorization notice: ${qbError.replace(/_/g, " ")}.`
       );
     } else if (xeroConnected === "true") {
       router.replace("/dashboard/invoices");
@@ -743,21 +736,22 @@ export default function InvoicesPortalPage() {
       setXeroSyncMessage(
         xeroError === "state_mismatch"
           ? "Security check failed. Please try again."
-          : `Xero authorization failed: ${xeroError.replace(/_/g, " ")}.`
+          : `Xero authorization notice: ${xeroError.replace(/_/g, " ")}.`
       );
     } else {
-      fetch("/api/auth/status")
-        .then(res => res.json())
-        .then(data => {
-          if (data.quickbooks) {
+      apiGetIntegrationsStatus()
+        .then((data: any) => {
+          if (data?.qboConnected || data?.quickbooks) {
             setConnectedSource("quickbooks");
             fetchQbInvoices();
-          } else if (data.xero) {
+          } else if (data?.xeroConnected || data?.xero) {
             setConnectedSource("xero");
             fetchXeroInvoices();
           }
         })
-        .catch(err => console.error("Failed to check auth status", err));
+        .catch((err: any) => {
+          console.debug("Integrations check:", err?.message || err);
+        });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
