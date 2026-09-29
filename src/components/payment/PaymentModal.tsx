@@ -46,9 +46,9 @@ export function PaymentModal({ isOpen, onClose, invoice }: PaymentModalProps) {
   const [selectedRail, setSelectedRail] = useState<PaymentRail>("instant_treasury");
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  // Virtual Cybrid deposit account details for wire/ACH instructions
+  // Virtual deposit account details for wire/ACH instructions
   const agencyDepositDetails = {
-    bankName: "Evolve Bank & Trust / Cybrid",
+    bankName: "Evolve Bank & Trust / Partner Clearing",
     routingNumber: "111000025",
     accountNumber: `4098${invoice.id.replace(/\D/g, "").padStart(6, "0").slice(0, 8)}`,
     accountType: "Commercial Checking",
@@ -58,7 +58,7 @@ export function PaymentModal({ isOpen, onClose, invoice }: PaymentModalProps) {
 
   const steps = [
     "Validating corporate invoice & cryptographic signature",
-    "Allocating liquidity via Cybrid partner banking ledger",
+    "Allocating liquidity via partner banking ledger",
     "Executing real-time clearing & settlement entry",
     "Generating immutable double-entry receipt on platform ledger",
   ];
@@ -139,7 +139,7 @@ export function PaymentModal({ isOpen, onClose, invoice }: PaymentModalProps) {
                 <ShieldCheck className="h-5 w-5 text-emerald-400" />
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">
                   {payState === "summary" && "Brand Payment Gateway"}
-                  {payState === "processing" && "Processing Cybrid Settlement"}
+                  {payState === "processing" && "Processing Settlement"}
                   {payState === "success" && "Settlement Confirmed"}
                   {payState === "failed" && "Settlement Failed"}
                 </h3>
@@ -185,7 +185,7 @@ export function PaymentModal({ isOpen, onClose, invoice }: PaymentModalProps) {
                       <p className="text-[#8E8E93] font-semibold uppercase tracking-wider text-[10px]">Settlement Rails</p>
                       <p className="text-emerald-400 font-bold mt-1 flex items-center gap-1.5">
                         <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                        Cybrid Cloud Banking
+                        Partner Clearing Rails
                       </p>
                     </div>
                   </div>
@@ -228,7 +228,7 @@ export function PaymentModal({ isOpen, onClose, invoice }: PaymentModalProps) {
                             <Zap className="h-4 w-4 text-amber-500" /> Instant Settlement
                           </div>
                           <span className={cn("text-[10px] mt-1 block", selectedRail === "instant_treasury" ? "text-neutral-700" : "text-[#71717A]")}>
-                            Cybrid Treasury Ledger
+                            Treasury Liquidity Ledger
                           </span>
                         </div>
                         <span className={cn("text-[9px] font-extrabold uppercase mt-2 px-1.5 py-0.5 rounded w-fit", selectedRail === "instant_treasury" ? "bg-black/10 text-black" : "bg-emerald-500/20 text-emerald-300")}>
@@ -349,7 +349,7 @@ export function PaymentModal({ isOpen, onClose, invoice }: PaymentModalProps) {
                   <div className="flex items-start gap-2.5 bg-white/[0.02] border border-white/[0.06] p-3.5 rounded-xl text-[11px] text-[#A1A1AA] leading-relaxed">
                     <Lock className="h-4 w-4 shrink-0 mt-0.5 text-emerald-400" />
                     <span>
-                      Protected by Cybrid Banking Security. Funds are held in FDIC-insured partner custodial accounts and automatically balanced on the platform double-entry ledger.
+                      Protected by FDIC-insured partner custodial accounts and automatically balanced on the platform double-entry ledger.
                     </span>
                   </div>
 
@@ -375,7 +375,7 @@ export function PaymentModal({ isOpen, onClose, invoice }: PaymentModalProps) {
 
                   <div className="space-y-1">
                     <h3 className="text-base font-bold text-white">Settling {formatCurrency(invoice.amount)}</h3>
-                    <p className="text-xs text-[#8E8E93]">Routing through Cybrid Banking Network</p>
+                    <p className="text-xs text-[#8E8E93]">Routing through AgncyPay Banking Network</p>
                   </div>
 
                   {/* Checklist of validation steps */}
@@ -422,7 +422,7 @@ export function PaymentModal({ isOpen, onClose, invoice }: PaymentModalProps) {
                   {/* Transaction metadata */}
                   <div className="w-full bg-white/[0.02] border border-white/[0.06] p-4 rounded-xl text-left text-xs divide-y divide-white/[0.04] space-y-2">
                     <div className="flex justify-between py-1">
-                      <span className="text-[#8E8E93]">Cybrid Transfer Reference</span>
+                      <span className="text-[#8E8E93]">Platform Clearing Reference</span>
                       <span className="font-mono font-bold text-white">{txId}</span>
                     </div>
                     <div className="flex justify-between py-2">

@@ -69,22 +69,8 @@ export default function AgencyContactsPage() {
           getRegisteredTalents()
         ]);
 
-        const MOCK_BRANDS: FirestoreUser[] = [
-          { uid: "b-1", email: "billing@nike.com", fullName: "Nike Brand Team", workspaceName: "Nike Global", accountType: "brand", agencyId: "AG-10001", createdAt: new Date().toISOString() },
-          { uid: "b-2", email: "finance@adidas.com", fullName: "Adidas North America", workspaceName: "Adidas Corp", accountType: "brand", agencyId: "AG-10002", createdAt: new Date().toISOString() },
-          { uid: "b-3", email: "ap@redbull.com", fullName: "Red Bull Media House", workspaceName: "Red Bull Media", accountType: "brand", agencyId: "AG-10003", createdAt: new Date().toISOString() },
-          { uid: "b-4", email: "accounts@apple.com", fullName: "Apple Marketing", workspaceName: "Apple Inc.", accountType: "brand", agencyId: "AG-10004", createdAt: new Date().toISOString() },
-        ];
-
-        const MOCK_TALENTS: FirestoreUser[] = [
-          { uid: "t-1", email: "alex.rivas@creator.co", fullName: "Alex Rivas", workspaceName: "Alex Studio", accountType: "talent_independent", agencyId: "AG-20001", createdAt: new Date().toISOString() },
-          { uid: "t-2", email: "elena.rostova@talent.io", fullName: "Elena Rostova", workspaceName: "Elena Vlog", accountType: "talent_independent", agencyId: "AG-20002", createdAt: new Date().toISOString() },
-          { uid: "t-3", email: "marcus.chen@studio.com", fullName: "Marcus Chen", workspaceName: "Marcus Media", accountType: "talent_independent", agencyId: "AG-20003", createdAt: new Date().toISOString() },
-          { uid: "t-4", email: "sarah.jenkins@vlog.tv", fullName: "Sarah Jenkins", workspaceName: "Sarah Vlog", accountType: "talent_independent", agencyId: "AG-20004", createdAt: new Date().toISOString() },
-        ];
-
-        setBrands(brandsData && brandsData.length > 0 ? brandsData : MOCK_BRANDS);
-        setTalents(talentsData && talentsData.length > 0 ? talentsData : MOCK_TALENTS);
+        setBrands(Array.isArray(brandsData) ? brandsData : []);
+        setTalents(Array.isArray(talentsData) ? talentsData : []);
       } catch (e) {
         console.error("Error loading contacts:", e);
       } finally {

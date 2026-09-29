@@ -126,49 +126,26 @@ export function IntegrationsPanel({
       }
     }
 
-    // Check backend QuickBooks & Integrations status
-    apiGetQuickBooksStatus()
-      .then((qbData) => {
-        if (qbData && qbData.connected) {
-          setConnectedIds((prev) => Array.from(new Set([...prev, "quickbooks"])));
-        }
-      })
-      .catch(() => {});
-
+    // Check backend Integrations status strictly for the authenticated user
     apiGetIntegrationsStatus()
       .then((data: any) => {
-        setConnectedIds((prev) => {
-          const backendList = [...prev];
-          let changed = false;
-          if (data.qboConnected && !backendList.includes("quickbooks")) {
-            backendList.push("quickbooks");
-            changed = true;
-            if (onSync) onSync("quickbooks");
-          }
-          if (changed) {
-            localStorage.setItem("agncypay_connected_apps", JSON.stringify(backendList));
-          }
-          return backendList;
-        });
+        const active: string[] = [];
+        if (data?.qboConnected || data?.quickbooks) {
+          active.push("quickbooks");
+          if (onSync) onSync("quickbooks");
+        }
+        if (data?.xeroConnected || data?.xero) {
+          active.push("xero");
+          if (onSync) onSync("xero");
+        }
+        if (data?.sageConnected || data?.sage) {
+          active.push("sage");
+        }
+        setConnectedIds(active);
       })
       .catch(() => {
-        // Fallback to local storage if API check is unavailable
+        setConnectedIds([]);
       });
-
-
-
-    // Load saved preferences from localStorage
-    const saved = localStorage.getItem("agncypay_connected_apps");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setConnectedIds((prev) => Array.from(new Set([...prev, ...parsed])));
-        }
-      } catch (e) {
-        console.error("Error parsing saved connected apps", e);
-      }
-    }
   }, [onSync]);
 
   const saveConnectedApps = (ids: string[]) => {
@@ -183,14 +160,13 @@ export function IntegrationsPanel({
       if (app.id === "quickbooks") {
         setConnectingId(app.id);
         setStatusType("loading");
-        setStatusMessage(`Redirecting to ${app.fullName} authentication portal...`);
-        apiConnectQuickBooks()
+        const currentPath = typeof window !== "undefined" ? window.location.pathname : "/branddashboard";
+        apiConnectQuickBooks(currentPath)
           .then((res: any) => {
-            window.location.href = res.url || "http://localhost:3001/api/v1/quickbooks/connect";
+            window.location.href = res.url || `http://localhost:3001/api/v1/quickbooks/connect?returnTo=${encodeURIComponent(currentPath)}`;
           })
-
           .catch(() => {
-            window.location.href = "http://localhost:3001/api/v1/quickbooks/connect";
+            window.location.href = `http://localhost:3001/api/v1/quickbooks/connect?returnTo=${encodeURIComponent(currentPath)}`;
           });
         return;
       }
@@ -320,21 +296,14 @@ export function IntegrationsPanel({
                   className={`w-full h-full object-contain filter drop-shadow-xs transition-transform duration-200 group-hover:scale-110 ${!isConn ? "opacity-85 group-hover:opacity-100" : ""}`} 
                 />
 
-                {/* Visible Status Badge (+ or Checkmark) */}
-                <div className="absolute top-1 right-1">
-                  {isConn ? (
+                {/* Status Badge (Checkmark when connected) */}
+                {isConn && (
+                  <div className="absolute top-1 right-1">
                     <div className="w-4 h-4 rounded-full bg-emerald-600 flex items-center justify-center text-white shadow-xs">
                       <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
                     </div>
-                  ) : (
-                    <div 
-                      className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-slate-900 group-hover:bg-slate-950 flex items-center justify-center text-white shadow-xs transition-transform duration-200 group-hover:scale-110"
-                      style={{ backgroundColor: "#0F172A", color: "#FFFFFF" }}
-                    >
-                      <Plus className="w-3 h-3 text-white" strokeWidth={2.5} style={{ color: "#FFFFFF" }} />
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
 
               {/* Tile Label */}
@@ -350,7 +319,7 @@ export function IntegrationsPanel({
                 </span>
               ) : (
                 <span className="text-[10px] text-slate-500 group-hover:text-slate-800 font-semibold mt-0.5 text-center truncate w-full flex items-center justify-center gap-0.5">
-                  <Plus className="w-2.5 h-2.5 text-slate-600 inline" strokeWidth={2.5} /> Connect
+                  Connect
                 </span>
               )}
             </motion.div>

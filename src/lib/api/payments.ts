@@ -18,7 +18,7 @@ export interface PaymentRecord {
   currency: string;
   status: string;
   paymentMethod: string;
-  cybridDepositRef?: string;
+  depositRef?: string;
   createdAt: string;
   brand?: { fullName: string; email: string };
   agency?: { fullName: string; email: string };

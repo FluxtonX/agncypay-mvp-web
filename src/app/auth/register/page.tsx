@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, ShieldCheck, Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
+import { Check, ShieldCheck, Loader2, ArrowRight } from "lucide-react";
 import { apiRegister } from "../../../lib/api/auth";
 import { WorkspaceType } from "../../../types/workspace";
 
@@ -12,60 +12,7 @@ import { useApp } from "../../../context/AppContext";
 const DEMO_EMAIL = "martin.safi@adidas.com";
 const DEMO_PASSWORD = "password123";
 
-function FormField({
-  id,
-  label,
-  value,
-  onChange,
-  placeholder,
-  error,
-  type = "text",
-  autoComplete,
-}: {
-  id: string;
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder: string;
-  error?: string;
-  type?: string;
-  autoComplete?: string;
-}) {
-  const [showPassword, setShowPassword] = useState(false);
-  const isPasswordType = type === "password";
-  const inputType = isPasswordType ? (showPassword ? "text" : "password") : type;
 
-  return (
-    <div className="space-y-2">
-      <label className="text-[12px] font-semibold text-[#A1A1AA]" htmlFor={id}>{label}</label>
-      <div className="relative group w-full">
-        <input
-          id={id}
-          type={inputType}
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          className={`w-full bg-[#0B0B0B] border ${error ? "border-[#ff453a]/50" : "border-[#262626] group-hover:border-white/20"} ${isPasswordType ? "pr-12" : ""} focus:border-white/40 focus:ring-4 focus:ring-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-[#5A5A62] transition-all outline-none`}
-          placeholder={placeholder}
-        />
-        {isPasswordType && (
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8E8E93] hover:text-white transition-colors"
-          >
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          </button>
-        )}
-      </div>
-      {error && (
-        <span className="text-xs text-[#ff453a] flex items-center gap-1 mt-1">
-          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-          {error}
-        </span>
-      )}
-    </div>
-  );
-}
 
 export default function RegisterPage() {
   const router = useRouter();
