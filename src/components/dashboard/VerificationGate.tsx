@@ -40,7 +40,7 @@ export function VerificationGate({ children }: VerificationGateProps) {
       pending: state.verificationStatus === "submitted" || state.verificationStatus === "in_review",
     },
     {
-      label: "Cybrid clearing bank account",
+      label: "Institutional clearing bank account",
       done: state.bankDetails.status === "approved",
       pending: state.bankDetails.status === "processing",
     },

@@ -182,7 +182,7 @@ export default function AgencyWalletPage() {
               availableBalance={42250}
               pendingBalance={6250}
               accountNumber={officialWalletId}
-              network="Cybrid FDIC Clearing"
+              network="FDIC Partner Clearing"
               onSend={() => router.push("/agencydashboard/invoices")}
               onReceive={() => setIsAddModalOpen(true)}
             />

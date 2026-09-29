@@ -398,7 +398,7 @@ export default function InvoicesQueuePage() {
                 title="Settled & Received"
                 value={settledTotal}
                 isCurrency={true}
-                deltaPeriod="Cleared via Cybrid rails"
+                deltaPeriod="Cleared via banking rails"
                 icon={<ShieldCheck className="h-4 w-4 text-emerald-500" />}
               />
             </>
@@ -620,7 +620,7 @@ export default function InvoicesQueuePage() {
               </div>
               <div>
                 <h3 className="text-base font-bold text-white">Create Brand Invoice</h3>
-                <p className="text-xs text-neutral-400">Issue invoice with automated Cybrid banking rails</p>
+                <p className="text-xs text-neutral-400">Issue invoice with automated banking rails</p>
               </div>
             </div>
 
@@ -756,7 +756,7 @@ export default function InvoicesQueuePage() {
               </div>
               <div>
                 <h3 className="text-base font-bold text-white">Business Verification Required</h3>
-                <p className="text-xs text-neutral-400">Cybrid Inbound Banking & Invoicing</p>
+                <p className="text-xs text-neutral-400">Inbound Banking & Invoicing</p>
               </div>
             </div>
 

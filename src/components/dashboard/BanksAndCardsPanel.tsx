@@ -12,7 +12,7 @@ interface PlaidAccount {
   availableBalance: number;
 }
 
-interface CybridDepositAccount {
+interface DepositAccount {
   routingNumber?: string;
   accountNumber?: string;
   uniqueMemoId?: string;
@@ -25,7 +25,7 @@ interface BanksAndCardsPanelProps {
 
 export function BanksAndCardsPanel({ onConnectAccount }: BanksAndCardsPanelProps) {
   const [plaidAccounts, setPlaidAccounts] = useState<PlaidAccount[]>([]);
-  const [cybridDeposit, setCybridDeposit] = useState<CybridDepositAccount | null>(null);
+  const [depositAccount, setDepositAccount] = useState<DepositAccount | null>(null);
   const [isPlaidLoading, setIsPlaidLoading] = useState(false);
   const [plaidError, setPlaidError] = useState<string | null>(null);
 
@@ -49,11 +49,11 @@ export function BanksAndCardsPanel({ onConnectAccount }: BanksAndCardsPanelProps
         }
       }
 
-      // Fetch Cybrid Virtual Deposit Account from API
+      // Fetch Virtual Deposit Account from API
       apiGetVerificationState()
         .then((state) => {
           if (state?.depositAccount) {
-            setCybridDeposit(state.depositAccount);
+            setDepositAccount(state.depositAccount);
           }
         })
         .catch(() => {});
@@ -192,8 +192,8 @@ export function BanksAndCardsPanel({ onConnectAccount }: BanksAndCardsPanelProps
 
       {/* Main Body */}
       <div className="p-6 flex flex-col gap-4 border-b border-slate-100 bg-white">
-        {/* Cybrid Inbound Deposit Account (Virtual Checking for Brand ACH/Wire Funding) */}
-        {cybridDeposit && (
+        {/* Inbound Deposit Account (Virtual Checking for Brand ACH/Wire Funding) */}
+        {depositAccount && (
           <div className="flex items-center justify-between p-4 rounded-xl border border-emerald-200 bg-emerald-50/60 hover:border-emerald-300 transition-all shadow-xs">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl border border-emerald-200 bg-emerald-100/70 flex items-center justify-center shrink-0">
@@ -202,18 +202,18 @@ export function BanksAndCardsPanel({ onConnectAccount }: BanksAndCardsPanelProps
               <div>
                 <div className="flex items-center gap-2">
                   <h4 className="text-xs font-bold text-slate-900">
-                    {cybridDeposit.bankName || "Evolve Bank & Trust / Cybrid Sandbox"}
+                    {depositAccount.bankName || "Evolve Bank & Trust / Dedicated Clearing"}
                   </h4>
                   <span className="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    Cybrid Cloud Inbound Settlement
+                    Dedicated Inbound Settlement
                   </span>
                 </div>
                 <p className="text-[11px] font-medium text-slate-600 mt-1 flex items-center gap-3">
-                  <span>Routing: <strong className="font-mono text-slate-900">{cybridDeposit.routingNumber}</strong></span>
+                  <span>Routing: <strong className="font-mono text-slate-900">{depositAccount.routingNumber}</strong></span>
                   <span>•</span>
-                  <span>Acct: <strong className="font-mono text-slate-900">{cybridDeposit.accountNumber}</strong></span>
+                  <span>Acct: <strong className="font-mono text-slate-900">{depositAccount.accountNumber}</strong></span>
                   <span>•</span>
-                  <span>Memo: <strong className="font-mono text-emerald-700">{cybridDeposit.uniqueMemoId}</strong></span>
+                  <span>Memo: <strong className="font-mono text-emerald-700">{depositAccount.uniqueMemoId}</strong></span>
                 </p>
               </div>
             </div>

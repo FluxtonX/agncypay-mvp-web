@@ -93,7 +93,7 @@ export default function VerificationPage() {
               <Lock className="h-4 w-4 text-slate-400 mt-0.5 shrink-0" />
               <div>
                 <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Encrypted Audit Hash</span>
-                <p className="font-mono text-[11px] text-slate-600 truncate mt-0.5">ap_984021_cybrid_fincen_audit</p>
+                <p className="font-mono text-[11px] text-slate-600 truncate mt-0.5">ap_984021_fincen_audit</p>
               </div>
             </div>
           </div>

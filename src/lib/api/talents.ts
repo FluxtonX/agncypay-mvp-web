@@ -49,3 +49,33 @@ export async function deleteTalent(id: string): Promise<{ success: boolean }> {
     method: 'DELETE',
   });
 }
+
+export async function getCrmConfig(): Promise<{
+  agencyId: string;
+  agncyId: string;
+  webhookUrl: string;
+  apiKey: string;
+  supportedEvents: string[];
+}> {
+  return apiClient('/crm/config');
+}
+
+export async function importCsvRoster(roster: Array<{
+  fullName: string;
+  email?: string;
+  phone?: string;
+  country?: string;
+  category?: string;
+  splitShare?: number;
+}>): Promise<{
+  totalReceived: number;
+  importedCount: number;
+  updatedCount: number;
+  talents: any[];
+}> {
+  return apiClient('/crm/import-roster', {
+    method: 'POST',
+    body: JSON.stringify({ roster }),
+  });
+}
+

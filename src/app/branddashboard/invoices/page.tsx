@@ -359,7 +359,7 @@ export default function InvoicesQueuePage() {
                 <span>•</span>
                 <span className="text-emerald-700 font-semibold flex items-center gap-1.5 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Cybrid Cloud Clearing Active
+                  AgncyPay Clearing Rails Active
                 </span>
               </div>
             </div>

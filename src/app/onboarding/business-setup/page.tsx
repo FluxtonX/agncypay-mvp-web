@@ -247,7 +247,7 @@ export default function BusinessSetupPage() {
               {[
                 { step: 1, title: "Business Registry", desc: "Entity & Tax Identification", icon: Building2 },
                 { step: 2, title: "Representative", desc: "Signatory & Ownership", icon: UserCheck },
-                { step: 3, title: "Clearing & Attestation", desc: "Cybrid Virtual Banking", icon: Landmark },
+                { step: 3, title: "Clearing & Attestation", desc: "Institutional Clearing", icon: Landmark },
               ].map((item, idx) => {
                 const Icon = item.icon;
                 const isActive = currentStep === item.step;
@@ -327,7 +327,7 @@ export default function BusinessSetupPage() {
               <div className="space-y-1">
                 <h3 className="text-xl font-bold text-slate-900 tracking-tight">Business Verification Submitted</h3>
                 <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-                  Your legal entity has been submitted to Cybrid for instant verification. Dedicated USD Fiat and settlement bank accounts are being linked to your workspace.
+                  Your legal entity has been submitted for automated compliance verification. Dedicated USD Fiat and settlement bank accounts are being linked to your workspace.
                 </p>
               </div>
 
@@ -588,7 +588,7 @@ export default function BusinessSetupPage() {
                   <div className="border-b border-slate-100 pb-4">
                     <h2 className="text-lg font-bold text-slate-900 tracking-tight">Dedicated Clearing & Legal Attestation</h2>
                     <p className="text-xs font-medium text-slate-500 mt-1">
-                      Review the dedicated banking channels provisioned via Cybrid and attest to corporate accuracy.
+                      Review the dedicated banking channels provisioned for your workspace and attest to corporate accuracy.
                     </p>
                   </div>
 
@@ -601,7 +601,7 @@ export default function BusinessSetupPage() {
                         </div>
                         <div>
                           <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                            Cybrid Dedicated Clearing Account
+                            Dedicated Corporate Clearing Account
                           </h4>
                           <p className="text-[11px] text-slate-500 font-medium">
                             Evolve Bank & Trust / Member FDIC • USD Virtual Clearing
@@ -674,7 +674,7 @@ export default function BusinessSetupPage() {
                         className="w-4 h-4 mt-0.5 rounded border-slate-300 text-slate-900 accent-slate-900 cursor-pointer"
                       />
                       <span className="text-xs leading-relaxed text-slate-600">
-                        I authorize Cybrid and partner banks to initialize corporate clearing accounts and perform automated FinCEN sanction checks pursuant to federal banking laws.
+                        I authorize AgncyPay and partner banking institutions to initialize corporate clearing accounts and perform automated FinCEN sanction checks pursuant to federal banking laws.
                       </span>
                     </label>
                   </div>
@@ -739,7 +739,7 @@ export default function BusinessSetupPage() {
                       {isLoading ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin text-white" />
-                          <span>Submitting to Cybrid...</span>
+                          <span>Submitting Verification...</span>
                         </>
                       ) : (
                         <>

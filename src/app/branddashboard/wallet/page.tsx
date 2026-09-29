@@ -270,7 +270,7 @@ export default function WalletDashboardPage() {
               availableBalance={depositedBalance * 0.85}
               pendingBalance={depositedBalance * 0.15}
               accountNumber={officialWalletId}
-              network="Cybrid FDIC Clearing"
+              network="FDIC Partner Clearing"
               onSend={() => router.push("/branddashboard/invoices")}
               onReceive={() => setIsDepositModalOpen(true)}
             />
