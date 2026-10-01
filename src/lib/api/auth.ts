@@ -1,13 +1,5 @@
 import { apiClient } from "./client";
 
-export interface RegisterPayload {
-  email: string;
-  password: string;
-  fullName: string;
-  accountType: "brand" | "agency";
-  workspaceName?: string;
-}
-
 export interface LoginPayload {
   email: string;
   password: string;
@@ -18,7 +10,7 @@ export interface AuthResponse {
     id: string;
     email: string;
     fullName: string;
-    accountType: "brand" | "agency";
+    accountType: "brand" | "agency" | "talent";
     agncyId: string;
     kybStatus?: string;
   };
@@ -26,18 +18,32 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
-export async function apiRegister(payload: RegisterPayload): Promise<AuthResponse> {
-  const data = await apiClient<AuthResponse>("/auth/register", {
+export async function apiAcceptInvitation(payload: {
+  token: string;
+  password: string;
+  fullName: string;
+}): Promise<AuthResponse> {
+  const data = await apiClient<AuthResponse>("/auth/invitations/accept", {
     method: "POST",
     body: JSON.stringify(payload),
   });
-
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined" && data.user.accountType !== "talent") {
     localStorage.setItem("agncypay_token", data.accessToken);
     localStorage.setItem("agncypay_refresh_token", data.refreshToken);
   }
-
   return data;
+}
+
+export function apiCreateInvitation(payload: {
+  organizationId: string;
+  email: string;
+  accountType: "brand" | "agency" | "talent";
+  relationshipType: string;
+}) {
+  return apiClient<{ invitationId: string; token: string; expiresAt: string }>("/auth/invitations", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export async function apiLogin(payload: LoginPayload): Promise<AuthResponse> {
@@ -71,11 +77,10 @@ export async function apiResetPassword(token: string, newPassword: string): Prom
 export async function apiLogout(): Promise<void> {
   try {
     await apiClient("/auth/logout", { method: "POST" });
-  } catch (_) {}
+  } catch {}
 
   if (typeof window !== "undefined") {
     localStorage.removeItem("agncypay_token");
     localStorage.removeItem("agncypay_refresh_token");
   }
 }
-

@@ -1,6 +1,5 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001/api/v1";
 
-let isRefreshing = false;
 let refreshPromise: Promise<string | null> | null = null;
 
 async function getOrRefreshToken(): Promise<string | null> {
@@ -31,44 +30,26 @@ async function getOrRefreshToken(): Promise<string | null> {
         }
       }
 
-      // Auto-authenticate with demo agency account if no valid session exists
-      const loginRes = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: "agency@elite.com",
-          password: "Password123!",
-        }),
-      });
-
-      if (loginRes.ok) {
-        const loginData = await loginRes.json();
-        if (loginData.accessToken) {
-          localStorage.setItem("agncypay_token", loginData.accessToken);
-          if (loginData.refreshToken) {
-            localStorage.setItem("agncypay_refresh_token", loginData.refreshToken);
-          }
-          return loginData.accessToken;
-        }
-      }
     } catch (e) {
-      console.warn("Auto-token provision fallback warning:", e);
+      console.warn("Session refresh failed:", e);
     } finally {
       refreshPromise = null;
     }
+    localStorage.removeItem("agncypay_token");
+    localStorage.removeItem("agncypay_refresh_token");
     return null;
   })();
 
   return refreshPromise;
 }
 
-export async function apiClient<T = any>(
+export async function apiClient<T = unknown>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
   let token = typeof window !== "undefined" ? localStorage.getItem("agncypay_token") : null;
 
-  // If no token exists at all in the browser, proactively provision one
+  // Refresh an existing user session; never provision an implicit/demo identity.
   if (!token && typeof window !== "undefined" && !endpoint.includes("/auth/")) {
     token = await getOrRefreshToken();
   }
@@ -89,7 +70,7 @@ export async function apiClient<T = any>(
     headers,
   });
 
-  // If 401 Unauthorized, automatically refresh/provision token and retry once
+  // If unauthorized, refresh the user's own session and retry once.
   if (response.status === 401 && typeof window !== "undefined" && !endpoint.includes("/auth/")) {
     const newToken = await getOrRefreshToken();
     if (newToken) {
@@ -104,9 +85,9 @@ export async function apiClient<T = any>(
   if (!response.ok) {
     let errorMessage = "An error occurred";
     try {
-      const errorData = await response.json();
-      errorMessage = errorData.message || errorData.error || errorMessage;
-    } catch (_) {}
+      const errorData = (await response.json()) as Record<string, unknown>;
+      errorMessage = String(errorData.message || errorData.error || errorMessage);
+    } catch {}
     throw new Error(errorMessage);
   }
 

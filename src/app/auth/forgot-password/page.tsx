@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Mail, ArrowLeft, Send } from "lucide-react";
+import { apiForgotPassword } from "../../../lib/api/auth";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -21,11 +22,11 @@ export default function ForgotPasswordPage() {
 
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await apiForgotPassword(email.trim().toLowerCase());
       setIsSubmitted(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Password reset failed:", err);
-      setError(err.message || "Failed to dispatch reset link. Please check your email.");
+      setError(err instanceof Error ? err.message : "Failed to dispatch reset link. Please check your email.");
     } finally {
       setIsLoading(false);
     }

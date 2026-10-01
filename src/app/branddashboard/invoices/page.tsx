@@ -1,608 +1,145 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Building2,
-  ArrowLeft,
-  Search,
-  ChevronRight,
-  LogOut,
-  Sun,
-  Moon,
-  Home,
-  RefreshCw,
-  Calendar,
-  CheckCircle2,
-  Layers,
-  Coins,
-  ShieldCheck,
-  MapPin,
-  AlertTriangle,
-  Clock,
-  Info,
-  Wallet,
-  X,
-  CreditCard,
-  Landmark,
-  Receipt
-} from "lucide-react";
+import { CommercialDocument, getBrandCommercialDocuments } from "../../../lib/api/commercial-documents";
+import { createPayment, getPayments, FundingInstructions, PaymentRecord } from "../../../lib/api/payments";
 import { useApp } from "../../../context/AppContext";
-import { subscribeInvoicesByBrand, subscribeInvoicesByAgency, apiUpdateInvoiceStatus } from "../../../lib/api/invoices";
-import { BatchPaymentCheckoutModal, BatchInvoiceItem } from "../../../components/payment/BatchPaymentCheckoutModal";
-import { PaymentModal } from "../../../components/payment/PaymentModal";
-import { EmptyState } from "../../../components/ui/EmptyState";
-import { LiveRefreshIndicator } from "../../../components/ui/LiveRefreshIndicator";
-import { ToastBanner, ToastMessage } from "../../../components/ui/ToastBanner";
-import { AppShell } from "../../../components/shell/AppShell";
-import { Money } from "../../../components/financial/Money";
-import { TransactionStatusBadge } from "../../../components/financial/TransactionStatusBadge";
 
-interface SplitItem {
-  name: string;
-  role: "Talent" | "Agency";
-  percentage: number;
-  amount: number;
-  walletId: string;
-  avatar: string;
+function money(amount: string, currency: string) {
+  return new Intl.NumberFormat(undefined, { style: "currency", currency }).format(Number(amount));
 }
 
-interface VendorItem {
-  name: string;
-  role: "Vendor";
-  amount: number;
-  walletId: string;
-  avatar: string;
-}
+export default function BrandInvoicesPage() {
+  const { state, logoutUser } = useApp();
+  const [documents, setDocuments] = useState<CommercialDocument[]>([]);
+  const [payments, setPayments] = useState<PaymentRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [workingId, setWorkingId] = useState<string>();
+  const [error, setError] = useState("");
+  const [instructions, setInstructions] = useState<FundingInstructions>();
 
-interface InvoiceMock {
-  id: string;
-  campaignName: string;
-  brandName: string;
-  createdDate: string;
-  dueDate: string;
-  amount: number;
-  location: string;
-  costCenter: string;
-  initials: string[];
-  vendorFee: VendorItem;
-  splitPool: {
-    total: number;
-    splits: SplitItem[];
-  };
-  status: "awaiting_approval" | "processing" | "settled" | "rejected" | "talent_disbursed";
-  defaultTerm: "Net-30" | "Net-60" | "Net-90";
-}
-
-const mockRecipients = [
-  { id: "western-models", name: "Western Models Agency", handle: "@western_models", email: "payouts@westernmodels.com", type: "agency", avatar: "W" },
-  { id: "studio-holland", name: "Studio Holland Talent", handle: "@studio_holland", email: "billing@studioholland.com", type: "agency", avatar: "S" },
-  { id: "john-adams", name: "John Adams", handle: "@john_adams", email: "john@johnadams.com", type: "talent", avatar: "J" },
-  { id: "lucy-che", name: "Lucy Che", handle: "@lucy_che", email: "lucy@lucyche.com", type: "talent", avatar: "L" },
-  { id: "jessica-bailey", name: "Jessica Bailey", handle: "@jessica_bailey", email: "jessica@jessicabailey.com", type: "talent", avatar: "J" },
-];
-
-export default function InvoicesQueuePage() {
-  const router = useRouter();
-  const { state, resetState } = useApp();
-  const workspaceType = state.user ? state.user.accountType : "brand";
-
-  const [isLightTheme, setIsLightTheme] = useState(true);
-  const [invoices, setInvoices] = useState<InvoiceMock[]>([]);
-  const [activeFilter, setActiveFilter] = useState<"all" | "awaiting_approval" | "settled">("awaiting_approval");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [isSinglePaymentOpen, setIsSinglePaymentOpen] = useState(false);
-  const [singlePaymentInvoice, setSinglePaymentInvoice] = useState<any>(null);
-  const [toast, setToast] = useState<ToastMessage | null>(null);
-  const [lastSyncText, setLastSyncText] = useState("Just now");
-
-  // Send & Request panel state
-  const [isSendRequestActive, setIsSendRequestActive] = useState(false);
-  const [sendRequestMode, setSendRequestMode] = useState<"send" | "receive">("send");
-  const [sendRequestQuery, setSendRequestQuery] = useState("");
-  const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
-  const [paymentAmount, setPaymentAmount] = useState("");
-  const [isPaymentSuccess, setIsPaymentSuccess] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedTheme = localStorage.getItem("agncypay_theme_brand");
-      if (savedTheme) {
-        const isLight = savedTheme === "light";
-        document.documentElement.classList.toggle("light", isLight);
-        document.documentElement.classList.toggle("dark", !isLight);
-        setIsLightTheme(isLight);
-      }
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (typeof window !== "undefined") {
-      const isLight = document.documentElement.classList.toggle("light");
-      document.documentElement.classList.toggle("dark", !isLight);
-      setIsLightTheme(isLight);
-      localStorage.setItem("agncypay_theme_brand", isLight ? "light" : "dark");
-    }
-  };
-
-  const handleInvoicesUpdate = useCallback((invoicesList: any[]) => {
-    const mappedList: InvoiceMock[] = invoicesList.map((inv) => {
-      let uiStatus: "awaiting_approval" | "settled" | "talent_disbursed" = "awaiting_approval";
-      if (inv.status === "paid") {
-        uiStatus = inv.talentPayoutStatus === "disbursed" ? "talent_disbursed" : "settled";
-      }
-
-      const numAmount = typeof inv.amount === "number" ? inv.amount : (Number(inv.amount) || 0);
-
-      return {
-        id: inv.id,
-        campaignName: inv.campaign || "Services Rendered",
-        brandName: inv.brandName || "Brand Partner",
-        createdDate: inv.createdDate || new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-        dueDate: inv.due || "Net-30",
-        amount: numAmount,
-        location: "Escrow Wallet Active",
-        costCenter: "Marketing (Campaign Pool)",
-        initials: [(inv.agency || "A").charAt(0).toUpperCase()],
-        defaultTerm: "Net-30",
-        status: uiStatus,
-        vendorFee: {
-          name: "Processing Fee",
-          role: "Vendor",
-          amount: numAmount * 0.1,
-          walletId: "@agncypay",
-          avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&auto=format&fit=crop&q=80",
-        },
-        splitPool: {
-          total: numAmount * 0.9,
-          splits: [
-            { name: inv.talent || "Talent Partner", role: "Talent", percentage: 85, amount: numAmount * 0.9 * 0.85, walletId: "@talent", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80" },
-            { name: inv.agency || "Agency", role: "Agency", percentage: 15, amount: numAmount * 0.9 * 0.15, walletId: "@agency", avatar: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=80&auto=format&fit=crop&q=80" },
-          ],
-        },
-      };
-    });
-    setInvoices(mappedList);
-    setLastSyncText(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-  }, []);
-
-  useEffect(() => {
-    const userEmail = state.user?.email;
-    if (!userEmail) {
-      setInvoices([]);
-      return;
-    }
-
-    let unsubscribe = () => {};
-    if (workspaceType === "brand") {
-      unsubscribe = subscribeInvoicesByBrand(userEmail, handleInvoicesUpdate);
-    } else {
-      unsubscribe = subscribeInvoicesByAgency(userEmail, handleInvoicesUpdate);
-    }
-
-    return () => unsubscribe();
-  }, [state.user, workspaceType, handleInvoicesUpdate]);
-
-  const handleManualSync = async () => {
-    setLastSyncText(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-    setToast({
-      id: `toast-${Date.now()}`,
-      type: "success",
-      title: "Ledger Synced",
-      message: "Latest invoice queue and settlement states have been updated."
-    });
-  };
-
-  const handleLogout = () => {
-    resetState();
-    router.push("/auth/login");
-  };
-
-  // Filter logic
-  const filteredInvoices = invoices.filter((inv) => {
-    const matchesFilter =
-      activeFilter === "all" ||
-      (activeFilter === "awaiting_approval" && inv.status === "awaiting_approval") ||
-      (activeFilter === "settled" && (inv.status === "settled" || inv.status === "talent_disbursed"));
-
-    const matchesSearch =
-      inv.campaignName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      inv.brandName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      inv.id.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
-
-  // Active invoice calculations
-  const activeInvoice =
-    invoices.find((inv) => inv.id === selectedInvoiceId) ||
-    filteredInvoices[0] ||
-    invoices.find((inv) => inv.status === "awaiting_approval") ||
-    invoices[0] ||
-    null;
-
-  const recentPendingInvoice =
-    invoices.find((inv) => inv.status === (activeFilter === "settled" ? "settled" : "awaiting_approval")) ||
-    invoices[0] ||
-    null;
-
-  const isAggregateView = selectedInvoiceId === null;
-  const selectedSum = invoices.filter((i) => selectedIds.includes(i.id)).reduce((acc, i) => acc + i.amount, 0);
-
-  const displayLabel =
-    selectedIds.length > 0
-      ? "Selected Total Due"
-      : !isAggregateView && activeInvoice
-      ? activeInvoice.status === "settled" || activeInvoice.status === "talent_disbursed"
-        ? "Balance Paid"
-        : "Balance Due"
-      : recentPendingInvoice?.status === "settled" || recentPendingInvoice?.status === "talent_disbursed"
-      ? "Balance Paid"
-      : "Balance Due";
-
-  const displayAmount =
-    selectedIds.length > 0
-      ? selectedSum
-      : !isAggregateView && activeInvoice
-      ? activeInvoice.amount
-      : recentPendingInvoice
-      ? recentPendingInvoice.amount
-      : 0;
-
-  const isAwaitingStatus =
-    selectedIds.length > 0
-      ? invoices.some((i) => selectedIds.includes(i.id) && i.status === "awaiting_approval")
-      : !isAggregateView && activeInvoice
-      ? activeInvoice.status === "awaiting_approval"
-      : recentPendingInvoice
-      ? recentPendingInvoice.status === "awaiting_approval"
-      : false;
-
-  const invoicesToApproveList =
-    selectedIds.length > 0
-      ? invoices.filter((inv) => selectedIds.includes(inv.id) && inv.status === "awaiting_approval")
-      : !isAggregateView && activeInvoice
-      ? [activeInvoice]
-      : recentPendingInvoice && recentPendingInvoice.status === "awaiting_approval"
-      ? [recentPendingInvoice]
-      : [];
-
-  const batchInvoices: BatchInvoiceItem[] = invoicesToApproveList.map((inv) => ({
-    id: inv.id,
-    agency: inv.campaignName,
-    amount: inv.amount,
-    status: inv.status,
-    brand: inv.brandName,
-    dueDate: inv.dueDate,
-  }));
-
-  const handleApproveAndPay = () => {
-    if (!isAwaitingStatus) return;
-    if (selectedIds.length > 1) {
-      setIsCheckoutOpen(true);
-    } else {
-      const target = invoicesToApproveList[0] || activeInvoice;
-      if (target) {
-        setSinglePaymentInvoice({
-          id: target.id,
-          amount: target.amount,
-          agency: target.vendorFee?.name || target.campaignName,
-          dueDate: target.dueDate,
-        });
-        setIsSinglePaymentOpen(true);
-      }
-    }
-  };
-
-  const handleAuthorizePayment = async () => {
-    if (invoicesToApproveList.length === 0) return;
-
+  const refresh = useCallback(async () => {
+    setError("");
     try {
-      await Promise.all(
-        invoicesToApproveList.map((inv) => apiUpdateInvoiceStatus(inv.id, "paid", "disbursed"))
-      );
-    } catch (e) {
-      console.warn("Backend update error:", e);
+      const [nextDocuments, nextPayments] = await Promise.all([
+        getBrandCommercialDocuments(),
+        getPayments(),
+      ]);
+      setDocuments(nextDocuments);
+      setPayments(nextPayments);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Unable to load commercial records.");
+    } finally {
+      setLoading(false);
     }
+  }, []);
 
-    setInvoices((prev) => {
-      const approvedIds = new Set(invoicesToApproveList.map((inv) => inv.id));
-      return prev.map((inv) =>
-        approvedIds.has(inv.id) ? { ...inv, status: "settled" as const } : inv
-      );
-    });
+  useEffect(() => {
+    let active = true;
+    Promise.all([getBrandCommercialDocuments(), getPayments()])
+      .then(([nextDocuments, nextPayments]) => {
+        if (!active) return;
+        setDocuments(nextDocuments);
+        setPayments(nextPayments);
+      })
+      .catch((caught) => {
+        if (active) setError(caught instanceof Error ? caught.message : "Unable to load commercial records.");
+      })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, []);
 
-    setToast({
-      id: `toast-${Date.now()}`,
-      type: "success",
-      title: "Settlement Confirmed",
-      message: `Successfully processed payment for ${invoicesToApproveList.length} invoice(s).`
-    });
-    setSelectedIds([]);
-  };
+  async function fund(document: CommercialDocument) {
+    const version = document.versions[0];
+    if (!version) return;
+    setWorkingId(document.id);
+    setError("");
+    try {
+      const result = await createPayment({
+        agencyOrganizationId: document.agencyOrganizationId,
+        amount: Number(version.totalAmount),
+        currency: version.currency,
+        commercialDocumentVersionId: version.id,
+        purpose: "commercial_invoice_payment",
+        idempotencyKey: `brand-invoice-${version.id}`,
+      });
+      setInstructions(result.fundingInstructions);
+      await refresh();
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Unable to initiate payment.");
+    } finally {
+      setWorkingId(undefined);
+    }
+  }
+
+  const paidVersions = new Set(payments.map((payment) => payment.commercialDocumentVersionId).filter(Boolean));
 
   return (
-    <AppShell>
-      <div className="flex flex-col gap-6">
-        {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-2">
-          <Link
-            href="/branddashboard"
-            className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-600 hover:text-slate-900 shadow-2xs transition-all flex items-center gap-1.5 shrink-0"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Dashboard
-          </Link>
-          <span className="text-xs text-slate-400">/</span>
-          <span className="text-xs text-slate-600 font-semibold">Corporate Payables & Invoices</span>
-        </div>
-
-        {/* Top Balance Card & Settlement CTA */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 flex flex-col justify-between shadow-xs relative overflow-hidden">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">{displayLabel}</span>
-              <div className="mt-1.5">
-                <Money amount={displayAmount} size="3xl" />
-              </div>
-              <div className="mt-4 flex items-center gap-3 text-xs text-slate-500">
-                <span className="flex items-center gap-1.5 font-medium">
-                  <Calendar className="h-4 w-4 text-slate-400" />
-                  {selectedIds.length > 0
-                    ? `Selected: ${selectedIds.length} invoice(s)`
-                    : `Due: ${recentPendingInvoice?.dueDate || activeInvoice?.dueDate || "Net-30"}`}
-                </span>
-                <span>•</span>
-                <span className="text-emerald-700 font-semibold flex items-center gap-1.5 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  AgncyPay Clearing Rails Active
-                </span>
-              </div>
-            </div>
-
-            {/* Pay Action Button */}
-            <div className="w-full md:w-auto shrink-0 min-w-[240px]">
-              <button
-                onClick={handleApproveAndPay}
-                disabled={!isAwaitingStatus}
-                className={`w-full h-12 px-6 rounded-xl text-xs font-bold shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                  isAwaitingStatus
-                    ? "bg-slate-900 text-white hover:bg-slate-800"
-                    : "bg-slate-100 text-slate-400 cursor-default border border-slate-200"
-                }`}
-              >
-                {isAwaitingStatus ? (
-                  <>
-                    Approve & Settle {selectedIds.length > 1 ? `(${selectedIds.length}) Invoices` : "Invoice"}
-                    <ChevronRight className="h-4 w-4" />
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle2 className="h-4.5 w-4.5 text-emerald-600" />
-                    All Invoices Settled
-                  </>
-                )}
-              </button>
-            </div>
+    <main className="min-h-screen bg-slate-50 p-5 sm:p-8">
+      <div className="mx-auto max-w-6xl">
+        <header className="mb-8 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <img src="/agncypaybrand-dark.png" alt="AgncyPay" className="mb-5 h-8 w-auto" />
+            <h1 className="text-3xl font-black text-slate-950">Brand invoices</h1>
+            <p className="mt-2 text-sm text-slate-500">CRM-originated, Agency-approved economics. AgncyPay validates and orchestrates payment without recalculating allocations.</p>
           </div>
-
-          <div className="mt-8 pt-6 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-600">
-            <div className="flex items-center gap-2.5">
-              <Layers className="h-4 w-4 text-slate-400" />
-              <span>Automated Payee Routing & Split</span>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <Landmark className="h-4 w-4 text-slate-400" />
-              <span>Direct ACH / Fedwire Deposit Available</span>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <ShieldCheck className="h-4 w-4 text-emerald-600" />
-              <span>FDIC-Insured Partner Vault Custody</span>
-            </div>
+          <div className="text-right text-sm text-slate-500">
+            <div className="font-bold text-slate-900">{state.user?.fullName}</div>
+            <button onClick={() => void logoutUser()} className="mt-2 font-semibold hover:text-slate-900">Sign out</button>
           </div>
-        </div>
+        </header>
 
-        {/* Filter Controls & Search */}
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center p-3 rounded-2xl border border-slate-200/80 bg-white shadow-xs">
-          <div className="flex flex-wrap gap-2">
-            {[
-              { id: "all", label: "All Invoices" },
-              { id: "awaiting_approval", label: "Awaiting Settlement" },
-              { id: "settled", label: "Settled" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => {
-                  setActiveFilter(tab.id as any);
-                  setSelectedIds([]);
-                }}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
-                  activeFilter === tab.id
-                    ? "bg-slate-900 text-white font-bold shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                }`}
-              >
-                {tab.label}
-                {tab.id === "awaiting_approval" && (
-                  <span className={`ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold ${activeFilter === tab.id ? "bg-white/20 text-white" : "bg-slate-100 text-slate-700"}`}>
-                    {invoices.filter((i) => i.status === "awaiting_approval").length}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
+        {error && <div className="mb-5 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-700">{error}</div>}
+        {instructions && (
+          <section className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-950">
+            <h2 className="font-black">External bank funding instructions</h2>
+            <p className="mt-1">Send the exact amount from the Brand&apos;s external bank. The Brand does not have an AgncyPay stored balance.</p>
+            <dl className="mt-4 grid gap-2 sm:grid-cols-2">
+              {Object.entries(instructions).filter(([, value]) => typeof value === "string").map(([key, value]) => (
+                <div key={key}><dt className="text-xs font-bold uppercase text-emerald-700">{key}</dt><dd className="font-mono font-semibold">{String(value)}</dd></div>
+              ))}
+            </dl>
+          </section>
+        )}
 
-          <div className="flex items-center gap-3">
-            <LiveRefreshIndicator
-              onRefresh={handleManualSync}
-              lastUpdatedText={lastSyncText}
-            />
-
-            <div className="relative md:w-72">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search campaign, invoice ID..."
-                className="w-full h-10 bg-slate-50 border border-slate-200 focus:border-slate-900 focus:bg-white rounded-xl pl-9 pr-4 text-xs outline-none placeholder:text-slate-400 transition-all text-slate-900"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Invoices List Table */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
-          {filteredInvoices.length === 0 ? (
-            <div className="p-8">
-              <EmptyState
-                icon={Receipt}
-                badgeText="Payables Status Clear"
-                title="No Invoices Pending Approval"
-                description={
-                  searchQuery
-                    ? `No invoices match your search query "${searchQuery}".`
-                    : "When partner agencies issue campaign invoices, they will appear here with automated invoice verification and one-click ACH/Wire payment settlement."
-                }
-                secondaryActionLabel={searchQuery ? "Clear Search" : undefined}
-                onSecondaryAction={searchQuery ? () => setSearchQuery("") : undefined}
-              />
-            </div>
+        <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+          <div className="border-b border-slate-100 px-6 py-5"><h2 className="font-black text-slate-900">Commercial invoice queue</h2></div>
+          {loading ? <p className="p-8 text-sm text-slate-500">Loading verified invoices…</p> : documents.length === 0 ? (
+            <p className="p-8 text-sm text-slate-500">No CRM invoices are mapped to this Brand yet. Your Agency controls onboarding and source-system mapping.</p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50/75 text-slate-500 font-bold uppercase tracking-wider">
-                    <th className="p-4 w-10">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 accent-slate-900 rounded border-slate-300 cursor-pointer"
-                        onChange={(e) => {
-                          const awaitingInvs = filteredInvoices.filter((i) => i.status === "awaiting_approval");
-                          setSelectedIds(e.target.checked ? awaitingInvs.map((i) => i.id) : []);
-                        }}
-                        checked={
-                          selectedIds.length > 0 &&
-                          selectedIds.length === filteredInvoices.filter((i) => i.status === "awaiting_approval").length &&
-                          filteredInvoices.filter((i) => i.status === "awaiting_approval").length > 0
-                        }
-                      />
-                    </th>
-                    <th className="p-4">Invoice ID</th>
-                    <th className="p-4">Campaign / Deliverable</th>
-                    <th className="p-4">Beneficiary Agency</th>
-                    <th className="p-4">Terms</th>
-                    <th className="p-4 text-right">Invoice Amount</th>
-                    <th className="p-4 text-center">Status</th>
-                    <th className="p-4 text-right pr-6">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {filteredInvoices.map((inv) => {
-                    const isAwaiting = inv.status === "awaiting_approval";
-                    const isSelected = selectedInvoiceId === inv.id;
-
-                    return (
-                      <tr
-                        key={inv.id}
-                        onClick={(e) => {
-                          if ((e.target as HTMLElement).tagName.toLowerCase() === "input") return;
-                          setSelectedInvoiceId(inv.id);
-                        }}
-                        className={`cursor-pointer transition-all group ${
-                          isSelected || selectedIds.includes(inv.id)
-                            ? "bg-slate-50 border-l-4 border-l-slate-900"
-                            : "hover:bg-slate-50/60"
-                        }`}
-                      >
-                        <td className="p-4 w-10" onClick={(e) => e.stopPropagation()}>
-                          {isAwaiting && (
-                            <input
-                              type="checkbox"
-                              className="h-4 w-4 accent-slate-900 rounded border-slate-300 cursor-pointer"
-                              checked={selectedIds.includes(inv.id)}
-                              onChange={() => {
-                                setSelectedIds((curr) =>
-                                  curr.includes(inv.id) ? curr.filter((id) => id !== inv.id) : [...curr, inv.id]
-                                );
-                              }}
-                            />
-                          )}
-                        </td>
-                        <td className="p-4 font-mono font-bold text-slate-600">
-                          {inv.id}
-                        </td>
-                        <td className="p-4">
-                          <p className="text-slate-900 font-bold">{inv.campaignName}</p>
-                          <p className="text-[11px] text-slate-500 mt-0.5">{inv.brandName}</p>
-                        </td>
-                        <td className="p-4 text-slate-800 font-semibold">{inv.vendorFee?.name || "Agency Workspace"}</td>
-                        <td className="p-4 text-slate-500 font-mono">{inv.dueDate || "Net-30"}</td>
-                        <td className="p-4 text-right font-semibold text-slate-900 text-sm">
-                          <Money amount={inv.amount} size="sm" />
-                        </td>
-                        <td className="p-4 text-center">
-                          <TransactionStatusBadge
-                            status={isAwaiting ? "PENDING" : "COMPLETED"}
-                            size="sm"
-                          />
-                        </td>
-                        <td className="p-4 text-right pr-6" onClick={(e) => e.stopPropagation()}>
-                          {isAwaiting ? (
-                            <button
-                              onClick={() => {
-                                setSinglePaymentInvoice({
-                                  id: inv.id,
-                                  amount: inv.amount,
-                                  agency: inv.vendorFee?.name || inv.campaignName,
-                                  dueDate: inv.dueDate,
-                                });
-                                setIsSinglePaymentOpen(true);
-                              }}
-                              className="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer"
-                            >
-                              Pay Now
-                            </button>
-                          ) : (
-                            <span className="text-xs text-slate-400 font-medium">Reconciled</span>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            <div className="divide-y divide-slate-100">
+              {documents.map((document) => {
+                const version = document.versions[0];
+                if (!version) return null;
+                const existing = payments.find((payment) => payment.commercialDocumentVersionId === version.id);
+                const eligible = version.validationStatus === "valid" && version.approval?.status === "approved";
+                return (
+                  <article key={document.id} className="grid gap-4 p-6 md:grid-cols-[1fr_auto] md:items-center">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="font-black text-slate-900">{document.externalDocumentId}</h3>
+                        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">{version.validationStatus}</span>
+                        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">{version.approval?.status || "not reviewable"}</span>
+                      </div>
+                      <p className="mt-2 text-sm text-slate-500">Payable to {document.agencyOrganization?.name || document.agencyOrganizationId} · Source version {version.versionNumber}</p>
+                      <p className="mt-2 text-xl font-black text-slate-950">{money(version.totalAmount, version.currency)}</p>
+                    </div>
+                    {existing || paidVersions.has(version.id) ? (
+                      <div className="rounded-xl bg-blue-50 px-4 py-3 text-sm font-bold text-blue-800">Payment {existing?.status || "created"}</div>
+                    ) : (
+                      <button disabled={!eligible || workingId === document.id} onClick={() => void fund(document)} className="rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-40">
+                        {workingId === document.id ? "Preparing…" : eligible ? "Get bank instructions" : "Awaiting Agency approval"}
+                      </button>
+                    )}
+                  </article>
+                );
+              })}
             </div>
           )}
-        </div>
+        </section>
+        <p className="mt-6 text-xs text-slate-400">Need help? <Link href="/auth/login" className="font-bold text-slate-600">Return to sign in</Link></p>
       </div>
-
-      {/* Multi-Rail Single Invoice Checkout Modal */}
-      {singlePaymentInvoice && (
-        <PaymentModal
-          isOpen={isSinglePaymentOpen}
-          onClose={() => {
-            setIsSinglePaymentOpen(false);
-            setSinglePaymentInvoice(null);
-          }}
-          invoice={singlePaymentInvoice}
-        />
-      )}
-
-      {/* Batch Payment Checkout Modal */}
-      <BatchPaymentCheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        selectedInvoices={batchInvoices}
-        onAuthorizePayment={handleAuthorizePayment}
-      />
-
-      {/* Toast Notification Banner */}
-      <ToastBanner toast={toast} onDismiss={() => setToast(null)} />
-    </AppShell>
+    </main>
   );
 }

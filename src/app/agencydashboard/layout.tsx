@@ -1,30 +1,16 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useApp } from "../../context/AppContext";
-import { AccountingProvider } from "../../modules/accounting/store/AccountingContext";
+import React from "react";
+import { PortalGuard } from "../../components/auth/PortalGuard";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export default function AgencyDashboardLayout({ children }: LayoutProps) {
-  const router = useRouter();
-  const { state } = useApp();
-
-  const accountType = (state.user?.accountType || "").toLowerCase();
-  const isTalent = ["talent", "individual", "talent_independent", "talent_agency", "creator", "model"].includes(accountType);
-
-  useEffect(() => {
-    if (isTalent) {
-      router.replace("/dashboard");
-    }
-  }, [isTalent, router]);
-
-  if (isTalent) {
-    return null;
-  }
-
-  return <AccountingProvider>{children}</AccountingProvider>;
+  return (
+    <PortalGuard role="agency" allowedPaths={["/agencydashboard/invoices", "/agencydashboard/settings"]} canonicalPath="/agencydashboard/invoices">
+      {children}
+    </PortalGuard>
+  );
 }

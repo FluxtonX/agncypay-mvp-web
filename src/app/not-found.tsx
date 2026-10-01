@@ -46,7 +46,7 @@ export default function NotFound() {
 
         <div className="flex flex-col sm:flex-row items-center gap-3 mt-8 w-full sm:w-auto">
           <Link
-            href="/branddashboard"
+            href="/auth/login"
             className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-2xs transition-all"
           >
             <Home className="w-4 h-4" />

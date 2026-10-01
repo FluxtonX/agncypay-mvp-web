@@ -1,27 +1,26 @@
 import { apiClient } from './client';
 
 export interface CreatePaymentDto {
-  agencyId: string;
+  agencyOrganizationId: string;
   amount: number;
-  currency?: string;
-  invoiceId?: string;
-  paymentMethod?: string;
-  metadata?: Record<string, any>;
+  currency: string;
+  commercialDocumentVersionId: string;
+  purpose?: string;
+  metadata?: Record<string, unknown>;
+  idempotencyKey: string;
 }
 
 export interface PaymentRecord {
   id: string;
-  paymentNumber: string;
-  brandId: string;
-  agencyId: string;
-  amount: number;
+  instructionType: string;
+  sourceOrganizationId: string;
+  destinationOrganizationId: string;
+  commercialDocumentVersionId?: string;
+  amount: string;
   currency: string;
   status: string;
-  paymentMethod: string;
-  depositRef?: string;
   createdAt: string;
-  brand?: { fullName: string; email: string };
-  agency?: { fullName: string; email: string };
+  attempts?: Array<{ id: string; status: string; operationType: string; externalReference?: string }>;
 }
 
 export interface FundingInstructions {
@@ -36,10 +35,13 @@ export interface FundingInstructions {
 }
 
 export async function createPayment(data: CreatePaymentDto): Promise<{ payment: PaymentRecord; fundingInstructions: FundingInstructions }> {
-  return apiClient('/payments', {
+  const { idempotencyKey, ...body } = data;
+  const result = await apiClient<{ instruction: PaymentRecord; fundingInstructions: FundingInstructions }>('/payments', {
     method: 'POST',
-    body: JSON.stringify(data),
+    headers: { 'Idempotency-Key': idempotencyKey },
+    body: JSON.stringify(body),
   });
+  return { payment: result.instruction, fundingInstructions: result.fundingInstructions };
 }
 
 export async function getPayments(): Promise<PaymentRecord[]> {
@@ -52,4 +54,18 @@ export async function getPaymentById(id: string): Promise<PaymentRecord> {
 
 export async function getFundingInstructions(paymentId: string): Promise<FundingInstructions> {
   return apiClient(`/payments/${paymentId}/funding-instructions`);
+}
+
+export function provisionAgencyRails(data: {
+  accountName: string;
+  bankName: string;
+  accountNumber: string;
+  routingNumber: string;
+  currency: string;
+}) {
+  return apiClient<{
+    agencyOrganizationId: string;
+    destinationAccount: Record<string, string>;
+    collectionAccount: Record<string, unknown>;
+  }>("/payments/agency/rails", { method: "POST", body: JSON.stringify(data) });
 }

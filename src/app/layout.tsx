@@ -17,8 +17,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "AgncyPay | Secure Brand Invoice Payments & KYB Verification",
-  description: "A verified brand payment platform for invoice management, business verification, and fast payment reconciliation. Secure Adidas invoices with AgncyPay.",
+  title: "AgncyPay | Payment orchestration for Brands and Agencies",
+  description: "Validate CRM commercial records and orchestrate reconciled Brand-to-Agency and Agency-to-Talent payments.",
   icons: {
     icon: "/Alogo.jpg",
   }
@@ -49,7 +49,6 @@ export default function RootLayout({
             `,
           }}
         />
-        <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" async />
       </head>
       <body className="min-h-full flex flex-col bg-white text-slate-900 antialiased">
         <ThemeEnforcer />

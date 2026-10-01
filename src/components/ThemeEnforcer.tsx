@@ -15,7 +15,7 @@ export default function ThemeEnforcer() {
       localStorage.removeItem("agncypay_theme");
       localStorage.removeItem("agncypay_theme_agency");
       localStorage.setItem("theme", "light");
-    } catch (_) {}
+    } catch {}
   }, [pathname]);
 
   return null;

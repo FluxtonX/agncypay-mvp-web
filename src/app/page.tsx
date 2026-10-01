@@ -62,13 +62,13 @@ const SOLUTIONS = [
   {
     icon: Layers,
     title: "Agency Command Center",
-    desc: "One dashboard to manage talent rosters, create invoices, automate commission splits, and track every dollar in or out.",
+    desc: "One dashboard to review CRM-supplied invoices and payables, validate identity mappings, and track every payment state.",
     tag: "For Agencies",
   },
   {
     icon: DollarSign,
     title: "Talent Balance & Payouts",
-    desc: "Real-time liquidity balance, crystallized earnings, and instant payout requests — finally, full financial clarity for creators.",
+    desc: "Real-time available and held AP balances, ledger-backed activity, and withdrawal requests — full payment clarity for creators.",
     tag: "For Talent",
   },
 ];
@@ -77,7 +77,7 @@ const CAPABILITIES = [
   {
     icon: Zap,
     title: "Real-Time Settlements",
-    desc: "Payments move the moment they're approved. Track every settlement from brand wallet to talent balance — live.",
+    desc: "Track settlement from the Brand's external bank to the Agency's external bank, then from Agency funding to Talent AP balance.",
   },
   {
     icon: BarChart3,
@@ -97,7 +97,7 @@ const CAPABILITIES = [
   {
     icon: BriefcaseBusiness,
     title: "Bank-Grade Security",
-    desc: "End-to-end encryption, MFA, role-based access, and SOC 2 Type II certified infrastructure protects every dollar.",
+    desc: "Encryption, role-based access, immutable audit history, and reconciled ledger controls protect every payment workflow.",
   },
   {
     icon: Globe2,
@@ -110,7 +110,7 @@ const WORKFLOW = [
   {
     step: "01",
     title: "Invoice Created",
-    desc: "Agency creates an invoice inside AgncyPay or syncs from their CRM — talent, amounts, and splits attached.",
+    desc: "The Agency's approved CRM/accounting source supplies final invoices, payables, and allocations.",
   },
   {
     step: "02",
@@ -119,8 +119,8 @@ const WORKFLOW = [
   },
   {
     step: "03",
-    title: "Automatic Split",
-    desc: "AgncyPay splits the payment: agency commission is deposited, talent earnings crystallize in real-time.",
+    title: "Validated Allocation Funding",
+    desc: "AgncyPay preserves the CRM's approved allocations and funds each mapped Talent AP balance without recalculating splits.",
   },
   {
     step: "04",
@@ -130,7 +130,7 @@ const WORKFLOW = [
 ];
 
 const TRUST_BADGES = [
-  "SOC 2 Type II Certified",
+  "Permissioned network access",
   "End-to-end encryption (AES-256)",
   "Multi-factor authentication",
   "Role-based access control",
@@ -278,7 +278,7 @@ export default function LandingPage() {
               className="inline-flex h-11 items-center justify-center rounded-full bg-slate-950 px-6 sm:px-7 text-[14px] sm:text-[15px] font-bold text-white transition-all hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-950/20 active:scale-95 cursor-pointer"
               style={{ color: "#FFFFFF" }}
             >
-              Get Started
+              Activate Invite
             </Link>
           </div>
         </div>
@@ -323,8 +323,8 @@ export default function LandingPage() {
               className="mt-8 max-w-[740px] text-xl sm:text-2xl font-normal leading-relaxed text-slate-600"
             >
               AgncyPay connects brands, agencies, and talent on a single payment rail.
-              Invoices flow in, payments split automatically, and creators see
-              every dollar — in real time.
+              Commercial data flows from approved CRM sources, payments are orchestrated,
+              and creators see their AP balances in the Talent app.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -339,7 +339,7 @@ export default function LandingPage() {
                 className="group inline-flex h-14 w-full sm:w-[230px] items-center justify-center gap-3 rounded-2xl bg-slate-950 text-base font-bold text-white transition-all hover:bg-slate-800 hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-slate-950/15 cursor-pointer"
                 style={{ color: "#FFFFFF" }}
               >
-                <span>Start Free</span>
+                <span>Activate Invite</span>
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" style={{ color: "#FFFFFF" }} />
               </Link>
               <Link
@@ -584,7 +584,7 @@ export default function LandingPage() {
                 className="group inline-flex h-14 w-full sm:w-[240px] items-center justify-center gap-3 rounded-2xl bg-slate-950 text-base font-bold text-white transition-all hover:bg-slate-800 hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-slate-950/15 cursor-pointer"
                 style={{ color: "#FFFFFF" }}
               >
-                <span>Get Started Free</span>
+                <span>Activate Invite</span>
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" style={{ color: "#FFFFFF" }} />
               </Link>
               <Link
